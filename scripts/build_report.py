@@ -110,6 +110,8 @@ if s.get('hybrid_evaluation'):
                     '<p>结构化文本由官方minimal helper生成，仅包含通用车载前视街景信息。它不是完整场景prompt，不能据此认定空文本是退步根因。'
                     '<a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-25/hf-hybrid/config-audit-zh.md" target="_blank" rel="noopener">配置、逐块窗口与读取核查记录 ↗</a></p></li>')
     page = page.replace('<ol class="finding-list">', '<ol class="finding-list">' + finding)
+    if (r / 'data/2026-10-25/dmd2-noisy-kv-review.md').exists():
+        page = page.replace('<div class="next-note">', '<p class="caption-note"><a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-25/dmd2-noisy-kv-review.md" target="_blank" rel="noopener">DMD2 与 Noisy KV：原理、当前实现差异及建议实验 ↗</a></p><div class="next-note">')
     for label, benchmark in [('L40S', l40s), ('A5000', a5000)]:
         h = benchmark['models']['hybrid']
         state = f'hybrid 作业 {h["job_id"]} 已完成。' if h['fps'] is not None else f'hybrid 作业 {h["job_id"]} 排队中，尚无实测值。'
