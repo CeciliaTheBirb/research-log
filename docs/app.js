@@ -1,9 +1,34 @@
 const video = document.querySelector('#comparison-video');
 const scenes = [...document.querySelectorAll('[data-time]')];
-scenes.forEach(scene => scene.addEventListener('click', () => {
-  const seek = () => { video.currentTime = Number(scene.dataset.time); video.play().catch(() => {}); };
-  if (video.readyState >= 1) seek();
-  else { video.addEventListener('loadedmetadata', seek, { once: true }); video.load(); }
+const originalVideoURL = video.querySelector('source').src;
+let seekableVideo;
+// Some static hosts stream MP4 without byte ranges. A complete in-memory copy
+// gives the media element a seekable resource while keeping the download link.
+function prepareSeeking() {
+  if (!seekableVideo) seekableVideo = (async () => {
+    const response = await fetch(originalVideoURL);
+    if (!response.ok) throw new Error('Video download failed');
+    const url = URL.createObjectURL(await response.blob());
+    await new Promise((resolve, reject) => {
+      video.addEventListener('loadedmetadata', resolve, { once: true });
+      video.addEventListener('error', reject, { once: true });
+      video.src = url;
+      video.load();
+    });
+  })().catch(error => { seekableVideo = null; throw error; });
+  return seekableVideo;
+}
+scenes.forEach(scene => scene.addEventListener('click', async () => {
+  scenes.forEach(button => { button.disabled = true; button.setAttribute('aria-busy', 'true'); });
+  try {
+    await prepareSeeking();
+    video.currentTime = Number(scene.dataset.time);
+    await video.play();
+  } catch {
+    video.controls = true;
+  } finally {
+    scenes.forEach(button => { button.disabled = false; button.removeAttribute('aria-busy'); });
+  }
 }));
 video.addEventListener('timeupdate', () => {
   const i = video.currentTime < 6.05 ? 0 : video.currentTime < 12.1 ? 1 : 2;
