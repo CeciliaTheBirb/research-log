@@ -2,7 +2,6 @@
   "updated": "2026-10-25",
   "quality_episodes": 172,
   "train_episodes": 4775,
-  "speed_gpu": "NVIDIA L40S",
   "speed_indices": [
     0,
     57,
@@ -23,7 +22,6 @@
       "lpips": 0.4337867604130012,
       "psnr": 15.807606674118562,
       "ssim": 0.5028855906683922,
-      "fps": 35.462999358425456,
       "calls": 51
     },
     {
@@ -35,7 +33,6 @@
       "lpips": 0.4347067196903996,
       "psnr": 15.779396752377812,
       "ssim": 0.5022942726947944,
-      "fps": 45.41242281751135,
       "calls": 33,
       "fvd_delta": {
         "protocol": "full121",
@@ -58,7 +55,6 @@
       "lpips": 0.4150429111539004,
       "psnr": 16.149659352893977,
       "ssim": 0.5141550202211438,
-      "fps": 56.84236996947842,
       "calls": 24,
       "fvd_delta": {
         "protocol": "full121",
@@ -85,42 +81,174 @@
     "l40s": {
       "status": "completed",
       "gpu": "NVIDIA L40S",
-      "job_id": 82709,
-      "source": "previous same-protocol optimized run; new verification running as 82712",
+      "job_id": 82712,
+      "indices": [
+        0,
+        57,
+        114
+      ],
+      "warmup_per_clip": 1,
+      "timed_repeats_per_clip": 3,
       "models": {
         "old": {
-          "fps": 35.462999358425456
+          "fps": 35.35467105852332,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 2.67520500801038,
+              "decode_s": 0.6867593919741921,
+              "combined_s": 3.361964399984572,
+              "combined_fps": 35.693417812678405
+            },
+            "57": {
+              "rollout_s": 2.701639520993922,
+              "decode_s": 0.691400888026692,
+              "combined_s": 3.3932864230009727,
+              "combined_fps": 35.36394664081253
+            },
+            "114": {
+              "rollout_s": 2.7276175019796938,
+              "decode_s": 0.6996617119875737,
+              "combined_s": 3.4272792139672674,
+              "combined_fps": 35.0131963310609
+            }
+          }
         },
         "clean": {
-          "fps": 45.41242281751135
+          "fps": 45.75521144111414,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 1.9160271110013127,
+              "decode_s": 0.6969222099869512,
+              "combined_s": 2.612949320988264,
+              "combined_fps": 45.92511574415606
+            },
+            "57": {
+              "rollout_s": 1.927002264012117,
+              "decode_s": 0.6983190259779803,
+              "combined_s": 2.626131047029048,
+              "combined_fps": 45.694597052099304
+            },
+            "114": {
+              "rollout_s": 1.9280416580149904,
+              "decode_s": 0.7008341840119101,
+              "combined_s": 2.6288758420269005,
+              "combined_fps": 45.64688757133479
+            }
+          }
         },
         "noisy": {
-          "fps": 56.84236996947842
+          "fps": 56.973004059294354,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 1.3984282170422375,
+              "decode_s": 0.7033658499713056,
+              "combined_s": 2.101794067013543,
+              "combined_fps": 57.09408066343484
+            },
+            "57": {
+              "rollout_s": 1.4053305860143155,
+              "decode_s": 0.7009829679736868,
+              "combined_s": 2.1063386269961484,
+              "combined_fps": 56.970896541517696
+            },
+            "114": {
+              "rollout_s": 1.4059444790473208,
+              "decode_s": 0.704614662041422,
+              "combined_s": 2.1106494370033033,
+              "combined_fps": 56.85453865345626
+            }
+          }
         }
       }
     },
     "a5000": {
-      "status": "running",
+      "status": "completed",
       "gpu": "NVIDIA RTX A5000",
       "job_id": 82713,
+      "indices": [
+        0,
+        57,
+        114
+      ],
+      "warmup_per_clip": 1,
+      "timed_repeats_per_clip": 3,
       "models": {
         "old": {
-          "fps": null
+          "fps": 15.45083858249751,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 6.281302855350077,
+              "decode_s": 1.4103001868352294,
+              "combined_s": 7.6916030421853065,
+              "combined_fps": 15.601429161365834
+            },
+            "57": {
+              "rollout_s": 6.362055525183678,
+              "decode_s": 1.424379131756723,
+              "combined_s": 7.788608584087342,
+              "combined_fps": 15.407116522092043
+            },
+            "114": {
+              "rollout_s": 6.38698993390426,
+              "decode_s": 1.4327154089696705,
+              "combined_s": 7.819494605064392,
+              "combined_fps": 15.346260348115148
+            }
+          }
         },
         "clean": {
-          "fps": null
+          "fps": 20.619032522857193,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 4.383538239635527,
+              "decode_s": 1.4312777239829302,
+              "combined_s": 5.814815963618457,
+              "combined_fps": 20.636938598023335
+            },
+            "57": {
+              "rollout_s": 4.387933074962348,
+              "decode_s": 1.4314062078483403,
+              "combined_s": 5.818799654953182,
+              "combined_fps": 20.622810049466384
+            },
+            "114": {
+              "rollout_s": 4.391342238057405,
+              "decode_s": 1.4346392219886184,
+              "combined_s": 5.825981460046023,
+              "combined_fps": 20.597387894717407
+            }
+          }
         },
         "noisy": {
-          "fps": null
+          "fps": 26.185063051336602,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 3.148031349759549,
+              "decode_s": 1.4338464178144932,
+              "combined_s": 4.5833031460642815,
+              "combined_fps": 26.181990624609885
+            },
+            "57": {
+              "rollout_s": 3.1467423047870398,
+              "decode_s": 1.4320460143499076,
+              "combined_s": 4.579422120936215,
+              "combined_fps": 26.204179660875475
+            },
+            "114": {
+              "rollout_s": 3.1517307232134044,
+              "decode_s": 1.4340735813602805,
+              "combined_s": 4.585570824332535,
+              "combined_fps": 26.16904298222608
+            }
+          }
         }
-      },
-      "reason": "Optimized same-protocol benchmark launched on idle A5000."
+      }
     }
   },
   "old_native_runtime": {
     "single_device": true,
     "fsdp": false,
     "text_cache": true,
-    "source": "Native class default cache_text=True and native single-device load_model; rechecking in benchmark 82712."
+    "source": "Audited source asserts cache_text and absence of FSDP before timed records."
   }
 }

@@ -23,6 +23,7 @@ summary = {label: b['summary'][name + '__' + mode] for label, name, mode in mapp
 public = {k: b[k] for k in ['gpu', 'torch', 'job_id', 'indices', 'warmup_per_clip',
                             'timed_repeats_per_clip', 'protocol', 'records', 'runtimes', 'complete']}
 public['summary'] = summary
+public['provenance'] = b.get('provenance', {})
 public['model_labels'] = {name: label for label, name, _ in mapping}
 (r / f'data/2026-10-25/{a.hardware}-benchmark.json').write_text(json.dumps(public, ensure_ascii=False, indent=2) + '\n')
 f = r / 'docs/results.json'

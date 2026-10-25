@@ -45,7 +45,10 @@ def main():
     p.add_argument('--optimized-only', action='store_true', help='Only benchmark deployed single-device, text-cached students.')
     a = p.parse_args()
     m = json.loads(node_path(a.manifest).read_text())
-    root = node_path(a.output); root.mkdir(parents=True, exist_ok=True)
+    root = node_path(a.output)
+    if not root.is_absolute():
+        raise ValueError('--output must be an absolute persistent directory, outside job scratch')
+    root.mkdir(parents=True, exist_ok=True)
     assert m['tiny_parallel'] is False
     torch.cuda.set_device(0); torch.set_num_threads(4)
     device = torch.device('cuda', 0)

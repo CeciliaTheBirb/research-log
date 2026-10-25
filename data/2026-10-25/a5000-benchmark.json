@@ -1,0 +1,1733 @@
+{
+  "gpu": "NVIDIA RTX A5000",
+  "torch": "2.9.1+cu128",
+  "job_id": "82713",
+  "indices": [
+    0,
+    57,
+    114
+  ],
+  "warmup_per_clip": 1,
+  "timed_repeats_per_clip": 3,
+  "protocol": "120 new RGB frames / synchronized generation plus TinyVAE BF16 streaming decode; same checkpoints, prompts, action layout and canonical noise on each GPU. Every video rebuilds its own text cache; loading, anchor encoding, CPU conversion, MP4 and quality validation excluded.",
+  "records": [
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 0,
+      "repeat": 0,
+      "rollout_s": 6.242423626128584,
+      "decode_s": 1.4042827431112528,
+      "combined_s": 7.646706369239837,
+      "combined_fps": 15.693030986873014,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 0,
+      "repeat": 1,
+      "rollout_s": 6.281302855350077,
+      "decode_s": 1.4103001868352294,
+      "combined_s": 7.6916030421853065,
+      "combined_fps": 15.601429161365834,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 0,
+      "repeat": 2,
+      "rollout_s": 6.301086524967104,
+      "decode_s": 1.416474211961031,
+      "combined_s": 7.717560736928135,
+      "combined_fps": 15.54895440288615,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 57,
+      "repeat": 0,
+      "rollout_s": 6.344892193097621,
+      "decode_s": 1.4228493138216436,
+      "combined_s": 7.767741506919265,
+      "combined_fps": 15.448505835719134,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 57,
+      "repeat": 1,
+      "rollout_s": 6.365304592065513,
+      "decode_s": 1.424379131756723,
+      "combined_s": 7.789683723822236,
+      "combined_fps": 15.404990016862776,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 57,
+      "repeat": 2,
+      "rollout_s": 6.362055525183678,
+      "decode_s": 1.4265530589036644,
+      "combined_s": 7.788608584087342,
+      "combined_fps": 15.407116522092043,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 114,
+      "repeat": 0,
+      "rollout_s": 6.38698993390426,
+      "decode_s": 1.4325046711601317,
+      "combined_s": 7.819494605064392,
+      "combined_fps": 15.346260348115148,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 114,
+      "repeat": 1,
+      "rollout_s": 6.385091837029904,
+      "decode_s": 1.4327154089696705,
+      "combined_s": 7.817807245999575,
+      "combined_fps": 15.349572613395503,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "index": 114,
+      "repeat": 2,
+      "rollout_s": 6.395732692908496,
+      "decode_s": 1.4348172661848366,
+      "combined_s": 7.830549959093332,
+      "combined_fps": 15.324594137944088,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "nfe_per_generated_block": 4,
+        "per_generated_block_nfe": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "denoise_updates_per_block": 4,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 40,
+        "model_call_count": 51,
+        "cache_history": "full",
+        "anchor_required": true,
+        "reuse_noisy_kv": false,
+        "cache_policy": "clean",
+        "clean_cache_commit_count": 11,
+        "noisy_cache_commit_count": 0,
+        "total_cache_writes": 11,
+        "noisy_cache_source_times": [],
+        "denoising_times": [
+          1.0,
+          0.9375,
+          0.8333333134651184,
+          0.625,
+          0.0
+        ],
+        "explicit_denoising_times": false,
+        "unstep": false,
+        "unstep_steps": null,
+        "unstep_full_steps": null,
+        "unstep_clean_sigma": null,
+        "unstep_cache_blocks": null,
+        "cache_blocks": null
+      },
+      "peak_allocated_gib": 8.130624294281006
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 0,
+      "repeat": 0,
+      "rollout_s": 4.380398525856435,
+      "decode_s": 1.4304536352865398,
+      "combined_s": 5.810852161142975,
+      "combined_fps": 20.651015835927996,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395,
+      "text_cache": {
+        "enabled": true,
+        "layer_count": 28,
+        "tokens": 19
+      }
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 0,
+      "repeat": 1,
+      "rollout_s": 4.383538239635527,
+      "decode_s": 1.4312777239829302,
+      "combined_s": 5.814815963618457,
+      "combined_fps": 20.636938598023335,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 0,
+      "repeat": 2,
+      "rollout_s": 4.3899046019651,
+      "decode_s": 1.4334438811056316,
+      "combined_s": 5.823348483070731,
+      "combined_fps": 20.60670082665607,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 57,
+      "repeat": 0,
+      "rollout_s": 4.387933074962348,
+      "decode_s": 1.430866579990834,
+      "combined_s": 5.818799654953182,
+      "combined_fps": 20.622810049466384,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395,
+      "text_cache": {
+        "enabled": true,
+        "layer_count": 28,
+        "tokens": 19
+      }
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 57,
+      "repeat": 1,
+      "rollout_s": 4.386608271859586,
+      "decode_s": 1.4314062078483403,
+      "combined_s": 5.8180144797079265,
+      "combined_fps": 20.625593218878375,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 57,
+      "repeat": 2,
+      "rollout_s": 4.393243605270982,
+      "decode_s": 1.4319117767736316,
+      "combined_s": 5.825155382044613,
+      "combined_fps": 20.600308855260156,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 114,
+      "repeat": 0,
+      "rollout_s": 4.391342238057405,
+      "decode_s": 1.4346392219886184,
+      "combined_s": 5.825981460046023,
+      "combined_fps": 20.597387894717407,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395,
+      "text_cache": {
+        "enabled": true,
+        "layer_count": 28,
+        "tokens": 19
+      }
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 114,
+      "repeat": 1,
+      "rollout_s": 4.395604421850294,
+      "decode_s": 1.433665791992098,
+      "combined_s": 5.829270213842392,
+      "combined_fps": 20.58576727409955,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395
+    },
+    {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 114,
+      "repeat": 2,
+      "rollout_s": 4.39045027224347,
+      "decode_s": 1.434881730005145,
+      "combined_s": 5.825332002248615,
+      "combined_fps": 20.59968426755406,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 11,
+        "noisy_commit_blocks": 0,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 33
+      },
+      "peak_allocated_gib": 7.6410603523254395
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 0,
+      "repeat": 0,
+      "rollout_s": 3.1458344040438533,
+      "decode_s": 1.4338161889463663,
+      "combined_s": 4.57965059299022,
+      "combined_fps": 26.202872372769306,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945,
+      "text_cache": {
+        "enabled": true,
+        "layer_count": 28,
+        "tokens": 19
+      }
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 0,
+      "repeat": 1,
+      "rollout_s": 3.1499189799651504,
+      "decode_s": 1.4338464178144932,
+      "combined_s": 4.5837653977796435,
+      "combined_fps": 26.179350290948026,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 0,
+      "repeat": 2,
+      "rollout_s": 3.148031349759549,
+      "decode_s": 1.4352717963047326,
+      "combined_s": 4.5833031460642815,
+      "combined_fps": 26.181990624609885,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 57,
+      "repeat": 0,
+      "rollout_s": 3.1467423047870398,
+      "decode_s": 1.4326798161491752,
+      "combined_s": 4.579422120936215,
+      "combined_fps": 26.204179660875475,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945,
+      "text_cache": {
+        "enabled": true,
+        "layer_count": 28,
+        "tokens": 19
+      }
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 57,
+      "repeat": 1,
+      "rollout_s": 3.1460560839623213,
+      "decode_s": 1.431960835121572,
+      "combined_s": 4.578016919083893,
+      "combined_fps": 26.212222916819886,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 57,
+      "repeat": 2,
+      "rollout_s": 3.1476301420480013,
+      "decode_s": 1.4320460143499076,
+      "combined_s": 4.579676156397909,
+      "combined_fps": 26.20272611030746,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 114,
+      "repeat": 0,
+      "rollout_s": 3.1481243767775595,
+      "decode_s": 1.4340735813602805,
+      "combined_s": 4.58219795813784,
+      "combined_fps": 26.18830550235914,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945,
+      "text_cache": {
+        "enabled": true,
+        "layer_count": 28,
+        "tokens": 19
+      }
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 114,
+      "repeat": 1,
+      "rollout_s": 3.1517307232134044,
+      "decode_s": 1.4338401011191308,
+      "combined_s": 4.585570824332535,
+      "combined_fps": 26.16904298222608,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945
+    },
+    {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "index": 114,
+      "repeat": 2,
+      "rollout_s": 3.151788590941578,
+      "decode_s": 1.4349450091831386,
+      "combined_s": 4.586733600124717,
+      "combined_fps": 26.162408908321407,
+      "calls": {
+        "denoise_calls": 22,
+        "clean_commit_calls": 2,
+        "noisy_commit_blocks": 9,
+        "per_generated_block_steps": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "model_calls": 24
+      },
+      "peak_allocated_gib": 7.644853591918945
+    }
+  ],
+  "runtimes": {
+    "original_native": {
+      "single_device": true,
+      "fsdp": false,
+      "text_cache": true,
+      "source": "Audited source asserts cache_text and absence of FSDP before timed records."
+    },
+    "single_device_text_cache": {
+      "single_device": true,
+      "fsdp": false,
+      "text_cache": true,
+      "source": "Selected optimized-only runtime and six printed cache checks."
+    }
+  },
+  "complete": true,
+  "summary": {
+    "old": {
+      "variant": "old4444_native",
+      "runtime": "original_native",
+      "combined_fps": 15.45083858249751,
+      "per_clip_median": {
+        "0": {
+          "rollout_s": 6.281302855350077,
+          "decode_s": 1.4103001868352294,
+          "combined_s": 7.6916030421853065,
+          "combined_fps": 15.601429161365834
+        },
+        "57": {
+          "rollout_s": 6.362055525183678,
+          "decode_s": 1.424379131756723,
+          "combined_s": 7.788608584087342,
+          "combined_fps": 15.407116522092043
+        },
+        "114": {
+          "rollout_s": 6.38698993390426,
+          "decode_s": 1.4327154089696705,
+          "combined_s": 7.819494605064392,
+          "combined_fps": 15.346260348115148
+        }
+      }
+    },
+    "clean": {
+      "variant": "clean3200_nocaption",
+      "runtime": "single_device_text_cache",
+      "combined_fps": 20.619032522857193,
+      "per_clip_median": {
+        "0": {
+          "rollout_s": 4.383538239635527,
+          "decode_s": 1.4312777239829302,
+          "combined_s": 5.814815963618457,
+          "combined_fps": 20.636938598023335
+        },
+        "57": {
+          "rollout_s": 4.387933074962348,
+          "decode_s": 1.4314062078483403,
+          "combined_s": 5.818799654953182,
+          "combined_fps": 20.622810049466384
+        },
+        "114": {
+          "rollout_s": 4.391342238057405,
+          "decode_s": 1.4346392219886184,
+          "combined_s": 5.825981460046023,
+          "combined_fps": 20.597387894717407
+        }
+      }
+    },
+    "noisy": {
+      "variant": "noisy_matched1600_nocaption",
+      "runtime": "single_device_text_cache",
+      "combined_fps": 26.185063051336602,
+      "per_clip_median": {
+        "0": {
+          "rollout_s": 3.148031349759549,
+          "decode_s": 1.4338464178144932,
+          "combined_s": 4.5833031460642815,
+          "combined_fps": 26.181990624609885
+        },
+        "57": {
+          "rollout_s": 3.1467423047870398,
+          "decode_s": 1.4320460143499076,
+          "combined_s": 4.579422120936215,
+          "combined_fps": 26.204179660875475
+        },
+        "114": {
+          "rollout_s": 3.1517307232134044,
+          "decode_s": 1.4340735813602805,
+          "combined_s": 4.585570824332535,
+          "combined_fps": 26.16904298222608
+        }
+      }
+    }
+  },
+  "provenance": {
+    "source": "Recovered from persistent Slurm stdout JSON, including the successful final summary.",
+    "reason": "Relative benchmark.json output was inside temporary job code and removed during normal cleanup.",
+    "log_sha256": "0305f11e501a657ab5077fe40a8d345dcb57d6c9e05f84dfb09389b256fc7ebf",
+    "metadata": "GPU is the audited scheduler node hardware; runtime flags and warmup are from the submitted source.",
+    "validation": "All 27 timed records retained; independently recomputed medians and aggregate FPS match printed summary."
+  },
+  "model_labels": {
+    "old4444_native": "old",
+    "clean3200_nocaption": "clean",
+    "noisy_matched1600_nocaption": "noisy"
+  }
+}
