@@ -10,7 +10,8 @@
   "quality_gpu": {
     "old": "NVIDIA RTX A5000",
     "clean": "NVIDIA RTX A5000 / NVIDIA L40S",
-    "noisy": "NVIDIA RTX A5000 / NVIDIA L40S"
+    "noisy": "NVIDIA RTX A5000 / NVIDIA L40S",
+    "hybrid": "NVIDIA RTX A5000"
   },
   "models": [
     {
@@ -64,6 +65,28 @@
         "paired_percentile_95ci": [
           -37.86628327308587,
           1.8177084279782694
+        ],
+        "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+      }
+    },
+    {
+      "id": "hybrid",
+      "name": "43222+hybrid forcing",
+      "checkpoint": "HF Edge · step2400",
+      "fvd121": 269.72950436238625,
+      "fvd16": 304.23085136587497,
+      "lpips": 0.4453905252346322,
+      "psnr": 16.037735718350078,
+      "ssim": 0.518538209159187,
+      "calls": 34,
+      "fvd_delta": {
+        "protocol": "full121",
+        "episodes": 172,
+        "repeats": 512,
+        "observed_delta": 37.77258975782024,
+        "paired_percentile_95ci": [
+          16.260389293019763,
+          62.00528045762359
         ],
         "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
       }
@@ -158,6 +181,11 @@
               "combined_fps": 56.85453865345626
             }
           }
+        },
+        "hybrid": {
+          "fps": null,
+          "status": "queued",
+          "job_id": 82729
         }
       }
     },
@@ -241,6 +269,27 @@
               "combined_fps": 26.16904298222608
             }
           }
+        },
+        "hybrid": {
+          "fps": 20.109165519483664,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 4.435553714632988,
+              "decode_s": 1.4605495482683182,
+              "combined_s": 5.896103262901306
+            },
+            "57": {
+              "rollout_s": 4.497690558433533,
+              "decode_s": 1.4805838540196419,
+              "combined_s": 5.980443276464939
+            },
+            "114": {
+              "rollout_s": 4.531190678477287,
+              "decode_s": 1.4918637201189995,
+              "combined_s": 6.025737851858139
+            }
+          },
+          "job_id": 82728
         }
       }
     }
@@ -250,5 +299,40 @@
     "fsdp": false,
     "text_cache": true,
     "source": "Audited source asserts cache_text and absence of FSDP before timed records."
+  },
+  "hf_source": {
+    "repo": "SichengMo-UCLA/NavWorldGym",
+    "revision": "97c822da1be03ee19092c937aefd24b61190c960",
+    "model": "Cosmos3-Edge",
+    "step": 2400,
+    "ema": false,
+    "runtime_repository": "DhlinV/NavWorldGym",
+    "runtime_commit": "dec58fab57464baab30f664ee78769e5dc5fae54",
+    "checkpoint_url": "https://huggingface.co/SichengMo-UCLA/NavWorldGym/tree/97c822da1be03ee19092c937aefd24b61190c960/edge-text-hybrid/step-2400"
+  },
+  "hybrid_evaluation": {
+    "episodes": 172,
+    "checkpoint_step": 2400,
+    "runtime_commit": "dec58fab57464baab30f664ee78769e5dc5fae54",
+    "schedule": [
+      4,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "window": {
+      "sink_size": 1,
+      "history_cutoff": 2
+    },
+    "history_memory": true,
+    "prompt": "",
+    "action_layout": "120 transitions",
+    "external_training_overlap": "not established"
   }
 }

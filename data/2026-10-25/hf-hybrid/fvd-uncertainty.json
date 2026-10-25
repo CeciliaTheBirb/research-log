@@ -1,0 +1,13 @@
+{
+  "hybrid2400_nocaption_minus_old4444_native": {
+    "protocol": "full121",
+    "episodes": 172,
+    "repeats": 512,
+    "observed_delta": 37.77258975782024,
+    "paired_percentile_95ci": [
+      16.260389293019763,
+      62.00528045762359
+    ],
+    "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+  }
+}

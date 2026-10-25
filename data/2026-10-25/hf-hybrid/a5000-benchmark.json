@@ -1,0 +1,1188 @@
+{
+  "settings": {
+    "variant": "hybrid2400_nocaption",
+    "hf_source": {
+      "repo": "SichengMo-UCLA/NavWorldGym",
+      "revision": "97c822da1be03ee19092c937aefd24b61190c960"
+    },
+    "runtime_commit": "dec58fab57464baab30f664ee78769e5dc5fae54",
+    "loaded": {
+      "format": "peft",
+      "checkpoint": "/bigdata/qianxun/projects/costream-stage3-422-20261022/out/eval-assets/hf-hybrid-20261025/edge-text-hybrid/step-2400",
+      "action_weights": "/bigdata/qianxun/projects/costream-stage3-422-20261022/out/eval-assets/hf-hybrid-20261025/edge-text-hybrid/step-2400/action_weights.safetensors",
+      "time_weights": "/bigdata/qianxun/projects/costream-stage3-422-20261022/out/eval-assets/hf-hybrid-20261025/edge-text-hybrid/step-2400/time_weights.safetensors",
+      "history_weights": "/bigdata/qianxun/projects/costream-stage3-422-20261022/out/eval-assets/hf-hybrid-20261025/edge-text-hybrid/step-2400/history_weights.safetensors",
+      "adapter_tensors": 344,
+      "action_tensors": 5,
+      "time_tensors": 8,
+      "history_tensors": 28
+    },
+    "gpu": "NVIDIA RTX A5000",
+    "job_id": "82728",
+    "torch": "2.9.1+cu128",
+    "cuda": "12.8",
+    "mode": "benchmark",
+    "single_device": true,
+    "text_cache": true,
+    "rope_inv_freq_dtype": "torch.float32",
+    "generation": {
+      "attention_sink_size": 1,
+      "attention_history_cutoff": 2,
+      "inference_step_schedule": [
+        4,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    "conditioning": {
+      "caption_format": "sft",
+      "prompt": "",
+      "max_text_tokens": 2048
+    },
+    "tinyvae": "/p0/data/qianxun/models/NavWorldGym/tinyvae/step-38000/decoder.safetensors",
+    "tiny_parallel": false,
+    "future_latents_passed": false,
+    "index_slice": [
+      0,
+      172
+    ],
+    "input_scope": "Anchor plus recorded actions; no future captions"
+  },
+  "records": [
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 0,
+      "repeat": 0,
+      "rollout_s": 4.404836505651474,
+      "decode_s": 1.4531260654330254,
+      "combined_s": 5.857962571084499,
+      "combined_fps": 20.484937987199206,
+      "rollout_fps": 27.24278184809768,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "3bd796241b628a874c624b87e15a2a9cc8be3dc96df8b5dcac0579de4e062432",
+      "rgb_sha256": "fb928d023d2c423404d7e4d7bfb2990f500419b0bf5eb58d0e9707e57ea0d020"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 0,
+      "repeat": 1,
+      "rollout_s": 4.435553714632988,
+      "decode_s": 1.4605495482683182,
+      "combined_s": 5.896103262901306,
+      "combined_fps": 20.35242509320493,
+      "rollout_fps": 27.054119444911105,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "3bd796241b628a874c624b87e15a2a9cc8be3dc96df8b5dcac0579de4e062432",
+      "rgb_sha256": "fb928d023d2c423404d7e4d7bfb2990f500419b0bf5eb58d0e9707e57ea0d020"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 0,
+      "repeat": 2,
+      "rollout_s": 4.449959747493267,
+      "decode_s": 1.4680103287100792,
+      "combined_s": 5.917970076203346,
+      "combined_fps": 20.27722317869265,
+      "rollout_fps": 26.966536060825696,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "3bd796241b628a874c624b87e15a2a9cc8be3dc96df8b5dcac0579de4e062432",
+      "rgb_sha256": "fb928d023d2c423404d7e4d7bfb2990f500419b0bf5eb58d0e9707e57ea0d020"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 57,
+      "repeat": 0,
+      "rollout_s": 4.475493170320988,
+      "decode_s": 1.4763551875948906,
+      "combined_s": 5.951848357915878,
+      "combined_fps": 20.16180399495589,
+      "rollout_fps": 26.812687548217944,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "8ce688d121f7930284f9fee878a3ad956157db12ca2a9b8d5d052547f2fc4953",
+      "rgb_sha256": "cc2367e7cd1a247f3805e10d5e3f664f3a3786613c7be2a6034852dd226084ff"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 57,
+      "repeat": 1,
+      "rollout_s": 4.504674024879932,
+      "decode_s": 1.4805838540196419,
+      "combined_s": 5.985257878899574,
+      "combined_fps": 20.04926144002048,
+      "rollout_fps": 26.638997480666426,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "8ce688d121f7930284f9fee878a3ad956157db12ca2a9b8d5d052547f2fc4953",
+      "rgb_sha256": "cc2367e7cd1a247f3805e10d5e3f664f3a3786613c7be2a6034852dd226084ff"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 57,
+      "repeat": 2,
+      "rollout_s": 4.497690558433533,
+      "decode_s": 1.4827527180314064,
+      "combined_s": 5.980443276464939,
+      "combined_fps": 20.065402254083818,
+      "rollout_fps": 26.68035927349211,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "8ce688d121f7930284f9fee878a3ad956157db12ca2a9b8d5d052547f2fc4953",
+      "rgb_sha256": "cc2367e7cd1a247f3805e10d5e3f664f3a3786613c7be2a6034852dd226084ff"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 114,
+      "repeat": 0,
+      "rollout_s": 4.518556237220764,
+      "decode_s": 1.4911291003227234,
+      "combined_s": 6.0096853375434875,
+      "combined_fps": 19.967767571846128,
+      "rollout_fps": 26.557155361157704,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "47920a4bcef3d334c9dc569d70f161cc1012b86ae875c42f2bbd650dc46c40b4",
+      "rgb_sha256": "0661e2ff23c4a4c14998fb98622e5218c23298fc8fdeec2495a962f89a03bf3c"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 114,
+      "repeat": 1,
+      "rollout_s": 4.53551434725523,
+      "decode_s": 1.4918637201189995,
+      "combined_s": 6.027378067374229,
+      "combined_fps": 19.90915430534406,
+      "rollout_fps": 26.457859200163426,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "47920a4bcef3d334c9dc569d70f161cc1012b86ae875c42f2bbd650dc46c40b4",
+      "rgb_sha256": "0661e2ff23c4a4c14998fb98622e5218c23298fc8fdeec2495a962f89a03bf3c"
+    },
+    {
+      "variant": "hybrid2400_nocaption",
+      "index": 114,
+      "repeat": 2,
+      "rollout_s": 4.531190678477287,
+      "decode_s": 1.4945471733808517,
+      "combined_s": 6.025737851858139,
+      "combined_fps": 19.91457360910514,
+      "rollout_fps": 26.483105328139967,
+      "calls": {
+        "generation_mode": "causal_autoregressive",
+        "block_boundaries": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            10
+          ],
+          [
+            10,
+            13
+          ],
+          [
+            13,
+            16
+          ],
+          [
+            16,
+            19
+          ],
+          [
+            19,
+            22
+          ],
+          [
+            22,
+            25
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            28,
+            31
+          ]
+        ],
+        "num_frame_per_block": [
+          1,
+          3
+        ],
+        "per_block_nfe": [
+          0,
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "nfe_per_generated_block": null,
+        "per_generated_block_nfe": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "denoise_updates_per_block": null,
+        "integration_method": "euler",
+        "guidance_scale": 1.0,
+        "cache_commit_count": 11,
+        "denoise_call_count": 23,
+        "model_call_count": 34,
+        "cache_history": "windowed",
+        "anchor_required": true,
+        "inference_step_schedule": [
+          4,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "attention_window": {
+          "sink_size": 1,
+          "history_cutoff": 2
+        },
+        "history_memory": {
+          "kind": "linear_attention_v1",
+          "feature": "relu",
+          "rope": "spatial",
+          "fold": "vision_action"
+        }
+      },
+      "peak_allocated_gib": 7.610374927520752,
+      "initial_noise_sha256": "47920a4bcef3d334c9dc569d70f161cc1012b86ae875c42f2bbd650dc46c40b4",
+      "rgb_sha256": "0661e2ff23c4a4c14998fb98622e5218c23298fc8fdeec2495a962f89a03bf3c"
+    }
+  ],
+  "indices": [
+    0,
+    57,
+    114
+  ],
+  "warmup_per_clip": 1,
+  "timed_repeats_per_clip": 3,
+  "protocol": "120 new RGB frames / synchronized generation plus TinyVAE BF16 streaming decode; one warmup and three timed repetitions on indices 0,57,114; each request rebuilds its text cache; exclude checkpoint loading, anchor encoding, CPU conversion, MP4 and metrics; report each GPU separately.",
+  "summary": {
+    "variant": "hybrid2400_nocaption",
+    "per_clip_median": {
+      "0": {
+        "rollout_s": 4.435553714632988,
+        "decode_s": 1.4605495482683182,
+        "combined_s": 5.896103262901306
+      },
+      "57": {
+        "rollout_s": 4.497690558433533,
+        "decode_s": 1.4805838540196419,
+        "combined_s": 5.980443276464939
+      },
+      "114": {
+        "rollout_s": 4.531190678477287,
+        "decode_s": 1.4918637201189995,
+        "combined_s": 6.025737851858139
+      }
+    },
+    "combined_fps": 20.109165519483664
+  },
+  "complete": true
+}

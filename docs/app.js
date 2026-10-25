@@ -60,7 +60,7 @@ rainButtons.forEach(button => button.addEventListener('click', async () => {
       rainVideo.load();
     });
     rainButtons.forEach(b => { const selected = b === button; b.classList.toggle('active', selected); b.setAttribute('aria-pressed', String(selected)); });
-    document.querySelector('#rain-action-label').textContent = `${rainNames[tag]} · 三模型同步播放`;
+    document.querySelector('#rain-action-label').textContent = `${rainNames[tag]} · 四模型同步播放`;
     document.querySelector('#rain-download').href = source;
     await rainVideo.play();
   } catch {

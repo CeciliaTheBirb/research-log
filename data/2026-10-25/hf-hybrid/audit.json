@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "quality_episodes": 172,
+  "timing_records": 9,
+  "same_cids_seeds_canonical_noise": true,
+  "actions_match_old_native_120_transitions": true,
+  "benchmark_quality_rgb_equal_all_9_trials": true,
+  "reference_features_strictly_match_baseline": true,
+  "history_weights_loaded": 28,
+  "history_memory_readout_enabled": true,
+  "denoise_calls": 23,
+  "total_model_calls": 34,
+  "single_device_text_cache": true,
+  "rope_inv_freq_dtype": "float32",
+  "tinyvae_bf16_streaming": true,
+  "rain_actions_match_originals": true,
+  "future_latents_input": "Only the one-frame anchor is supplied to the native API.",
+  "future_captions_input": "Empty SFT prompt, never reads validation captions.",
+  "external_hybrid_training_overlap": "Not established; these are shared validation episodes, not a certified unseen test."
+}

@@ -17,8 +17,9 @@ for m in s['models']:
     cells = []
     for gpu in ['l40s', 'a5000']:
         b = s['hardware_benchmarks'][gpu]
-        v = b['models'][m['id']]['fps']
-        cells.append(f'<td>{v:.2f}<small>FPS</small></td>' if v is not None else '<td class="pending">正在补测<small>Slurm 82713</small></td>')
+        record = b['models'][m['id']]
+        v = record['fps']
+        cells.append(f'<td>{v:.2f}<small>FPS</small></td>' if v is not None else f'<td class="pending">排队中<small>Slurm {record["job_id"]}</small></td>')
     fps_rows.append('<tr><th scope="row">' + html.escape(m['name']) + '</th>' + ''.join(cells) + '</tr>')
 page = '''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -56,6 +57,47 @@ a5000 = s['hardware_benchmarks']['a5000']
 lstatus = f'已完成，作业 {l40s["job_id"]}；三模型均为直接单卡＋文本缓存。'
 astatus = (f'已完成，作业 {a5000["job_id"]}；同片段、同口径、同优化设置。' if a5000['status'] == 'completed'
            else f'作业 {a5000["job_id"]} 已进入正常 Slurm 队列，等待本轮评测完成；尚无优化后的实测值。')
+if s.get('hybrid_evaluation'):
+    hybrid = next(m for m in s['models'] if m['id'] == 'hybrid')
+    training += (r / 'scripts/hybrid-content.html').read_text()
+    source = s['hf_source']
+    hf_url = f'https://huggingface.co/{source["repo"]}/tree/{source["revision"]}/edge-text-hybrid/step-2400'
+    checkpoint_rows.append(f'<tr><th scope="row">43222+hybrid forcing<small>HF Edge · step2400</small></th><td><a href="{hf_url}" target="_blank" rel="noopener">固定 HF 版本 ↗</a></td><td><a href="{hf_url}" target="_blank" rel="noopener">LoRA / action / time / history ↗</a><small>四组权重均需加载</small></td></tr>')
+    edits = {
+        '记录模型设计、质量与速度结果，以及当前发现。':'并加入 HF 发布的 43222+hybrid forcing（Edge step2400）作比较。',
+        '4775 train / 172 validation':'4222：4775 train / 对比：172 validation',
+        '上排：真实视频、旧 stage3 student<br>下排：4222 clean、4222+noisy kv reuse':'上排：旧 stage3 student、4222 clean<br>下排：4222+noisy kv reuse、43222+hybrid forcing',
+        '真实视频与三个模型的优化后同步对比':'四个模型的优化后同步对比',
+        '雨后路口 / 三模型对比':'雨后路口 / 四模型对比',
+        '三个面板从左到右为旧 stage3 student、4222 clean、4222+noisy kv reuse。':'上排为旧 stage3 student、4222 clean；下排为 4222+noisy kv reuse、43222+hybrid forcing。',
+        '雨后路口三模型同步对比':'雨后路口四模型同步对比',
+        '三模型同步播放':'四模型同步播放',
+        '旧 stage3 student 的原生直接单卡＋文本缓存，以及两版新模型的直接单卡＋文本缓存。':'四个模型均采用直接单卡＋请求内文本缓存。',
+        '验证集 FVD、LPIPS、PSNR、SSIM 和 GPU 速度表保持原有结果。':'质量表来自 172 条验证视频，速度表来自独立重复测速；本条雨天展示不改变这些统计口径。',
+        '4222 clean 的 FVD 点估计最低。':'原三模型比较中，4222 clean 的 FVD 点估计最低。',
+        '4222+noisy kv reuse 的配对画质指标最好。':'原三模型比较中，4222+noisy kv reuse 的配对画质指标最好。',
+        '在当前三模型中均值最好':'在原三模型比较中均值最好',
+        '旧模型质量评测使用 RTX A5000；新模型使用 RTX A5000 / L40S 分片。':'旧学生和 HF hybrid 使用 RTX A5000；两版 4222 使用 RTX A5000 / L40S 分片。',
+        '本页评测所用的两个训练版本。':'本页两版 4222 的 Box checkpoint，以及新增的 HF hybrid 固定版本。',
+        'Checkpoint 目录同时包含训练 state；Box 链接沿用原有访问权限。':'Box checkpoint 目录同时包含训练 state，链接沿用原有访问权限。HF hybrid 需 Cosmos3-Edge 底座及四组导出权重；HF 链接可能需要原仓库访问权限。',
+    }
+    for old, new in edits.items():
+        assert old in page, old
+        page = page.replace(old, new)
+    page = page.replace('质量指标使用未压缩 RGB。</p>', '质量指标使用未压缩 RGB。<a href="assets/model-comparison-with-reference.mp4" download>原三模型＋真实参考视频 ↓</a></p>')
+    h_fps = a5000['models']['hybrid']['fps']
+    finding = (f'<li><h3>新增 HF hybrid 的完整 checkpoint 比较。</h3><p>172 条相同验证视频上，'
+               f'FVD121={hybrid["fvd121"]:.2f}、FVD16={hybrid["fvd16"]:.2f}，LPIPS={hybrid["lpips"]:.4f}、'
+               f'PSNR={hybrid["psnr"]:.2f} dB、SSIM={hybrid["ssim"]:.4f}；A5000 为 {h_fps:.2f} FPS。'
+               'SSIM 均值为四模型最高，但 FVD 和 LPIPS 均差于原三模型。'
+               '采用原生 4,3,2,2,… 与 sink1/history2＋历史记忆。其训练数据、窗口和初始化也不同，结果不构成记忆模块的独立消融。</p></li>')
+    page = page.replace('<ol class="finding-list">', '<ol class="finding-list">' + finding)
+    for label, benchmark in [('L40S', l40s), ('A5000', a5000)]:
+        h = benchmark['models']['hybrid']
+        state = f'hybrid 作业 {h["job_id"]} 已完成。' if h['fps'] is not None else f'hybrid 作业 {h["job_id"]} 排队中，尚无实测值。'
+        text = f'原三模型作业 {benchmark["job_id"]}；' + state + ' 同片段、同计时口径，hybrid 为另一轮单卡作业。'
+        if label == 'L40S': lstatus = text
+        else: astatus = text
 for key, value in {'TRAINING': training, 'QUALITY': quality, 'FPSROWS': ''.join(fps_rows), 'PROTOCOL': protocol,
                    'L40SSTATUS': lstatus, 'A5000STATUS': astatus, 'CHECKPOINTROWS': ''.join(checkpoint_rows)}.items():
     page = page.replace('@@' + key + '@@', value)

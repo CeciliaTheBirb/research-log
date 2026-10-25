@@ -1,0 +1,134 @@
+[
+  {
+    "output": "outputs/hf-hybrid-20261025/stitched/four-models-0000.mp4",
+    "sha256": "bbab38e2e50493134c853bb8036580ce55f946c9a0de4b4e1184260373e1a88c",
+    "inputs": [
+      {
+        "path": "outputs/inference-speed-20261025/old4444_native/0000/generated.mp4",
+        "sha256": "ed68074728305ba82d77665bc02c975298b6718f8456ebd3c824a57a386a695c"
+      },
+      {
+        "path": "outputs/inference-speed-20261025/single_device_text_cache/clean3200_nocaption/0000/generated.mp4",
+        "sha256": "38a290da167229bc311cef2de57c78cb8a430f57da5b912b7d88d11114fc5380"
+      },
+      {
+        "path": "outputs/inference-speed-20261025/single_device_text_cache/noisy_matched1600_nocaption/0000/generated.mp4",
+        "sha256": "fb02d2f5139d9cc2062219389fca2614522912d8bc19085f3195e50949737ba2"
+      },
+      {
+        "path": "outputs/hf-hybrid-20261025/benchmark-a5000/hybrid2400_nocaption/0000/generated.mp4",
+        "sha256": "33813637389ec686bc4830aba253f4229c2aa1e67206cd0c10b02144939d5959"
+      }
+    ]
+  },
+  {
+    "output": "outputs/hf-hybrid-20261025/stitched/four-models-0057.mp4",
+    "sha256": "6df44c33f7fbcfea3fd131132c566cf4400381f2b2592469dbf3156263d477bb",
+    "inputs": [
+      {
+        "path": "outputs/inference-speed-20261025/old4444_native/0057/generated.mp4",
+        "sha256": "0c549ed0fc45e74794a5993ea655a3e44628fb15467068cb6adaa0de1576fb86"
+      },
+      {
+        "path": "outputs/inference-speed-20261025/single_device_text_cache/clean3200_nocaption/0057/generated.mp4",
+        "sha256": "cfec53e3e52c9fc124c2111a7fc159f5e658f768b257963af4e479678e12f477"
+      },
+      {
+        "path": "outputs/inference-speed-20261025/single_device_text_cache/noisy_matched1600_nocaption/0057/generated.mp4",
+        "sha256": "64df9b0ecafbc43864e3b6169b9b913fcd05bab35364e8811610326f00635ed2"
+      },
+      {
+        "path": "outputs/hf-hybrid-20261025/benchmark-a5000/hybrid2400_nocaption/0057/generated.mp4",
+        "sha256": "f463e744a33f8963fbcdb561463c10f0fdea8095520c5667d3b3874c18c74719"
+      }
+    ]
+  },
+  {
+    "output": "outputs/hf-hybrid-20261025/stitched/four-models-0114.mp4",
+    "sha256": "8aa122f21fce2c6f0bd7b1855d02d5e4ed587141c6b7a14594419329ad052511",
+    "inputs": [
+      {
+        "path": "outputs/inference-speed-20261025/old4444_native/0114/generated.mp4",
+        "sha256": "996db5519f6b7b29c43fdb3dd2c845b06f0371e7e683540b62c20b5345aebc78"
+      },
+      {
+        "path": "outputs/inference-speed-20261025/single_device_text_cache/clean3200_nocaption/0114/generated.mp4",
+        "sha256": "84b037a6bc901a9209a25069e822f74a7bdc656d41fa4fab5ed16a9f7fbbc6d4"
+      },
+      {
+        "path": "outputs/inference-speed-20261025/single_device_text_cache/noisy_matched1600_nocaption/0114/generated.mp4",
+        "sha256": "347cf7e6445a0871a425728e0c55d923498a0c020d1fdf460a335e1af5872508"
+      },
+      {
+        "path": "outputs/hf-hybrid-20261025/benchmark-a5000/hybrid2400_nocaption/0114/generated.mp4",
+        "sha256": "8dd1165573c772bcf9d36b94fa8c9aa88b60149e7259beb5e3fb47628867960e"
+      }
+    ]
+  },
+  {
+    "output": "outputs/hf-hybrid-20261025/stitched/rain-four-models-2p5mps.mp4",
+    "sha256": "5a7f084ae648c7e8ed344045856af0b6944316ede8976e07404fc58a074ab6c8",
+    "inputs": [
+      {
+        "path": "outputs/rain-regression-20261024/rain/old4444_bf16_stream/generated.mp4",
+        "sha256": "86074cd92b9f6398265219054291b138c86c4d49db09f8d0f937e417a0bbb203"
+      },
+      {
+        "path": "outputs/rain-regression-20261024/rain/clean3200/generated.mp4",
+        "sha256": "82d5a80238335dd71eb86878d6ef11285ff6f798bf9afbca5c3096dc349d34d5"
+      },
+      {
+        "path": "outputs/rain-regression-20261024/rain/noisy_matched1600/generated.mp4",
+        "sha256": "f4c41a395103f268be8ab70b50994e8e8ae9a2f100dbb8e6016b39d0e7be6d11"
+      },
+      {
+        "path": "outputs/hf-hybrid-20261025/rain/2p5mps/generated.mp4",
+        "sha256": "7d2c9c2559f427967718a625dcc228f6f0ec920244ea470507ed43a3e1e879b8"
+      }
+    ]
+  },
+  {
+    "output": "outputs/hf-hybrid-20261025/stitched/rain-four-models-0p5mps.mp4",
+    "sha256": "2a9a51a23e41d46a7a2acee04aae2771de87546219fc4b89194f847882db0e42",
+    "inputs": [
+      {
+        "path": "outputs/rain-slow-regression-20261024/rain/old4444_bf16_stream/generated.mp4",
+        "sha256": "79ad668d1f4669a6a210f473ce69702814a6dd97ac9ffdb0c90743e3b10c2fc8"
+      },
+      {
+        "path": "outputs/rain-slow-regression-20261024/rain/clean3200/generated.mp4",
+        "sha256": "1609bea08a51fa0d1960306713d245cdbca23d6725770ca8cfd0dfdd94fe83a3"
+      },
+      {
+        "path": "outputs/rain-slow-regression-20261024/rain/noisy_matched1600/generated.mp4",
+        "sha256": "118c4da9ff9adb429eb12cff98d887a1d15352a9041d360d23bbe0f415f4cea7"
+      },
+      {
+        "path": "outputs/hf-hybrid-20261025/rain/0p5mps/generated.mp4",
+        "sha256": "9479b45b7094b27f1da91cc44582e94905d78e1e36213c68e343c67dfd2baa71"
+      }
+    ]
+  },
+  {
+    "output": "outputs/hf-hybrid-20261025/stitched/rain-four-models-stop.mp4",
+    "sha256": "02628cb0c2060a0ffa108f69ba770e724b465f6c00a5596452afb8658e5a947c",
+    "inputs": [
+      {
+        "path": "outputs/rain-stop-regression-20261024/rain/old4444_bf16_stream/generated.mp4",
+        "sha256": "ce7ae6e4441a1746f20ad3a6e64544f38f59bba51ea7b1b6a64814f2cfac3e03"
+      },
+      {
+        "path": "outputs/rain-stop-regression-20261024/rain/clean3200/generated.mp4",
+        "sha256": "a1dbdc8a69cd94b1238ec6e4f7db0a163edac9c49569c8ab29dd989e4dede04f"
+      },
+      {
+        "path": "outputs/rain-stop-regression-20261024/rain/noisy_matched1600/generated.mp4",
+        "sha256": "feff024a52849c1760088971d9cc09a1ecd221cccfb935692bf2e586d7b3e5c1"
+      },
+      {
+        "path": "outputs/hf-hybrid-20261025/rain/stop/generated.mp4",
+        "sha256": "5b335636fe84982974804eaad06ff845ba7e3a50b49837e46ee049e9b486e201"
+      }
+    ]
+  }
+]

@@ -6,16 +6,16 @@
 
 ## 2026-10-25 · Stage 3 蒸馏
 
-比较三个现有 Cosmos3-Edge 模型：**旧 stage3 student**、**4222 clean**、**4222+noisy kv reuse**。
+比较四个 Cosmos3-Edge 模型：**旧 stage3 student**、**4222 clean**、**4222+noisy kv reuse**、**43222+hybrid forcing**（HF Edge step2400）。
 
 - `docs/`：可直接静态托管的网页、样式、脚本与观看视频。
 - `docs/results.json`：精确质量指标与 L40S / A5000 实测吞吐。
 - `data/2026-10-25/`：质量汇总、两种 GPU 各 27 次计时记录及来源说明。
 - `scripts/`：生成报告的内容与脚本，以及对应 CoStream 评测脚本。
 
-网站只展示优化后的推理结果。三个模型都使用直接单卡和请求内文本缓存；历史 clean / noisy KV 策略按各模型训练约定保留。FPS 包含生成和 TinyVAE BF16 流式解码，排除加载、首帧编码、CPU 转换、写 MP4 与质量指标。
+网站只展示优化后的推理结果。四个模型都使用直接单卡和请求内文本缓存；历史 KV 与记忆策略按各模型原生配置保留。FPS 包含生成和 TinyVAE BF16 流式解码，排除加载、首帧编码、CPU 转换、写 MP4 与质量指标。
 
-质量表是 172 条 validation 的已完成评测（RTX A5000 / L40S 分片），并非分别在两种 GPU 上重跑的两套全量质量结果。双 GPU 速度表使用同 3 条固定视频、预热 1 次后各计时 3 次。
+质量表是 172 条 validation 的已完成评测（旧学生与 HF hybrid 使用 RTX A5000，两版4222使用 A5000 / L40S 分片），并非分别在两种 GPU 上重跑的两套全量质量结果。双 GPU 速度表使用同 3 条固定视频、预热 1 次后各计时 3 次；HF hybrid 的 L40S 项仍在排队，未填估算值。
 
 本轮速度作业为 L40S `82712`、A5000 `82713`，均通过空闲 GPU 检查。两次作业将 JSON 写进临时代码目录，成功退出后的清理移除了该文件；仓库中的速度记录从持久 Slurm 日志内的全部 27 条 JSON 计时及最终汇总恢复，并重新计算中位数与 FPS 逐一核验。`provenance` 保存恢复说明和原日志 SHA256。后续评测脚本已强制要求绝对输出路径，以免再次随临时目录清理。
 
@@ -27,6 +27,16 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 
 ## 雨后路口展示与 checkpoint
 
-页面采用 Notion 风格的侧栏与文档排版。新增雨后路口三模型对比，可切换直行 2.5 m/s、慢行 0.5 m/s 和静止。视频来自已经完成的诊断输出，重新标注本页模型名；没有重新生成，也不从这些视频取吞吐数字。动作与出处见 `data/2026-10-25/rain/`。这组单图展示不参与 172 条验证集的质量统计，原指标保留。
+页面采用 Notion 风格的侧栏与文档排版。雨后路口四模型对比可切换直行 2.5 m/s、慢行 0.5 m/s 和静止。原三模型使用已完成的诊断输出，HF hybrid 新增对应动作视频；不从这些展示视频取吞吐数字。动作与出处见 `data/2026-10-25/rain/` 和 `data/2026-10-25/hf-hybrid/`。这组单图展示不参与 172 条验证集的质量统计。
 
 `docs/checkpoints.json` 和页面最后列出 clean step3200、修正版 noisy step1600 的 Box checkpoint 与 adapter 文件链接，已通过 Box 目录及实际 meta.json 核对；保留 Box 原有权限。
+
+## 新增 HF Hybrid Forcing 比较
+
+新增 `SichengMo-UCLA/NavWorldGym/edge-text-hybrid/step-2400`（Cosmos3-Edge，非 EMA），固定 HF revision `97c822da1be03ee19092c937aefd24b61190c960` 和官方 NavWorldGym runtime `dec58fab57464baab30f664ee78769e5dc5fae54`。完整加载 LoRA、action、time、history 四组权重；原生 4,3,2,2,…，sink1/history2，历史记忆开启。
+
+沿用相同 172 条验证视频、固定初始噪声、cached anchor、原始 RGB 参考和空 SFT 文本。新模型原生接口接收 120 行真实动作，TinyVAE BF16 流式解码，单卡＋请求内文本缓存。三条固定视频的测速与质量运行 RGB hash 一致。该模型训练数据标注为 clips1k，与当前验证视频的重叠未核实，不能称作对该外部 checkpoint 已确认未见过的测试集。
+
+`data/2026-10-25/hf-hybrid/` 保存来源、配置、完整质量汇总、每卡重复测速与视频来源。新 hybrid 在 A5000 上的质量分片作业为 82730_0..3，测速作业为 82728；L40S 测速作业为 82729（未完成时表中标明排队，不填估算值）。原三模型的已完成质量与速度结果保留，hybrid 为新增一轮单卡测速。
+
+四模型视频上排为旧 stage3 student / 4222 clean，下排为 4222+noisy kv reuse / 43222+hybrid forcing；雨天可切换三种动作。原三模型与真实参考视频保留在 `docs/assets/model-comparison-with-reference.mp4`。运行 `python3 scripts/import_hybrid.py` 后再运行 `python3 scripts/build_report.py` 更新表格。评测脚本供在 CoStream 环境内运行，不包含模型底座或数据。

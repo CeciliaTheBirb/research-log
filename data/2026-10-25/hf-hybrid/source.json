@@ -1,0 +1,10 @@
+{
+  "repo": "SichengMo-UCLA/NavWorldGym",
+  "revision": "97c822da1be03ee19092c937aefd24b61190c960",
+  "model": "Cosmos3-Edge",
+  "step": 2400,
+  "ema": false,
+  "runtime_repository": "DhlinV/NavWorldGym",
+  "runtime_commit": "dec58fab57464baab30f664ee78769e5dc5fae54",
+  "checkpoint_url": "https://huggingface.co/SichengMo-UCLA/NavWorldGym/tree/97c822da1be03ee19092c937aefd24b61190c960/edge-text-hybrid/step-2400"
+}
