@@ -2,7 +2,9 @@
 
 按日期整理的研究记录。每篇依次包含模型设计与训练细节、Qualitative + Quantitative results，以及 Findings。
 
-[公开网页](https://cecilia-research-log.snowypearl2049.chatgpt.site)
+[公开网页](https://ceciliathebirb.github.io/research-log/)
+
+网站由本仓库 `main` 分支的 `docs/` 自动发布到 GitHub Pages。原 `chatgpt.site` 地址目前仍能浏览旧版，但当前 Sites 管理连接看不到该项目，读取原项目 ID 返回 404；新的公开地址与本仓库同步。
 
 ## 2026-10-25 · Stage 3 蒸馏
 
@@ -40,3 +42,5 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 `data/2026-10-25/hf-hybrid/` 保存来源、配置、完整质量汇总、每卡重复测速与视频来源。新 hybrid 在 A5000 上的质量分片作业为 82730_0..3，测速作业为 82728；L40S 测速作业为 82729（未完成时表中标明排队，不填估算值）。原三模型的已完成质量与速度结果保留，hybrid 为新增一轮单卡测速。
 
 四模型视频上排为旧 stage3 student / 4222 clean，下排为 4222+noisy kv reuse / 43222+hybrid forcing；雨天可切换三种动作。原三模型与真实参考视频保留在 `docs/assets/model-comparison-with-reference.mp4`。运行 `python3 scripts/import_hybrid.py` 后再运行 `python3 scripts/build_report.py` 更新表格。评测脚本供在 CoStream 环境内运行，不包含模型底座或数据。
+
+[Hybrid 推理配置核查](data/2026-10-25/hf-hybrid/config-audit-zh.md) 记录官方窗口/记忆参数对照，以及固定十条视频的完整历史、关闭记忆和通用结构化文本诊断。原172条无caption成绩与这份诊断分别保留。运行 `python3 scripts/import_hybrid_audit.py` 校验原始诊断记录并更新摘要，再重建网页。

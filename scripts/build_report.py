@@ -90,7 +90,25 @@ if s.get('hybrid_evaluation'):
                f'FVD121={hybrid["fvd121"]:.2f}、FVD16={hybrid["fvd16"]:.2f}，LPIPS={hybrid["lpips"]:.4f}、'
                f'PSNR={hybrid["psnr"]:.2f} dB、SSIM={hybrid["ssim"]:.4f}；A5000 为 {h_fps:.2f} FPS。'
                'SSIM 均值为四模型最高，但 FVD 和 LPIPS 均差于原三模型。'
-               '采用原生 4,3,2,2,… 与 sink1/history2＋历史记忆。其训练数据、窗口和初始化也不同，结果不构成记忆模块的独立消融。</p></li>')
+               '采用原生 4,3,2,2,… 与 sink1/history2＋历史记忆；这里使用空文本，官方示例使用结构化 prompt。其训练数据、窗口和初始化也不同，结果不构成记忆模块的独立消融。</p></li>')
+    audit_path = r / 'data/2026-10-25/hf-hybrid/config-audit.json'
+    if audit_path.exists():
+        audit = json.loads(audit_path.read_text())
+        assert audit['passed'] and audit['count'] == 10
+        labels = [('native_s1h2_empty','默认窗口＋记忆，空文本'),
+                  ('full_history_empty','完整历史，空文本'),
+                  ('memory_disabled_empty','窗口＋关闭记忆，空文本'),
+                  ('native_s1h2_structured_generic','窗口＋记忆，通用结构化文本')]
+        audit_rows = []
+        for key, label in labels:
+            q = audit['variants'][key]
+            audit_rows.append(f'<tr><th scope="row">{label}</th><td>{q["lpips_alex"]:.4f}</td><td>{q["psnr_db"]:.2f}</td><td>{q["ssim"]:.4f}</td></tr>')
+        finding += ('<li id="hybrid-config-audit"><h3>Hybrid 的窗口与历史记忆已核查。</h3>'
+                    '<p>sink1/history2、absolute RoPE、记忆读取和4322…步数与官方默认一致。默认路径重跑后RGB与原评测完全一致；抽查第0、13、27层，63次具有移出历史的读取均有非零贡献。关闭记忆后贡献为0。</p>'
+                    '<div class="table-wrap"><table class="results-table"><caption>固定十条视频的诊断；不替换172条FVD</caption><thead><tr><th>设置</th><th>LPIPS ↓</th><th>PSNR ↑ dB</th><th>SSIM ↑</th></tr></thead><tbody>'
+                    + ''.join(audit_rows) + '</tbody></table></div>'
+                    '<p>结构化文本由官方minimal helper生成，仅包含通用车载前视街景信息。它不是完整场景prompt，不能据此认定空文本是退步根因。'
+                    '<a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-25/hf-hybrid/config-audit-zh.md" target="_blank" rel="noopener">配置、逐块窗口与读取核查记录 ↗</a></p></li>')
     page = page.replace('<ol class="finding-list">', '<ol class="finding-list">' + finding)
     for label, benchmark in [('L40S', l40s), ('A5000', a5000)]:
         h = benchmark['models']['hybrid']

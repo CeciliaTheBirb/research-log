@@ -17,7 +17,7 @@ for model in data['models']:
         return '排队中' if value is None else f'{value:.2f}'
     lines.append(f'| {model["name"]} | {model["fvd121"]:.2f} | {model["fvd16"]:.2f} | {model["lpips"]:.4f} | {model["psnr"]:.2f} | {model["ssim"]:.4f} | {speed("a5000")} | {speed("l40s")} |')
 hybrid=next(m for m in data['models'] if m['id']=='hybrid')
-lines += ['', 'HF hybrid 的 SSIM 均值为四模型最高，但 FVD 和 LPIPS 均差于原三模型。此处没有显示它在所有质量维度上的优势。','',
+lines += ['', 'HF hybrid 的 SSIM 均值为四模型最高，但 FVD 和 LPIPS 均差于原三模型。此处是无 caption 的 image＋actions 比较；官方示例使用结构化 prompt，这份成绩不代表完整官方文本条件。','',
           'FPS 包含生成与 TinyVAE BF16 流式解码，排除加载、cached 首帧编码、CPU 转换、写文件和指标计算。每次请求内重建文本缓存；0000、0057、0114 各预热1次，再计时3次。hybrid 为新增一轮单卡测速，原三模型的已完成结果保留。','',
           '原生配置为 `[4,3,2,2,2,2,2,2,2,2]`、sink1/history2、absolute RoPE、历史记忆开启，共23次去噪＋11次 clean commit。完整加载344个LoRA、5个action、8个time、28个history张量；BF16推理，RoPE inv_freq保留FP32。', '',
           'HF训练标注为clips1k；student来自causal step12550，score来自bidir step31000。它与两版4222的训练数据、窗口、score初始化及步数不同；与本页验证集的训练重叠未核实，不能将差异单独归因于历史记忆。', '',

@@ -1,0 +1,1708 @@
+{
+  "passed": true,
+  "count": 10,
+  "indices": [
+    0,
+    19,
+    38,
+    57,
+    76,
+    95,
+    114,
+    133,
+    152,
+    171
+  ],
+  "gpu": "NVIDIA RTX A5000",
+  "job_id": 82737,
+  "generated_runs": 31,
+  "reused_baseline_rows": 9,
+  "native_repeat_rgb_equals_previous": true,
+  "first_three_generated_blocks_unchanged_before_eviction": true,
+  "official_runtime_commit": "dec58fab57464baab30f664ee78769e5dc5fae54",
+  "official_defaults": {
+    "sink_size": 1,
+    "history_cutoff": 2,
+    "attention_rope_range": "absolute",
+    "history_memory_readout": true,
+    "history_rope": "spatial",
+    "history_fold": "vision_action",
+    "schedule": [
+      4,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "guidance": 1,
+    "flow_shift": 5
+  },
+  "scope": "Fixed diagnostic subset only; no 10-clip FVD replaces the 172-clip result. Structured text is generic, generated with the official minimal helper and contains no validation captions or future information.",
+  "variants": {
+    "native_s1h2_empty": {
+      "lpips_alex": 0.4693288979493082,
+      "psnr_db": 15.489888411362966,
+      "ssim": 0.4679092890148362,
+      "lpips_alex_per_block": [
+        0.2625057091936469,
+        0.38175567115346587,
+        0.41826738740007074,
+        0.43075398579239843,
+        0.46625209028522174,
+        0.5067621417343616,
+        0.5155202875534693,
+        0.5421003483235837,
+        0.5740631158153217,
+        0.5953082422415416
+      ],
+      "psnr_db_per_block": [
+        18.587401215235392,
+        16.682471195856728,
+        16.28929766813914,
+        16.30078360239665,
+        15.930578748385111,
+        14.999019408226014,
+        14.662114286422732,
+        14.329039422671002,
+        13.832937105496725,
+        13.28524146080017
+      ],
+      "ssim_per_block": [
+        0.5447144635021687,
+        0.49476595471302665,
+        0.4757188978294532,
+        0.4740137842794259,
+        0.47848147749900816,
+        0.45797619832058745,
+        0.4435236194481452,
+        0.43871993993719416,
+        0.43900738557179764,
+        0.43217116904755437
+      ]
+    },
+    "full_history_empty": {
+      "lpips_alex": 0.4742739574921628,
+      "psnr_db": 15.67970911026001,
+      "ssim": 0.4702006727208694,
+      "lpips_alex_per_block": [
+        0.2625057091936469,
+        0.38175567115346587,
+        0.41826738740007074,
+        0.4366723080476126,
+        0.46957908421754835,
+        0.510132492085298,
+        0.5235389664769172,
+        0.5496949302653472,
+        0.5837102957069874,
+        0.6068827303747335
+      ],
+      "psnr_db_per_block": [
+        18.587401215235392,
+        16.682471195856728,
+        16.28929766813914,
+        16.30116375287374,
+        16.102612257003784,
+        15.278243215878803,
+        14.953048435846963,
+        14.670343828201293,
+        14.240354482332865,
+        13.692155051231385
+      ],
+      "ssim_per_block": [
+        0.5447144635021687,
+        0.49476595471302665,
+        0.4757188978294532,
+        0.47288521751761425,
+        0.48282888705531757,
+        0.4646144998570284,
+        0.4500322088599205,
+        0.4418210794528325,
+        0.43857974261045457,
+        0.4360457758108775
+      ]
+    },
+    "memory_disabled_empty": {
+      "lpips_alex": 0.47226234560832375,
+      "psnr_db": 15.519077615737917,
+      "ssim": 0.4711686869089801,
+      "lpips_alex_per_block": [
+        0.2625057091936469,
+        0.38175567115346587,
+        0.41826738740007074,
+        0.43659777740637457,
+        0.47085076222817107,
+        0.5082440947492918,
+        0.5156012376149496,
+        0.5430843298633893,
+        0.5815082455674807,
+        0.6042082409063975
+      ],
+      "psnr_db_per_block": [
+        18.587401215235392,
+        16.682471195856728,
+        16.28929766813914,
+        16.27516915003459,
+        15.962305935223899,
+        15.080811325709025,
+        14.718520983060202,
+        14.415626120567321,
+        13.829881628354395,
+        13.349290935198464
+      ],
+      "ssim_per_block": [
+        0.5447144635021687,
+        0.49476595471302665,
+        0.4757188978294532,
+        0.4736074301103751,
+        0.4811412997543812,
+        0.462547042965889,
+        0.448495311041673,
+        0.445204521715641,
+        0.44498208686709406,
+        0.4405098605901003
+      ]
+    },
+    "native_s1h2_structured_generic": {
+      "lpips_alex": 0.4618487570372721,
+      "psnr_db": 15.54837501525879,
+      "ssim": 0.4687027338519692,
+      "lpips_alex_per_block": [
+        0.26982000737140577,
+        0.39156945620973904,
+        0.4315580549339453,
+        0.44092875545223553,
+        0.46505861133337023,
+        0.49553682679931327,
+        0.511882958561182,
+        0.525035877029101,
+        0.5363438285887241,
+        0.5507531940937042
+      ],
+      "psnr_db_per_block": [
+        18.37542603810628,
+        16.415025941530864,
+        16.010625672340392,
+        15.902371478080747,
+        15.668272558848065,
+        15.094862755139667,
+        14.675588194529217,
+        14.58305977185567,
+        14.571632639567056,
+        14.186885102589926
+      ],
+      "ssim_per_block": [
+        0.5379910672704378,
+        0.483498959740003,
+        0.4685934082915385,
+        0.46607409814993545,
+        0.4755117058753967,
+        0.4639000641802947,
+        0.4469141306976477,
+        0.44647278512517624,
+        0.4533089133600394,
+        0.44476220582922305
+      ]
+    }
+  },
+  "trace_summary": {
+    "native_s1h2_empty": {
+      "sample_index": 0,
+      "traced_layers": [
+        0,
+        13,
+        27
+      ],
+      "reads_with_evicted_history": 63,
+      "nonzero_contributions": 63,
+      "first_active_read": {
+        "layer": 0,
+        "retained_blocks": [
+          0,
+          2,
+          3
+        ],
+        "history_tokens": 1182,
+        "readout_enabled": true,
+        "output_delta_rms": 5.287717067403719e-05,
+        "attention_rms": 0.008914693258702755
+      },
+      "last_active_read": {
+        "layer": 27,
+        "retained_blocks": [
+          0,
+          8,
+          9
+        ],
+        "history_tokens": 8274,
+        "readout_enabled": true,
+        "output_delta_rms": 0.0007556375348940492,
+        "attention_rms": 0.07770944386720657
+      },
+      "window_trace": [
+        {
+          "block": 0,
+          "commit": true,
+          "visible_blocks": [],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": true,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 4,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 5,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 6,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 7,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 8,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 9,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        },
+        {
+          "block": 10,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        }
+      ]
+    },
+    "full_history_empty": {
+      "sample_index": 0,
+      "traced_layers": [
+        0,
+        13,
+        27
+      ],
+      "reads_with_evicted_history": 0,
+      "nonzero_contributions": 0,
+      "first_active_read": null,
+      "last_active_read": null,
+      "window_trace": [
+        {
+          "block": 0,
+          "commit": true,
+          "visible_blocks": [],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": true,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 4,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 5,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 6,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 7,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 8,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 9,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 10,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "history_tokens": 0
+        }
+      ]
+    },
+    "memory_disabled_empty": {
+      "sample_index": 0,
+      "traced_layers": [
+        0,
+        13,
+        27
+      ],
+      "reads_with_evicted_history": 63,
+      "nonzero_contributions": 0,
+      "first_active_read": {
+        "layer": 0,
+        "retained_blocks": [
+          0,
+          2,
+          3
+        ],
+        "history_tokens": 1182,
+        "readout_enabled": false,
+        "output_delta_rms": 0.0,
+        "attention_rms": 0.008914693258702755
+      },
+      "last_active_read": {
+        "layer": 27,
+        "retained_blocks": [
+          0,
+          8,
+          9
+        ],
+        "history_tokens": 8274,
+        "readout_enabled": false,
+        "output_delta_rms": 0.0,
+        "attention_rms": 0.07447851449251175
+      },
+      "window_trace": [
+        {
+          "block": 0,
+          "commit": true,
+          "visible_blocks": [],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": true,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 4,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 5,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 6,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 7,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 8,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 9,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        },
+        {
+          "block": 10,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        }
+      ]
+    },
+    "native_s1h2_structured_generic": {
+      "sample_index": 0,
+      "traced_layers": [
+        0,
+        13,
+        27
+      ],
+      "reads_with_evicted_history": 63,
+      "nonzero_contributions": 63,
+      "first_active_read": {
+        "layer": 0,
+        "retained_blocks": [
+          0,
+          2,
+          3
+        ],
+        "history_tokens": 1182,
+        "readout_enabled": true,
+        "output_delta_rms": 5.342728036339395e-05,
+        "attention_rms": 0.00698015047237277
+      },
+      "last_active_read": {
+        "layer": 27,
+        "retained_blocks": [
+          0,
+          8,
+          9
+        ],
+        "history_tokens": 8274,
+        "readout_enabled": true,
+        "output_delta_rms": 0.0008806093828752637,
+        "attention_rms": 0.08515185117721558
+      },
+      "window_trace": [
+        {
+          "block": 0,
+          "commit": true,
+          "visible_blocks": [],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": false,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 1,
+          "commit": true,
+          "visible_blocks": [
+            0
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 2,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 3,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            1,
+            2
+          ],
+          "history_tokens": 0
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 4,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 4,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            2,
+            3
+          ],
+          "history_tokens": 1182
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 5,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 5,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            3,
+            4
+          ],
+          "history_tokens": 2364
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 6,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 6,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            4,
+            5
+          ],
+          "history_tokens": 3546
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 7,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 7,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            5,
+            6
+          ],
+          "history_tokens": 4728
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 8,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 8,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            6,
+            7
+          ],
+          "history_tokens": 5910
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 9,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 9,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            7,
+            8
+          ],
+          "history_tokens": 7092
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        },
+        {
+          "block": 10,
+          "commit": false,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        },
+        {
+          "block": 10,
+          "commit": true,
+          "visible_blocks": [
+            0,
+            8,
+            9
+          ],
+          "history_tokens": 8274
+        }
+      ]
+    }
+  }
+}
