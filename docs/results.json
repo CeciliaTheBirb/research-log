@@ -1,0 +1,126 @@
+{
+  "updated": "2026-10-25",
+  "quality_episodes": 172,
+  "train_episodes": 4775,
+  "speed_gpu": "NVIDIA L40S",
+  "speed_indices": [
+    0,
+    57,
+    114
+  ],
+  "quality_gpu": {
+    "old": "NVIDIA RTX A5000",
+    "clean": "NVIDIA RTX A5000 / NVIDIA L40S",
+    "noisy": "NVIDIA RTX A5000 / NVIDIA L40S"
+  },
+  "models": [
+    {
+      "id": "old",
+      "name": "旧 stage3 student",
+      "checkpoint": "stage3 step2200",
+      "fvd121": 231.956914604566,
+      "fvd16": 288.4384748892021,
+      "lpips": 0.4337867604130012,
+      "psnr": 15.807606674118562,
+      "ssim": 0.5028855906683922,
+      "fps": 35.462999358425456,
+      "calls": 51
+    },
+    {
+      "id": "clean",
+      "name": "4222 clean",
+      "checkpoint": "3200次总更新",
+      "fvd121": 202.07889666207257,
+      "fvd16": 270.38775377048205,
+      "lpips": 0.4347067196903996,
+      "psnr": 15.779396752377812,
+      "ssim": 0.5022942726947944,
+      "fps": 45.41242281751135,
+      "calls": 33,
+      "fvd_delta": {
+        "protocol": "full121",
+        "episodes": 172,
+        "repeats": 512,
+        "observed_delta": -29.878017942493443,
+        "paired_percentile_95ci": [
+          -54.82563296606013,
+          -9.274210429048837
+        ],
+        "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+      }
+    },
+    {
+      "id": "noisy",
+      "name": "4222+noisy kv reuse",
+      "checkpoint": "1600次总更新",
+      "fvd121": 215.3470181505122,
+      "fvd16": 278.84655868530945,
+      "lpips": 0.4150429111539004,
+      "psnr": 16.149659352893977,
+      "ssim": 0.5141550202211438,
+      "fps": 56.84236996947842,
+      "calls": 24,
+      "fvd_delta": {
+        "protocol": "full121",
+        "episodes": 172,
+        "repeats": 512,
+        "observed_delta": -16.609896454053796,
+        "paired_percentile_95ci": [
+          -37.86628327308587,
+          1.8177084279782694
+        ],
+        "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+      }
+    }
+  ],
+  "quality_scope": "No future captions; raw RGB reference; paired metrics exclude anchor; FVD full121 includes anchor.",
+  "speed_scope": "120 new RGB frames / synchronized generation plus TinyVAE BF16 streaming decode; same GPU, checkpoints, prompts, action layout and canonical noise. Every video rebuilds its own text cache; loading, anchor encoding, CPU conversion, MP4 and quality validation excluded.",
+  "output_validation": {
+    "comparisons": 12,
+    "latent_equal": true,
+    "rgb_equal": true
+  },
+  "site_name": "cecilia-research-log",
+  "hardware_benchmarks": {
+    "l40s": {
+      "status": "completed",
+      "gpu": "NVIDIA L40S",
+      "job_id": 82709,
+      "source": "previous same-protocol optimized run; new verification running as 82712",
+      "models": {
+        "old": {
+          "fps": 35.462999358425456
+        },
+        "clean": {
+          "fps": 45.41242281751135
+        },
+        "noisy": {
+          "fps": 56.84236996947842
+        }
+      }
+    },
+    "a5000": {
+      "status": "running",
+      "gpu": "NVIDIA RTX A5000",
+      "job_id": 82713,
+      "models": {
+        "old": {
+          "fps": null
+        },
+        "clean": {
+          "fps": null
+        },
+        "noisy": {
+          "fps": null
+        }
+      },
+      "reason": "Optimized same-protocol benchmark launched on idle A5000."
+    }
+  },
+  "old_native_runtime": {
+    "single_device": true,
+    "fsdp": false,
+    "text_cache": true,
+    "source": "Native class default cache_text=True and native single-device load_model; rechecking in benchmark 82712."
+  }
+}
