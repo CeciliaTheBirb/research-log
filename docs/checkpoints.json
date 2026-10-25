@@ -1,0 +1,30 @@
+{
+  "verified_on": "2026-10-25",
+  "verification": "Box folder and file IDs listed through the existing streambox remote; meta.json step, Edge architecture, Stage 2 initialization and clean/noisy policy checked.",
+  "models": [
+    {
+      "name": "4222 clean",
+      "step": 3200,
+      "run": "20261023-192219_stage3_422_clean_continue3200_j82265",
+      "checkpoint_url": "https://app.box.com/folder/430687662598",
+      "adapter_url": "https://app.box.com/folder/430687240764",
+      "weights_url": "https://app.box.com/file/2547172230477",
+      "metadata_url": "https://app.box.com/file/2547168390296",
+      "weights_bytes": 1066880624,
+      "cache_mode": "clean"
+    },
+    {
+      "name": "4222+noisy kv reuse",
+      "step": 1600,
+      "run": "20261023-233626_stage3_422_noisy_matched_sp4_j82387",
+      "checkpoint_url": "https://app.box.com/folder/430762142212",
+      "adapter_url": "https://app.box.com/folder/430762528196",
+      "weights_url": "https://app.box.com/file/2547749248581",
+      "metadata_url": "https://app.box.com/file/2547752661175",
+      "weights_bytes": 1066880624,
+      "cache_mode": "noisy"
+    }
+  ],
+  "format": "adapter.safetensors includes named student/fake/real adapters; use the student adapter for inference with the matching Cosmos3-Edge and Stage 2 initialization. Checkpoint folders also include training state.",
+  "box_access": "Existing Box permissions are preserved."
+}

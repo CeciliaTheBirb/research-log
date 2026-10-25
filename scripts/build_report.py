@@ -8,6 +8,10 @@ s = json.loads((r / 'docs/results.json').read_text())
 training = (r / 'scripts/training-content.html').read_text()
 quality = (r / 'scripts/quality-table.html').read_text()
 protocol = (r / 'scripts/protocol-content.html').read_text()
+checkpoints = json.loads((r / 'docs/checkpoints.json').read_text())
+checkpoint_rows = []
+for c in checkpoints['models']:
+    checkpoint_rows.append(f'''<tr><th scope="row">{html.escape(c['name'])}<small>step {c['step']} · {html.escape(c['cache_mode'])} KV</small></th><td><a href="{c['checkpoint_url']}" target="_blank" rel="noopener">打开 checkpoint ↗</a></td><td><a href="{c['weights_url']}" target="_blank" rel="noopener">adapter.safetensors ↗</a><small>1.067 GB</small></td></tr>''')
 fps_rows = []
 for m in s['models']:
     cells = []
@@ -20,21 +24,20 @@ page = '''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>cecilia-research-log · 2026.10.25</title>
 <meta name="description" content="Cecilia 的研究日志：模型设计与训练细节、定性与定量结果、Findings。Stage 3 蒸馏，L40S / A5000 优化后推理结果。">
-<meta name="theme-color" content="#faf9f6"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script defer src="app.js"></script></head>
+<meta name="theme-color" content="#ffffff"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script defer src="app.js"></script></head>
 <body class="research-log"><a class="skip" href="#log-2026-10-25">跳到日志正文</a>
-<header class="log-masthead"><a href="#" class="log-brand">cecilia<span>—</span>research-log</a><div class="header-links"><a href="https://github.com/CeciliaTheBirb/research-log" target="_blank" rel="noopener">GitHub ↗</a><span>RESEARCH NOTES / 2026</span></div></header>
-<div class="log-layout"><aside class="date-sidebar"><div class="sidebar-label">Date</div><nav aria-label="按日期浏览"><a class="date-link active" href="#log-2026-10-25" aria-current="page"><span>10.25</span><small>2026 · Stage 3 蒸馏</small></a></nav><div class="entry-nav"><a href="#model-design">01　模型设计</a><a href="#results">02　Qual + Quant</a><a href="#findings">03　Findings</a></div><div class="sidebar-bottom">WORLD MODEL<br>EXPERIMENT JOURNAL</div></aside>
-<main class="log-content" id="log-2026-10-25"><header class="entry-header"><div class="eyebrow">OCTOBER 25, 2026 / EXPERIMENT LOG 001</div><h1>Stage 3 蒸馏</h1><p class="entry-deck">从 Stage 2 初始化，训练 4222 clean 与 4222+noisy kv reuse。记录模型设计、质量与速度结果，以及当前发现。</p><div class="entry-tags"><span>Cosmos3-Edge</span><span>4775 train / 172 validation</span><span>TinyVAE BF16 流式</span></div></header>
+<aside class="date-sidebar" id="research-sidebar"><a href="#log-2026-10-25" class="workspace-name"><span class="workspace-icon">C</span><strong>cecilia-research-log</strong><span class="chevron" aria-hidden="true">⌄</span></a><div class="workspace-caption">Research workspace</div><a class="sidebar-home" href="#log-2026-10-25"><span aria-hidden="true">⌂</span>研究日志</a><div class="sidebar-label">2026 · October</div><nav aria-label="按日期浏览"><a class="date-link active" href="#log-2026-10-25" aria-current="page"><span aria-hidden="true">▤</span><span>10.25 · Stage 3 蒸馏</span></a></nav><nav class="entry-nav" aria-label="本页目录"><a href="#model-design">模型设计与训练细节</a><a href="#results">定性与定量结果</a><a href="#rain-results">雨后路口</a><a href="#quality-results">质量指标</a><a href="#throughput-results">推理速度</a><a href="#findings">Findings</a><a href="#checkpoints">Checkpoint</a></nav><div class="sidebar-bottom"><a href="https://github.com/CeciliaTheBirb/research-log" target="_blank" rel="noopener">GitHub repository ↗</a><span>cecilia · research notes</span></div></aside><div class="page-workspace"><header class="log-masthead"><div class="breadcrumb"><button class="sidebar-toggle" aria-label="切换侧栏" aria-controls="research-sidebar" aria-expanded="true">☰</button><span>Research Notes</span><span class="breadcrumb-slash">/</span><span>2026</span><span class="breadcrumb-slash">/</span><span>10.25</span></div><a href="https://github.com/CeciliaTheBirb/research-log" target="_blank" rel="noopener">在 GitHub 查看 ↗</a></header><main class="log-content" id="log-2026-10-25"><header class="entry-header"><div class="page-icon" aria-hidden="true">▤</div><div class="entry-date">2026 年 10 月 25 日</div><h1>Stage 3 蒸馏</h1><p class="entry-deck">从 Stage 2 初始化，训练 4222 clean 与 4222+noisy kv reuse。记录模型设计、质量与速度结果，以及当前发现。</p><div class="entry-tags"><span>Cosmos3-Edge</span><span>4775 train / 172 validation</span><span>TinyVAE BF16 流式</span></div></header>
 <section id="model-design" class="log-section">@@TRAINING@@</section>
 <section id="results" class="log-section"><div class="section-head"><div><div class="eyebrow">02 / QUALITATIVE + QUANTITATIVE RESULTS</div><h2>定性与定量结果</h2></div></div>
-<p class="section-intro">只展示优化后的部署结果。旧 stage3 student 已使用原生直接单卡＋文本缓存；两版新模型也开启直接单卡＋文本缓存。模型历史 KV 的 clean / noisy 策略按各自训练方案保留。</p>
+<p class="section-intro">速度表统一使用优化后的部署设置：旧 stage3 student 的原生直接单卡＋文本缓存，以及两版新模型的直接单卡＋文本缓存。模型历史 KV 的 clean / noisy 策略按各自训练方案保留。</p>
 <h3 class="result-title">Qualitative / 同步对比视频</h3><div class="viewer-head"><p>上排：真实视频、旧 stage3 student<br>下排：4222 clean、4222+noisy kv reuse</p><a href="assets/model-comparison.mp4" download>下载 MP4 ↓</a></div>
 <div class="video-shell"><video id="comparison-video" controls playsinline preload="metadata" poster="assets/quality-poster.jpg" aria-label="真实视频与三个模型的优化后同步对比"><source src="assets/model-comparison.mp4" type="video/mp4">请下载 MP4 观看。</video></div>
 <div class="scene-picker" aria-label="跳转到场景"><button class="scene active" data-time="0"><img src="assets/quality-poster.jpg" alt="白天路口"><span>01 白天路口<small>0000 · 0:00</small></span></button><button class="scene" data-time="6.05"><img src="assets/quality-poster-1.jpg" alt="夜间街道"><span>02 夜间街道<small>0057 · 0:06</small></span></button><button class="scene" data-time="12.1"><img src="assets/quality-poster-2.jpg" alt="树荫人行道"><span>03 树荫人行道<small>0114 · 0:12</small></span></button></div>
 <p class="caption-note">18.15 秒合辑；121 帧/片段，统一按 20 FPS 播放。播放速度与模型生成吞吐不同。视频为压缩观看副本，质量指标使用未压缩 RGB。</p>
-<h3 class="result-title">Quantitative / 172 条验证质量</h3>@@QUALITY@@
+<div id="rain-results" class="rain-results"><h3 class="result-title">雨后路口 / 三模型对比</h3><p>NavWorldGym 的 <code>rain_obs.png</code>，同一输入图与初始噪声，分别比较直行、慢行和静止动作。三个面板从左到右为旧 stage3 student、4222 clean、4222+noisy kv reuse。</p><div class="rain-input"><img src="assets/rain-input.png" alt="雨后路口输入首帧：左侧石墙、地面积水、前方路口"><div><strong>雨后路口 · 输入首帧</strong><span>seed 2026 · 121 帧 · 20 FPS · TinyVAE BF16 流式</span></div></div><div class="rain-controls" role="group" aria-label="选择雨后场景动作"><button class="active" data-rain="2p5mps" aria-pressed="true">直行 2.5 m/s</button><button data-rain="0p5mps" aria-pressed="false">慢行 0.5 m/s</button><button data-rain="stop" aria-pressed="false">静止</button></div><div class="video-shell"><video id="rain-video" controls playsinline preload="metadata" poster="assets/rain-poster-2p5mps.jpg" aria-label="雨后路口三模型同步对比"><source src="assets/rain-comparison-2p5mps.mp4" type="video/mp4"></video></div><div class="viewer-head rain-download"><span id="rain-action-label">直行 2.5 m/s · 三模型同步播放</span><a id="rain-download" href="assets/rain-comparison-2p5mps.mp4" download>下载当前 MP4 ↓</a></div><p class="caption-note">这是单张输入图的动作条件诊断，没有对应的真实未来视频。此展示样例不参与下方 172 条验证视频的指标统计；验证集 FVD、LPIPS、PSNR、SSIM 和 GPU 速度表保持原有结果。</p></div>
+<h3 class="result-title" id="quality-results">Quantitative / 172 条验证质量</h3>@@QUALITY@@
 <p class="caption-note">参考为原始相机 RGB。旧模型质量评测使用 RTX A5000；新模型使用 RTX A5000 / L40S 分片。本表不是分别在 L40S 和 A5000 上重跑两套 172 条质量评测；GPU 型号不代表不同模型版本。</p>
-<h3 class="result-title">Throughput / 两种 GPU，统一优化后的单卡推理</h3><div class="table-wrap"><table class="hardware-table"><thead><tr><th scope="col">模型</th><th scope="col">NVIDIA L40S<br><small>48 GB · 单卡</small></th><th scope="col">NVIDIA RTX A5000<br><small>24 GB · 单卡</small></th></tr></thead><tbody>@@FPSROWS@@</tbody></table></div>
+<h3 class="result-title" id="throughput-results">Throughput / 两种 GPU，统一优化后的单卡推理</h3><div class="table-wrap"><table class="hardware-table"><thead><tr><th scope="col">模型</th><th scope="col">NVIDIA L40S<br><small>48 GB · 单卡</small></th><th scope="col">NVIDIA RTX A5000<br><small>24 GB · 单卡</small></th></tr></thead><tbody>@@FPSROWS@@</tbody></table></div>
 <div class="hardware-notes"><p><b>L40S：</b><span id="l40s-status">@@L40SSTATUS@@</span></p><p><b>A5000：</b><span id="a5000-status">@@A5000STATUS@@</span></p></div>
 <div class="timing-box"><span class="small-label">统一计时口径 / 所有模型、所有 GPU</span><h4>不含加载、首帧编码、写文件。</h4><p>包含 rollout 生成＋TinyVAE BF16 流式解码；排除模型加载、cached 首帧编码、CPU 转换、MP4 写入和质量指标。固定视频 0000、0057、0114，各预热 1 次、计时 3 次，GPU 同步后计时。FPS = 360 个新帧 ÷ 三条视频各自中位耗时之和。</p><p>文本缓存在每次请求内重建，缓存建立成本包含在计时中；没有跨视频复用已建好的文本缓存。首帧 latent 已缓存，因此这不是从原始输入图到落盘视频的完整端到端延迟。</p></div>
 <details class="detail"><summary>评测协议与可比性说明 <span>+</span></summary><div class="detail-body">@@PROTOCOL@@</div></details>
@@ -46,17 +49,17 @@ page = '''<!doctype html>
 <li><h3>这轮比较仍有需要拆开的变量。</h3><p>两版新模型训练长度不同；noisy 同时加入历史噪声匹配和 score 时间分布统一，并改变了 SP 规模。现有新 checkpoint 仍使用 121 行含 anchor 占位的动作约定，旧模型使用 120 行真实转移。不能将全部差异单独归因于 4222 或 noisy KV。</p></li></ol>
 <div class="next-note"><span class="small-label">NEXT QUESTIONS</span><p>120 行动作约定重训；历史噪声匹配与 critic 时间抽样的独立消融；更长 rollout 与独立保留测试集。达到当前训练预算不等于已收敛。</p></div>
 </section>
-<footer class="entry-footer"><a href="results.json" download>指标 JSON ↓</a><a href="https://github.com/CeciliaTheBirb/research-log/tree/main/data/2026-10-25" target="_blank" rel="noopener">数据与复现记录 ↗</a><span>2026.10.25 · Cecilia</span></footer></main></div></body></html>'''
+<section id="checkpoints" class="log-section"><div class="section-head"><h2>Checkpoint</h2></div><p>本页评测所用的两个训练版本。Box 文件与 <code>meta.json</code> 中的 step、Edge 架构、Stage 2 初始化及 clean / noisy 策略已核对。</p><div class="table-wrap"><table class="checkpoint-table"><thead><tr><th scope="col">模型</th><th scope="col">训练 checkpoint</th><th scope="col">推理权重</th></tr></thead><tbody>@@CHECKPOINTROWS@@</tbody></table></div><p class="caption-note">文件为 LoRA adapter，需配合对应 Cosmos3-Edge 底座和 Stage 2 初始化加载，推理时使用 student adapter。Checkpoint 目录同时包含训练 state；Box 链接沿用原有访问权限。</p></section><footer class="entry-footer"><a href="results.json" download>指标 JSON ↓</a><a href="https://github.com/CeciliaTheBirb/research-log/tree/main/data/2026-10-25" target="_blank" rel="noopener">数据与复现记录 ↗</a><span>2026.10.25 · Cecilia</span></footer></main></div></body></html>'''
 l40s = s['hardware_benchmarks']['l40s']
 a5000 = s['hardware_benchmarks']['a5000']
 lstatus = f'已完成，作业 {l40s["job_id"]}；三模型均为直接单卡＋文本缓存。'
 astatus = (f'已完成，作业 {a5000["job_id"]}；同片段、同口径、同优化设置。' if a5000['status'] == 'completed'
            else f'作业 {a5000["job_id"]} 已进入正常 Slurm 队列，等待本轮评测完成；尚无优化后的实测值。')
 for key, value in {'TRAINING': training, 'QUALITY': quality, 'FPSROWS': ''.join(fps_rows), 'PROTOCOL': protocol,
-                   'L40SSTATUS': lstatus, 'A5000STATUS': astatus}.items():
+                   'L40SSTATUS': lstatus, 'A5000STATUS': astatus, 'CHECKPOINTROWS': ''.join(checkpoint_rows)}.items():
     page = page.replace('@@' + key + '@@', value)
 assert '@@' not in page
-for forbidden in ['推理优化前后', 'speed_ablation', 'Clean3200', 'Noisy1600', 'localhost']:
+for forbidden in ['推理优化前后', 'speed_ablation', 'Clean3200', 'Noisy1600', 'localhost', '4222 具体省掉了什么', 'block-track']:
     assert forbidden not in page, forbidden
 (r / 'docs/index.html').write_text(page)
 print('Built docs/index.html')

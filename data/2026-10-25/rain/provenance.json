@@ -1,0 +1,53 @@
+{
+  "input": "NavWorldGym/test_assets/rain_obs.png",
+  "model_order": [
+    "旧 stage3 student",
+    "4222 clean",
+    "4222+noisy kv reuse"
+  ],
+  "frames": 121,
+  "fps_playback": 20,
+  "decoder": "TinyVAE step38000 BF16 streaming",
+  "future_ground_truth_available": false,
+  "scope": "Qualitative action-conditioned diagnostic; separate from the 172-episode validation metrics and optimized throughput benchmark.",
+  "new_model_text": "Empty SFT text, no future captions. Native old model retains its published action prompt.",
+  "rendering": "Existing diagnostic RGB viewing copies with model labels replaced; no new model generation or speed measurement.",
+  "cases": [
+    {
+      "id": "2p5mps",
+      "straight_speed_mps": 2.5,
+      "gpu": "NVIDIA L40S",
+      "job_id": "82558",
+      "seed": 2026,
+      "image_sha256": "c989d05e65192daf6a37eff0e1b886c7b8df18548e80f14314d4971de4f91684",
+      "noise_sha256": "51960c953203321e903e47722f40e20f5a455fdc9d886431fa7710a250b890c2",
+      "actions_array_sha256": "f6038930e5f6fa514295068bb3e73d2515761d86c7eff644345028a66def4578",
+      "video": "assets/rain-comparison-2p5mps.mp4",
+      "video_sha256": "90f8f6103d07b56920e6095fde2df59cf4c237eda034e35417c7bce60a0bd549"
+    },
+    {
+      "id": "0p5mps",
+      "straight_speed_mps": 0.5,
+      "gpu": "NVIDIA L40S",
+      "job_id": "82578",
+      "seed": 2026,
+      "image_sha256": "c989d05e65192daf6a37eff0e1b886c7b8df18548e80f14314d4971de4f91684",
+      "noise_sha256": "51960c953203321e903e47722f40e20f5a455fdc9d886431fa7710a250b890c2",
+      "actions_array_sha256": "3186883aadac9abb774eabeb8d6aad307da0b1a8eae860223f9113c10c57949e",
+      "video": "assets/rain-comparison-0p5mps.mp4",
+      "video_sha256": "47e6ce77e0af88b6edc9452c8d67baf71ba4fa8118249a4d10b9f934451087be"
+    },
+    {
+      "id": "stop",
+      "straight_speed_mps": 0.0,
+      "gpu": "NVIDIA L40S",
+      "job_id": "82579",
+      "seed": 2026,
+      "image_sha256": "c989d05e65192daf6a37eff0e1b886c7b8df18548e80f14314d4971de4f91684",
+      "noise_sha256": "51960c953203321e903e47722f40e20f5a455fdc9d886431fa7710a250b890c2",
+      "actions_array_sha256": "33a0490b96a9fe2ab3aa024750d83cc1fa5143116ce7b7914fa5a9ab6c40c736",
+      "video": "assets/rain-comparison-stop.mp4",
+      "video_sha256": "d5ca47bf816635e875bbf7ee4db069909881c69a5a05fa22cbc9263a3ba64f27"
+    }
+  ]
+}

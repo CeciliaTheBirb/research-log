@@ -24,3 +24,9 @@
 运行 `python3 scripts/build_report.py`，即可从仓库内的内容与数据重建 `docs/index.html`。先更新 `docs/results.json` 与 `data/`，再重建并提交。无需构建框架或外部依赖。
 
 GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频是压缩观看副本；指标使用未压缩生成 RGB。仓库不包含模型权重、训练视频数据集、服务器凭据或机器本地路径。
+
+## 雨后路口展示与 checkpoint
+
+页面采用 Notion 风格的侧栏与文档排版。新增雨后路口三模型对比，可切换直行 2.5 m/s、慢行 0.5 m/s 和静止。视频来自已经完成的诊断输出，重新标注本页模型名；没有重新生成，也不从这些视频取吞吐数字。动作与出处见 `data/2026-10-25/rain/`。这组单图展示不参与 172 条验证集的质量统计，原指标保留。
+
+`docs/checkpoints.json` 和页面最后列出 clean step3200、修正版 noisy step1600 的 Box checkpoint 与 adapter 文件链接，已通过 Box 目录及实际 meta.json 核对；保留 Box 原有权限。

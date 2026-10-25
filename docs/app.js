@@ -34,22 +34,58 @@ video.addEventListener('timeupdate', () => {
   const i = video.currentTime < 6.05 ? 0 : video.currentTime < 12.1 ? 1 : 2;
   scenes.forEach((scene, k) => scene.classList.toggle('active', i === k));
 });
-const policyButtons = [...document.querySelectorAll('[data-policy]')];
-function policy(name) {
-  const noisy = name === 'noisy';
-  policyButtons.forEach(button => { const active = button.dataset.policy === name; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
-  const track = document.querySelector('#block-track'); track.replaceChildren();
-  for (let i = 0; i <= 10; i++) {
-    const block = document.createElement('div');
-    const reuse = noisy && i >= 2;
-    block.className = `block${i === 0 ? ' anchor' : ''}${reuse ? ' noise' : ''}`;
-    for (const [tag, text] of [['span', i === 0 ? '首帧' : `块 ${i}`], ['b', i === 0 ? 'A' : i === 1 ? '4' : '2'], ['small', reuse ? 'NOISY KV' : 'CLEAN KV']]) {
-      const e = document.createElement(tag); e.textContent = text; block.append(e);
+
+const rainVideo = document.querySelector('#rain-video');
+const rainButtons = [...document.querySelectorAll('[data-rain]')];
+const rainNames = {'2p5mps':'直行 2.5 m/s', '0p5mps':'慢行 0.5 m/s', 'stop':'静止'};
+const rainCopies = new Map();
+rainButtons.forEach(button => button.addEventListener('click', async () => {
+  const tag = button.dataset.rain;
+  const source = `assets/rain-comparison-${tag}.mp4`;
+  rainButtons.forEach(b => { b.disabled = true; b.setAttribute('aria-busy', 'true'); });
+  try {
+    if (!rainCopies.has(tag)) {
+      const response = await fetch(source);
+      if (!response.ok) throw new Error('Video download failed');
+      rainCopies.set(tag, URL.createObjectURL(await response.blob()));
     }
-    track.append(block);
+    await new Promise((resolve, reject) => {
+      const cleanup = () => { rainVideo.removeEventListener('loadedmetadata', loaded); rainVideo.removeEventListener('error', failed); };
+      const loaded = () => { cleanup(); resolve(); };
+      const failed = () => { cleanup(); reject(new Error('Video load failed')); };
+      rainVideo.addEventListener('loadedmetadata', loaded);
+      rainVideo.addEventListener('error', failed);
+      rainVideo.src = rainCopies.get(tag);
+      rainVideo.poster = `assets/rain-poster-${tag}.jpg`;
+      rainVideo.load();
+    });
+    rainButtons.forEach(b => { const selected = b === button; b.classList.toggle('active', selected); b.setAttribute('aria-pressed', String(selected)); });
+    document.querySelector('#rain-action-label').textContent = `${rainNames[tag]} · 三模型同步播放`;
+    document.querySelector('#rain-download').href = source;
+    await rainVideo.play();
+  } catch {
+    document.querySelector('#rain-action-label').textContent = '视频暂未加载，请重试或下载观看。';
+    document.querySelector('#rain-download').href = source;
+  } finally {
+    rainButtons.forEach(b => { b.disabled = false; b.removeAttribute('aria-busy'); });
   }
-  document.querySelector('#policy-description').textContent = noisy ? '后续 9 个块复用 σ=0.625 最后一步输入的 KV，省去各自的 clean commit。' : '每个块完成 denoise 后，额外执行一次干净历史的 KV 写入。';
-  document.querySelector('#call-count').textContent = noisy ? '24 次模型调用' : '33 次模型调用';
-}
-policyButtons.forEach(button => button.addEventListener('click', () => policy(button.dataset.policy)));
-policy('clean');
+}));
+[video, rainVideo].forEach(current => current.addEventListener('play', () => {
+  [video, rainVideo].forEach(other => { if (other !== current) other.pause(); });
+}));
+const sidebarToggle = document.querySelector('.sidebar-toggle');
+sidebarToggle.addEventListener('click', () => {
+  if (matchMedia('(max-width: 800px)').matches) {
+    const open = document.body.classList.toggle('sidebar-open');
+    sidebarToggle.setAttribute('aria-expanded', String(open));
+  } else {
+    const closed = document.body.classList.toggle('sidebar-collapsed');
+    sidebarToggle.setAttribute('aria-expanded', String(!closed));
+  }
+});
+document.querySelectorAll('.entry-nav a, .date-link').forEach(link => link.addEventListener('click', () => {
+  if (matchMedia('(max-width: 800px)').matches) {
+    document.body.classList.remove('sidebar-open'); sidebarToggle.setAttribute('aria-expanded', 'false');
+  }
+}));
+if (matchMedia('(max-width: 800px)').matches) sidebarToggle.setAttribute('aria-expanded', 'false');
