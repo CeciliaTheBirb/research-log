@@ -43,7 +43,8 @@ page = '''<!doctype html>
 <details class="detail"><summary>评测协议与可比性说明 <span>+</span></summary><div class="detail-body">@@PROTOCOL@@</div></details>
 </section>
 <section id="findings" class="log-section findings-section"><div class="section-head"><div><div class="eyebrow">03 / FINDINGS</div><h2>当前发现</h2></div></div>
-<ol class="finding-list"><li><h3>4222 clean 的 FVD 点估计最低。</h3><p>FVD121 为 202.08，比旧 stage3 student 的 231.96 低 29.88（约 12.9%）。配对 bootstrap 95% 差值区间为 [−54.83, −9.27]。LPIPS、PSNR、SSIM 与旧模型接近，FVD 排名不能代表全部视觉维度。</p></li>
+<ol class="finding-list"><li><h3>旧学生后半段画质下降与撞墙，新模型有所改善。</h3><p>在本页对比样例中，尤其是雨后路口，旧 stage3 student 随 rollout 推进，后半段画质下降，并出现镜头撞向墙体的现象。新训练的 4222 clean 与 4222+noisy kv reuse 后半段画面相对稳定，撞墙问题也有所缓解。这是当前展示片段中的定性观察。</p></li>
+<li><h3>4222 clean 的 FVD 点估计最低。</h3><p>FVD121 为 202.08，比旧 stage3 student 的 231.96 低 29.88（约 12.9%）。配对 bootstrap 95% 差值区间为 [−54.83, −9.27]。LPIPS、PSNR、SSIM 与旧模型接近，FVD 排名不能代表全部视觉维度。</p></li>
 <li><h3>4222+noisy kv reuse 的配对画质指标最好。</h3><p>LPIPS=0.4150、PSNR=16.15 dB、SSIM=0.5142，在当前三模型中均值最好。FVD121=215.35，相对旧模型的差值区间 [−37.87, +1.82] 跨 0。</p></li>
 <li><h3>更少的模型调用，已转化为实际吞吐收益。</h3><p>每个 6 秒 clip 的模型调用从旧模型 51 次降至 clean 的 33 次、noisy 的 24 次。两种 GPU 的实际 FPS 见上表；不按调用数比例推算硬件速度。</p></li>
 <li><h3>这轮比较仍有需要拆开的变量。</h3><p>两版新模型训练长度不同；noisy 同时加入历史噪声匹配和 score 时间分布统一，并改变了 SP 规模。现有新 checkpoint 仍使用 121 行含 anchor 占位的动作约定，旧模型使用 120 行真实转移。不能将全部差异单独归因于 4222 或 noisy KV。</p></li></ol>
