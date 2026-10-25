@@ -6,6 +6,8 @@
 
 网站由本仓库 `main` 分支的 `docs/` 自动发布到 GitHub Pages。原 `chatgpt.site` 地址目前仍能浏览旧版，但当前 Sites 管理连接看不到该项目，读取原项目 ID 返回 404；新的公开地址与本仓库同步。
 
+发布约定（2026-10-25）：后续研究日志与进度网页统一通过本仓库的 GitHub Pages 发布，固定公开地址为 https://ceciliathebirb.github.io/research-log/ 。不再使用 Sites / `chatgpt.site` 作为发布渠道。
+
 ## 2026-10-25 · Stage 3 蒸馏
 
 比较四个 Cosmos3-Edge 模型：**旧 stage3 student**、**4222 clean**、**4222+noisy kv reuse**、**43222+hybrid forcing**（HF Edge step2400）。
