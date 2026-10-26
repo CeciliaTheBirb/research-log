@@ -46,3 +46,5 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 四模型视频上排为旧 stage3 student / 4222 clean，下排为 4222+noisy kv reuse / 43222+hybrid forcing；雨天可切换三种动作。原三模型与真实参考视频保留在 `docs/assets/model-comparison-with-reference.mp4`。运行 `python3 scripts/import_hybrid.py` 后再运行 `python3 scripts/build_report.py` 更新表格。评测脚本供在 CoStream 环境内运行，不包含模型底座或数据。
 
 [Hybrid 推理配置核查](data/2026-10-25/hf-hybrid/config-audit-zh.md) 记录官方窗口/记忆参数对照，以及固定十条视频的完整历史、关闭记忆和通用结构化文本诊断。原172条无caption成绩与这份诊断分别保留。运行 `python3 scripts/import_hybrid_audit.py` 校验原始诊断记录并更新摘要，再重建网页。
+
+[Noisy KV 1:5 TTUR 实验](data/2026-10-25/noisy-ttur15/README.md) 已提交：目标800次student＋4000次fake，沿用原matched noisy配方，不加GAN。预检查通过，正式4卡训练已运行；带时间戳的进度、两段续训及后续172条质量和两卡型测速任务见实验记录；新结果完成前不填入质量与速度表。

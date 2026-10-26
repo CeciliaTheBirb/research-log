@@ -1,0 +1,254 @@
+{
+  "name": "4222+noisy kv reuse · TTUR1:5",
+  "updated_at": "2026-10-25T23:16:19-07:00",
+  "status": "running",
+  "status_zh": "正式训练运行中：2160/4800（45%），360次student＋1800次fake",
+  "baseline": "4222+noisy kv reuse（修正版，1600次总更新）",
+  "initialization": {
+    "student": "edge-text-causal-s1-step12550",
+    "fake_and_frozen_teacher": "edge-text-bidir-step30000",
+    "fresh_start": true
+  },
+  "planned_updates": {
+    "student": 800,
+    "fake": 4000,
+    "total": 4800
+  },
+  "baseline_updates": {
+    "student": 800,
+    "fake": 800,
+    "total": 1600
+  },
+  "resources": {
+    "requested_gpu": "RTX A5000",
+    "requested_gpu_count": 4,
+    "sp": 4,
+    "dp": 1,
+    "effective_batch": 1
+  },
+  "training_jobs": [
+    {
+      "job": 82756,
+      "run": "20261025-165045_stage3_422_noisy_ttur15_sp4_part1",
+      "afterok": 82755,
+      "start_update": 0,
+      "target_update": 2400
+    },
+    {
+      "job": 82760,
+      "run": "20261025-165045_stage3_422_noisy_ttur15_sp4_part2",
+      "afterok": 82756,
+      "start_update": 2400,
+      "target_update": 4800
+    }
+  ],
+  "evaluation_jobs": [
+    {
+      "job": 82761,
+      "gpu": "a5000",
+      "afterok": 82760
+    },
+    {
+      "job": 82762,
+      "gpu": "l40s",
+      "afterok": 82761
+    }
+  ],
+  "preflight": {
+    "job": 82755,
+    "completed": true,
+    "train_clips": 4775,
+    "validation_clips": 172,
+    "overlapping_clips": 0,
+    "overlapping_sessions": 0,
+    "validation_index_sha256": "10422a9de996b76350e1213abadbeca62fd6681e30c57b96325cbece8a396c29",
+    "student_updates": 2,
+    "fake_updates": 10,
+    "gradient_isolation_verified": true,
+    "reload_verified": true,
+    "scope": "Cropped real-model execution/reload check; not a quality or full-resolution memory benchmark.",
+    "metrics": [
+      {
+        "phase": "student",
+        "total_loss": 1.0478416681289673,
+        "grad_norm": 2.2850847244262695,
+        "loss": 1.0478416681289673,
+        "boundary_mse": 0.05719282105565071,
+        "transition_mse": 0.5324633717536926,
+        "forward_loss": 0.016068531200289726,
+        "dmd_loss": 0.5158865451812744,
+        "student_loss": 1.0478416681289673
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.09015989303588867,
+        "grad_norm": 0.28603219985961914,
+        "fake_loss": 0.09015989303588867
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.0824739933013916,
+        "grad_norm": 0.16164559125900269,
+        "fake_loss": 0.0824739933013916
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.08896251022815704,
+        "grad_norm": 0.16302970051765442,
+        "fake_loss": 0.08896251022815704
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.12258247286081314,
+        "grad_norm": 1.459012508392334,
+        "fake_loss": 0.12258247286081314
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.3115037977695465,
+        "grad_norm": 0.3470988869667053,
+        "fake_loss": 0.3115037977695465
+      },
+      {
+        "phase": "student",
+        "total_loss": 1.152701497077942,
+        "grad_norm": 0.8595058917999268,
+        "loss": 1.152701497077942,
+        "boundary_mse": 0.05495860427618027,
+        "transition_mse": 0.47981390357017517,
+        "forward_loss": 0.06766723096370697,
+        "dmd_loss": 0.5425171256065369,
+        "student_loss": 1.152701497077942
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.0729362890124321,
+        "grad_norm": 0.230250284075737,
+        "fake_loss": 0.0729362890124321
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.06980328261852264,
+        "grad_norm": 0.5038138031959534,
+        "fake_loss": 0.06980328261852264
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.10937690734863281,
+        "grad_norm": 1.4550714492797852,
+        "fake_loss": 0.10937690734863281
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.4865071773529053,
+        "grad_norm": 18.37291717529297,
+        "fake_loss": 0.4865071773529053
+      },
+      {
+        "phase": "fake",
+        "total_loss": 0.2092759907245636,
+        "grad_norm": 0.1865091621875763,
+        "fake_loss": 0.2092759907245636
+      }
+    ]
+  },
+  "recipe": {
+    "first_times": [
+      1.0,
+      0.9375,
+      0.8333333333333334,
+      0.625,
+      0.0
+    ],
+    "rest_times": [
+      1.0,
+      0.625,
+      0.0
+    ],
+    "cache_mode": "noisy",
+    "clean_prefix_blocks": 1,
+    "match_noisy_context": true,
+    "fake_sigma_sampling": "uniform",
+    "flow_shift": 5,
+    "fake_reuse_student": false,
+    "loss": "AnyFlow forward + 2 * DMD",
+    "learning_rate": 2e-06,
+    "seed": 0,
+    "action_layout": "anchor_padded",
+    "gan": false,
+    "checkpoint_every_total_updates": 300,
+    "validation_every_total_updates": 300
+  },
+  "config_diff": {
+    "train.ckpt_at": [
+      [
+        2
+      ],
+      [
+        6
+      ]
+    ],
+    "train.steps": [
+      1600,
+      4800
+    ],
+    "train.remote.keep_every": [
+      400,
+      1200
+    ],
+    "train.ckpt_every": [
+      100,
+      300
+    ],
+    "stage2.fake_steps_per_cycle": [
+      1,
+      5
+    ],
+    "train.val_every": [
+      100,
+      300
+    ]
+  },
+  "data_order_note": "Same loader and seed; the changed phase schedule changes which samples and per-step RNG reach student updates.",
+  "evaluation_protocol": "Same 172 validation clips, canonical noise, empty SFT prompt, original RGB reference, TinyVAE BF16 streaming. Optimized single-GPU plus request-local text cache. FVD121/FVD16, LPIPS/PSNR/SSIM, temporal metrics, A5000/L40S repeated FPS. Baseline outputs reused.",
+  "quality": null,
+  "fps": null,
+  "storage": "Training checkpoints and logs mirror to the existing Box CoStream/experiments root; public progress is published through this repository GitHub Pages.",
+  "progress": {
+    "total_updates": 2160,
+    "student_updates": 360,
+    "fake_updates": 1800,
+    "segment_target": 2400,
+    "all_segments_target": 4800,
+    "job": 82756,
+    "gpu_model": "RTX A5000",
+    "gpu_count": 4,
+    "node": "bolei-gpu01",
+    "elapsed_s": 21555,
+    "average_seconds_per_total_update": 9.973263073409045,
+    "latest_checkpoint": 2100,
+    "uploaded_checkpoints": [
+      6,
+      300,
+      600,
+      900,
+      1200,
+      1500,
+      1800,
+      2100
+    ],
+    "all_logged_training_metrics_finite": true,
+    "last_validation": {
+      "step": 2100,
+      "time": 1792994760.9,
+      "val/loss": 0.21309047937393188,
+      "val/boundary_mse": 0.20007412135601044,
+      "val/transition_mse": 1.3756850957870483
+    },
+    "initial_gpu_guard": {
+      "checked_devices": 4,
+      "existing_compute_processes_per_device": 0,
+      "passed": true
+    }
+  }
+}

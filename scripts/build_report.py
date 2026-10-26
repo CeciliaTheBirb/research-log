@@ -118,6 +118,21 @@ if s.get('hybrid_evaluation'):
         text = f'原三模型作业 {benchmark["job_id"]}；' + state + ' 同片段、同计时口径，hybrid 为另一轮单卡作业。'
         if label == 'L40S': lstatus = text
         else: astatus = text
+ttur_path = r / 'data/2026-10-25/noisy-ttur15/experiment.json'
+if ttur_path.exists():
+    ttur = json.loads(ttur_path.read_text())
+    assert ttur['planned_updates'] == {'student': 800, 'fake': 4000, 'total': 4800}
+    assert ttur['preflight']['reload_verified'] and ttur['preflight']['gradient_isolation_verified']
+    jobs = '、'.join(str(j['job']) for j in ttur['training_jobs'])
+    evaluation_jobs = '、'.join(str(j['job']) for j in ttur['evaluation_jobs'])
+    resources = '使用' if ttur['status'] == 'running' else '申请'
+    training += ('<div class="model-card" id="noisy-ttur15"><h3>4222+noisy kv reuse · TTUR1:5</h3>'
+                 f'<p><strong>{html.escape(ttur["status_zh"])}</strong>。状态记录时间：{html.escape(ttur["updated_at"])}。</p>'
+                 '<p>从同一 Stage 2 重新初始化，保留4222、历史噪声匹配、score时间抽样、损失和学习率；student:fake从1:1改为1:5。本轮没有GAN。</p>'
+                 f'<p>{resources}4张RTX A5000，SP4 / DP1，有效batch=1；目标800次student＋4000次fake，共4800次总更新。每50次student更新验证和保存。拆成两段作业，通过完整训练状态衔接。</p>'
+                 f'<p>训练作业：{jobs}。完成后自动运行172条质量评测与A5000 / L40S优化后测速，评测作业：{evaluation_jobs}。当前没有该实验的新FVD或FPS结果。</p>'
+                 '<p>预检查已完成2次student＋10次fake更新，梯度隔离及新进程重载一致性通过；训练4775条与验证172条在clip/session层面无重叠。</p>'
+                 '<p><a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-25/noisy-ttur15/README.md" target="_blank" rel="noopener">实验状态、训练配方与验证记录 ↗</a></p></div>')
 for key, value in {'TRAINING': training, 'QUALITY': quality, 'FPSROWS': ''.join(fps_rows), 'PROTOCOL': protocol,
                    'L40SSTATUS': lstatus, 'A5000STATUS': astatus, 'CHECKPOINTROWS': ''.join(checkpoint_rows)}.items():
     page = page.replace('@@' + key + '@@', value)
