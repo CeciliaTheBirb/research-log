@@ -1,0 +1,13 @@
+{
+  "noisy_ttur15_4800_nocaption_minus_noisy_matched1600_nocaption": {
+    "protocol": "full121",
+    "episodes": 172,
+    "repeats": 512,
+    "observed_delta": 6.560440476889198,
+    "paired_percentile_95ci": [
+      -7.981505873718038,
+      15.765246871867618
+    ],
+    "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+  }
+}

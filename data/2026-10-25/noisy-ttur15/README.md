@@ -1,17 +1,27 @@
 # 4222+noisy kv reuse · TTUR1:5
 
-正式训练运行中：2160/4800（45%），360次student＋1800次fake。截至 2026-10-25T23:16:19-07:00。
+训练与172条质量评测已完成；A5000测速已完成，L40S测速排队。截至 2026-10-26T10:42:51-07:00。
 
-从原 causal Stage2 step12550 重新初始化，fake/teacher 使用 bidir step30000；不接续现有noisy1600。沿用SP4/DP1、有效batch1、seed0、两处目标匹配、AnyFlow forward + 2×DMD及学习率2e-6。本轮只消融更新比例，没有GAN。
+已完成800次student＋4000次fake，共4800次总更新。4×RTX A5000、SP4/DP1，有效batch1。两段作业82756、82760均成功；第二段完整恢复第一段step2400的模型与优化器。训练占卡约13小时24分，约53.6 GPU小时（包含加载、保存、同步）。checkpoint4800已上传Box。
 
-目标为800次student＋4000次fake。原对照为800＋800。每300次总更新（50次student）验证和保存；为了适配A5000的24小时作业限制，拆为0→2400、2400→4800两段，通过完整模型及优化器状态续训，段间不重置学习率或更新计数。
+与修正版1:1 noisy对照相同：从causal Stage2 step12550重新初始化，fake/teacher为bidir step30000，seed0，4222网格，Noisy KV及历史噪声匹配，shifted uniform score时间，AnyFlow forward + 2×DMD，学习率2e-6。本轮只改更新频率及对应的保存/验证频率，没有GAN。
 
-正式训练作业：82756、82760。最终评测作业：82761（172条质量＋A5000优化测速）、82762（L40S优化测速）。
+| 指标 | 1:1 noisy | 1:5 TTUR |
+|---|---:|---:|
+| FVD121↓ | 215.34702 | 221.90746 |
+| FVD16↓ | 278.84656 | 275.86709 |
+| LPIPS↓ | 0.41504 | 0.42588 |
+| PSNR↑ | 16.14966 | 15.97402 |
+| SSIM↑ | 0.51416 | 0.50945 |
 
-预检查82755已完成：训练4775条、验证172条，clip/session重叠均为0；真模型裁剪运行2次student＋10次fake，梯度隔离通过，portable adapter和DCP重载后生成逐值一致。裁剪检查不代表质量或全分辨率显存结果。
+FVD121差值为+6.56，配对bootstrap95%区间[-7.98,+15.77]跨0。因此未显示整体收益，不能称为已确认显著退步；FVD16略有改善。当前不据此替换1:1基线，也不能据此否定完整DMD2。
 
-沿用相同seed及loader；更新比例变化会改变哪些样本及逐步随机数用于student，因此不是逐student更新完全相同样本的配对实验。最终按相同student更新数及GPU小时共同比较。
+同作业A5000优化后测速：1:1=25.76FPS，1:5=25.73FPS。L40S作业82762仍排队，不填估算值。
 
-评测沿用原172条验证视频、固定初始噪声、空SFT文本及原始相机RGB参考。TinyVAE BF16流式，直接单卡＋请求内文本缓存；FPS不含加载、首帧编码和写文件。checkpoint2100已保存并由Box同步器确认上传；当前所有已记录训练loss和梯度均为有限值。验证loss为0.21309（step2100，辅助目标；不能替代FVD或生成质量）。尚无本轮新FVD或FPS结果。
+全部172条对照已检查CID、seed、初始噪声hash、文本token hash和24次模型调用。训练4775条与验证172条的clip/session重叠均为0。训练日志逐步核对1:5比例、连续1至4800的更新数和有限loss/梯度。
 
-[完整实验记录](experiment.json) · [DMD2原理与当前实现差异](../dmd2-noisy-kv-review.md)
+沿用同一loader和seed；改更新比例后，进入student的样本和逐步随机数也会改变，并非逐student更新使用完全相同样本的配对训练。800次student预算相同。
+
+质量基于未压缩生成RGB与原始相机RGB，172条验证、canonical noise、空SFT文本。速度为直接单卡＋请求内文本缓存＋TinyVAE BF16流式，不含加载、首帧编码、CPU转换、写文件和指标。
+
+[Checkpoint4800](https://app.box.com/folder/431189754989) · [推理adapter](https://app.box.com/file/2550530063317) · [质量汇总](summary.json) · [测速原始记录](a5000-benchmark.json) · [核查记录](evaluation-audit.json) · [视频来源](video-provenance.json)

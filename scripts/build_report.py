@@ -125,14 +125,48 @@ if ttur_path.exists():
     assert ttur['preflight']['reload_verified'] and ttur['preflight']['gradient_isolation_verified']
     jobs = '、'.join(str(j['job']) for j in ttur['training_jobs'])
     evaluation_jobs = '、'.join(str(j['job']) for j in ttur['evaluation_jobs'])
-    resources = '使用' if ttur['status'] == 'running' else '申请'
+    completed = ttur['status'] == 'trained_quality_complete_l40s_pending'
+    resources = '已使用' if completed else '使用'
+    training_result = (
+        f'<p>训练作业 {jobs} 已完成800次student＋4000次fake，总计4800次更新；两段完整恢复模型及优化器。'
+        '占卡13小时24分，约53.6 GPU小时（含加载、保存和同步）。172条质量与A5000评测作业82761已完成；L40S作业82762排队中。最终checkpoint4800已备份到Box，链接见页末。</p>'
+        if completed else
+        f'<p>训练作业：{jobs}。评测作业：{evaluation_jobs}；结果完成后更新。</p>'
+    )
     training += ('<div class="model-card" id="noisy-ttur15"><h3>4222+noisy kv reuse · TTUR1:5</h3>'
                  f'<p><strong>{html.escape(ttur["status_zh"])}</strong>。状态记录时间：{html.escape(ttur["updated_at"])}。</p>'
                  '<p>从同一 Stage 2 重新初始化，保留4222、历史噪声匹配、score时间抽样、损失和学习率；student:fake从1:1改为1:5。本轮没有GAN。</p>'
-                 f'<p>{resources}4张RTX A5000，SP4 / DP1，有效batch=1；目标800次student＋4000次fake，共4800次总更新。每50次student更新验证和保存。拆成两段作业，通过完整训练状态衔接。</p>'
-                 f'<p>训练作业：{jobs}。完成后自动运行172条质量评测与A5000 / L40S优化后测速，评测作业：{evaluation_jobs}。当前没有该实验的新FVD或FPS结果。</p>'
+                 f'<p>{resources}4张RTX A5000，SP4 / DP1，有效batch=1；预算800次student＋4000次fake，共4800次总更新。每50次student更新验证和保存。</p>'
+                 + training_result +
                  '<p>预检查已完成2次student＋10次fake更新，梯度隔离及新进程重载一致性通过；训练4775条与验证172条在clip/session层面无重叠。</p>'
+                 '<p>800次student预算与1:1基线相同；沿用loader与seed，但更新比例改变了进入student的样本及逐步随机数，不是逐student更新的完全配对训练。这里只测试更新频率，尚未加入完整DMD2的其他组件。</p>'
                  '<p><a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-25/noisy-ttur15/README.md" target="_blank" rel="noopener">实验状态、训练配方与验证记录 ↗</a></p></div>')
+    if completed:
+        ttur_results = (
+            '<div id="ttur-results" class="rain-results"><h3 class="result-title">Noisy KV / 1:1 与 1:5 更新比例</h3>'
+            '<p><strong>本轮1:5未显示整体质量收益。</strong>相同800次student更新预算下，FVD121从215.35变为221.91，LPIPS、PSNR和SSIM也略差；FVD16从278.85降至275.87。'
+            'FVD121差值为+6.56，配对bootstrap 95%区间[−7.98,+15.77]跨0，尚不能称为显著退步；这也不等于完整DMD2无效。</p>'
+            '<p>配对RGB指标的差值区间则均不跨0：LPIPS为+0.01084 [0.00796,0.01377]，PSNR为−0.1756 dB [−0.2348,−0.1166]，SSIM为−0.00471 [−0.00637,−0.00304]。这172条验证视频上，1:5的配对画质指标确有下降。</p>'
+            '<div class="viewer-head"><p>上排：真实视频、旧 stage3 student<br>下排：4222+noisy kv reuse（1:1）、TTUR1:5</p>'
+            '<a href="assets/noisy-ttur15-comparison.mp4" download>下载 MP4 ↓</a></div>'
+            '<div class="video-shell"><video id="ttur-video" controls playsinline preload="metadata" poster="assets/noisy-ttur15-comparison.jpg" '
+            'aria-label="真实视频、旧学生及Noisy KV两种更新比例的同步对比"><source src="assets/noisy-ttur15-comparison.mp4" type="video/mp4">请下载MP4观看。</video></div>'
+            '<p class="caption-note">三个场景：0000白天路口、0057夜间街道、0114树荫人行道；共18.15秒，20 FPS播放。172条质量评测已逐条核对首帧、动作、文本、seed与初始噪声；两版noisy均为24次模型调用。</p>'
+            '<p>同一作业82761的A5000优化后实测：1:1为<strong>25.76 FPS</strong>，1:5为<strong>25.73 FPS</strong>，速度基本相同。'
+            '下方总表保留1:1旧轮次的26.19 FPS；判断本次速度差异应使用这组同作业对照。L40S作业82762仍排队，未填估算值。</p></div>'
+        )
+        page = page.replace('<h3 class="result-title" id="quality-results">', ttur_results + '<h3 class="result-title" id="quality-results">')
+        page = page.replace('<a href="#quality-results">质量指标</a>', '<a href="#ttur-results">Noisy KV · 1:5 实验</a><a href="#quality-results">质量指标</a>')
+        page = page.replace('四个模型均采用直接单卡＋请求内文本缓存。', '各模型均采用直接单卡＋请求内文本缓存。')
+        page = page.replace('本页两版 4222 的 Box checkpoint，以及新增的 HF hybrid 固定版本。', '本页三版 4222 的 Box checkpoint（含TTUR1:5），以及HF hybrid固定版本。')
+        page = page.replace('两版 4222 使用 RTX A5000 / L40S 分片。', '原两版 4222 使用 RTX A5000 / L40S 分片，TTUR1:5使用RTX A5000。')
+        finding = ('<li><h3>Noisy KV 的1:5更新频率未显示整体收益。</h3>'
+                   '<p>相同800次student更新预算，FVD121为221.91（1:1为215.35），配对差值区间跨0；LPIPS、PSNR、SSIM略差，FVD16略好。'
+                   '同作业A5000速度为25.76→25.73 FPS。暂保留1:1作为基线，不能仅凭增加fake更新次数认定critic滞后已经解决，或将结果推广到完整DMD2。</p></li>')
+        page = page.replace('<ol class="finding-list">', '<ol class="finding-list">' + finding)
+        astatus += ' TTUR1:5及1:1同作业对照82761已完成。'
+        lstatus += ' TTUR1:5作业82762排队中。'
+        page = page.replace('2026.10.25 · Cecilia</span>', '2026.10.26 更新 · Cecilia</span>')
 for key, value in {'TRAINING': training, 'QUALITY': quality, 'FPSROWS': ''.join(fps_rows), 'PROTOCOL': protocol,
                    'L40SSTATUS': lstatus, 'A5000STATUS': astatus, 'CHECKPOINTROWS': ''.join(checkpoint_rows)}.items():
     page = page.replace('@@' + key + '@@', value)

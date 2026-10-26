@@ -1,0 +1,51 @@
+{
+  "episodes": 172,
+  "same_cid_seed": true,
+  "same_initial_noise": true,
+  "same_prompt_tokens": true,
+  "noisy_calls_24": true,
+  "reference_feature_consistency": {
+    "old4444_native/full121": {
+      "strict_allclose": true,
+      "max_abs": 0.0,
+      "max_relative_l2": 0.0,
+      "explicit_tolerance_used": false
+    },
+    "old4444_native/uniform16": {
+      "strict_allclose": true,
+      "max_abs": 0.0,
+      "max_relative_l2": 0.0,
+      "explicit_tolerance_used": false
+    },
+    "noisy_matched1600_nocaption/full121": {
+      "strict_allclose": false,
+      "max_abs": 0.0031719207763671875,
+      "max_relative_l2": 0.00038382728280195286,
+      "explicit_tolerance_used": true,
+      "reference_self_fvd": 1.5962538782332558e-05,
+      "candidate_fvd_with_own_reference": 215.34556664280808,
+      "candidate_fvd_reference_delta": 0.0014515077050418768
+    },
+    "noisy_matched1600_nocaption/uniform16": {
+      "strict_allclose": false,
+      "max_abs": 0.008333683013916016,
+      "max_relative_l2": 0.0009263480961056326,
+      "explicit_tolerance_used": true,
+      "reference_self_fvd": 9.096973644773243e-05,
+      "candidate_fvd_with_own_reference": 278.85457084353357,
+      "candidate_fvd_reference_delta": -0.008012158224573795
+    },
+    "noisy_ttur15_4800_nocaption/full121": {
+      "strict_allclose": true,
+      "max_abs": 0.0,
+      "max_relative_l2": 0.0,
+      "explicit_tolerance_used": false
+    },
+    "noisy_ttur15_4800_nocaption/uniform16": {
+      "strict_allclose": true,
+      "max_abs": 0.0,
+      "max_relative_l2": 0.0,
+      "explicit_tolerance_used": false
+    }
+  }
+}

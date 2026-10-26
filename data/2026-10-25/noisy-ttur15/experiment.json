@@ -1,8 +1,8 @@
 {
   "name": "4222+noisy kv reuse · TTUR1:5",
-  "updated_at": "2026-10-25T23:16:19-07:00",
-  "status": "running",
-  "status_zh": "正式训练运行中：2160/4800（45%），360次student＋1800次fake",
+  "updated_at": "2026-10-26T10:46:37-07:00",
+  "status": "trained_quality_complete_l40s_pending",
+  "status_zh": "训练与172条质量评测已完成；A5000测速已完成，L40S测速排队",
   "baseline": "4222+noisy kv reuse（修正版，1600次总更新）",
   "initialization": {
     "student": "edge-text-causal-s1-step12550",
@@ -211,44 +211,142 @@
   },
   "data_order_note": "Same loader and seed; the changed phase schedule changes which samples and per-step RNG reach student updates.",
   "evaluation_protocol": "Same 172 validation clips, canonical noise, empty SFT prompt, original RGB reference, TinyVAE BF16 streaming. Optimized single-GPU plus request-local text cache. FVD121/FVD16, LPIPS/PSNR/SSIM, temporal metrics, A5000/L40S repeated FPS. Baseline outputs reused.",
-  "quality": null,
-  "fps": null,
+  "quality": {
+    "lpips": 0.42587823848106515,
+    "psnr": 15.974020324474157,
+    "ssim": 0.5094459722143447,
+    "fvd121": 221.90745862740232,
+    "fvd16": 275.86708885099324,
+    "fvd_delta_vs_noisy": {
+      "protocol": "full121",
+      "episodes": 172,
+      "repeats": 512,
+      "observed_delta": 6.560440476889198,
+      "paired_percentile_95ci": [
+        -7.981505873718038,
+        15.765246871867618
+      ],
+      "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+    }
+  },
+  "fps": {
+    "a5000": 25.732091562832014,
+    "l40s": null,
+    "same_job_a5000_noisy_baseline": 25.757452004536656,
+    "a5000_job": 82761,
+    "l40s_pending_job": 82762
+  },
   "storage": "Training checkpoints and logs mirror to the existing Box CoStream/experiments root; public progress is published through this repository GitHub Pages.",
   "progress": {
-    "total_updates": 2160,
-    "student_updates": 360,
-    "fake_updates": 1800,
-    "segment_target": 2400,
+    "total_updates": 4800,
+    "student_updates": 800,
+    "fake_updates": 4000,
+    "segment_target": 4800,
     "all_segments_target": 4800,
-    "job": 82756,
+    "job": 82760,
     "gpu_model": "RTX A5000",
     "gpu_count": 4,
     "node": "bolei-gpu01",
-    "elapsed_s": 21555,
-    "average_seconds_per_total_update": 9.973263073409045,
-    "latest_checkpoint": 2100,
+    "elapsed_s": 48260,
+    "average_seconds_per_total_update": 10.054166666666667,
+    "latest_checkpoint": 4800,
     "uploaded_checkpoints": [
-      6,
-      300,
-      600,
-      900,
-      1200,
-      1500,
-      1800,
-      2100
+      2700,
+      3000,
+      3300,
+      3600,
+      3900,
+      4200,
+      4500,
+      4800
     ],
     "all_logged_training_metrics_finite": true,
     "last_validation": {
-      "step": 2100,
-      "time": 1792994760.9,
-      "val/loss": 0.21309047937393188,
-      "val/boundary_mse": 0.20007412135601044,
-      "val/transition_mse": 1.3756850957870483
+      "step": 4800,
+      "loss": 0.21047435700893402
     },
     "initial_gpu_guard": {
       "checked_devices": 4,
       "existing_compute_processes_per_device": 0,
       "passed": true
+    },
+    "completed_segments": [
+      {
+        "job": 82756,
+        "last_step": 2400,
+        "status": "finished",
+        "resumed_from_previous": false
+      },
+      {
+        "job": 82760,
+        "last_step": 4800,
+        "status": "finished",
+        "resumed_from_previous": true
+      }
+    ],
+    "training_wall_s": 48260,
+    "training_allocated_gpu_hours": 53.62222222222222,
+    "elapsed_basis": "Sum of completed Slurm training allocations, including loading, saves and synchronization.",
+    "uploaded_checkpoints_scope": "Part2; part1 checkpoint2400 was used for full model/optimizer continuation."
+  },
+  "checkpoints": {
+    "step": 4800,
+    "checkpoint_url": "https://app.box.com/folder/431189754989",
+    "weights_url": "https://app.box.com/file/2550530063317",
+    "weights_bytes": 1066880624,
+    "box_report_url": "https://app.box.com/file/2550061943605",
+    "uploaded": true
+  },
+  "evaluation_audit": {
+    "episodes": 172,
+    "same_cid_seed": true,
+    "same_initial_noise": true,
+    "same_prompt_tokens": true,
+    "noisy_calls_24": true,
+    "reference_feature_consistency": {
+      "old4444_native/full121": {
+        "strict_allclose": true,
+        "max_abs": 0.0,
+        "max_relative_l2": 0.0,
+        "explicit_tolerance_used": false
+      },
+      "old4444_native/uniform16": {
+        "strict_allclose": true,
+        "max_abs": 0.0,
+        "max_relative_l2": 0.0,
+        "explicit_tolerance_used": false
+      },
+      "noisy_matched1600_nocaption/full121": {
+        "strict_allclose": false,
+        "max_abs": 0.0031719207763671875,
+        "max_relative_l2": 0.00038382728280195286,
+        "explicit_tolerance_used": true,
+        "reference_self_fvd": 1.5962538782332558e-05,
+        "candidate_fvd_with_own_reference": 215.34556664280808,
+        "candidate_fvd_reference_delta": 0.0014515077050418768
+      },
+      "noisy_matched1600_nocaption/uniform16": {
+        "strict_allclose": false,
+        "max_abs": 0.008333683013916016,
+        "max_relative_l2": 0.0009263480961056326,
+        "explicit_tolerance_used": true,
+        "reference_self_fvd": 9.096973644773243e-05,
+        "candidate_fvd_with_own_reference": 278.85457084353357,
+        "candidate_fvd_reference_delta": -0.008012158224573795
+      },
+      "noisy_ttur15_4800_nocaption/full121": {
+        "strict_allclose": true,
+        "max_abs": 0.0,
+        "max_relative_l2": 0.0,
+        "explicit_tolerance_used": false
+      },
+      "noisy_ttur15_4800_nocaption/uniform16": {
+        "strict_allclose": true,
+        "max_abs": 0.0,
+        "max_relative_l2": 0.0,
+        "explicit_tolerance_used": false
+      }
     }
-  }
+  },
+  "conclusion": "No overall quality gain from the 1:5 TTUR setting at equal 800 student updates: FVD121/LPIPS/PSNR/SSIM point estimates are worse; FVD16 slightly better. FVD121 delta95CI crosses zero. This is not full DMD2 and does not establish a root cause."
 }

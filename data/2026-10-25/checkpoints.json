@@ -1,5 +1,5 @@
 {
-  "verified_on": "2026-10-25",
+  "verified_on": "2026-10-26",
   "verification": "Box folder and file IDs listed through the existing streambox remote; meta.json step, Edge architecture, Stage 2 initialization and clean/noisy policy checked.",
   "models": [
     {
@@ -23,6 +23,14 @@
       "metadata_url": "https://app.box.com/file/2547752661175",
       "weights_bytes": 1066880624,
       "cache_mode": "noisy"
+    },
+    {
+      "id": "noisy_ttur15",
+      "name": "4222+noisy kv reuse · TTUR1:5",
+      "step": 4800,
+      "cache_mode": "noisy",
+      "checkpoint_url": "https://app.box.com/folder/431189754989",
+      "weights_url": "https://app.box.com/file/2550530063317"
     }
   ],
   "format": "adapter.safetensors includes named student/fake/real adapters; use the student adapter for inference with the matching Cosmos3-Edge and Stage 2 initialization. Checkpoint folders also include training state.",

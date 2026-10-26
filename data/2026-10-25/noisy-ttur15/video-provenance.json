@@ -1,0 +1,90 @@
+{
+  "output": "docs/assets/noisy-ttur15-comparison.mp4",
+  "sha256": "dcd956db6166e6e8afa0d51f2f25715101f05310d432786783cb1f9a11f88ad1",
+  "frames": 363,
+  "fps": 20,
+  "duration_s": 18.15,
+  "panels": [
+    [
+      "真实参考视频",
+      "Ground truth"
+    ],
+    [
+      "旧 stage3 student",
+      "原生每块4步"
+    ],
+    [
+      "4222+noisy kv reuse",
+      "student:fake = 1:1 | 800次 student"
+    ],
+    [
+      "4222+noisy kv reuse · TTUR1:5",
+      "student:fake = 1:5 | 800次 student"
+    ]
+  ],
+  "clips": [
+    {
+      "index": 0,
+      "inputs": [
+        {
+          "path": "old4444_native/0000/reference.mp4",
+          "sha256": "8243ee47b46f9e43d02071c7623b6df972824a3e8a0ea0479baf06ac54a000d6"
+        },
+        {
+          "path": "old4444_native/0000/generated.mp4",
+          "sha256": "ed68074728305ba82d77665bc02c975298b6718f8456ebd3c824a57a386a695c"
+        },
+        {
+          "path": "noisy_matched1600_nocaption/0000/generated.mp4",
+          "sha256": "fb02d2f5139d9cc2062219389fca2614522912d8bc19085f3195e50949737ba2"
+        },
+        {
+          "path": "noisy_ttur15_4800_nocaption/0000/generated.mp4",
+          "sha256": "8994109d30eca41dcafd93fcded03b63b16965d4fe69de9cd3ebb226b6653972"
+        }
+      ]
+    },
+    {
+      "index": 57,
+      "inputs": [
+        {
+          "path": "old4444_native/0057/reference.mp4",
+          "sha256": "07b1c4ab9b83682524e2da31aa224df5bfcb597959e87a0c2579a80b12dabe8b"
+        },
+        {
+          "path": "old4444_native/0057/generated.mp4",
+          "sha256": "0c549ed0fc45e74794a5993ea655a3e44628fb15467068cb6adaa0de1576fb86"
+        },
+        {
+          "path": "noisy_matched1600_nocaption/0057/generated.mp4",
+          "sha256": "cfdafca59856b62dfad13165796cf063812d0fe5f4d260a85a839cc3ac1af1b1"
+        },
+        {
+          "path": "noisy_ttur15_4800_nocaption/0057/generated.mp4",
+          "sha256": "adeb17c7caa489234897a9634975ed8c8686753852144606836ac2b1ee04bae6"
+        }
+      ]
+    },
+    {
+      "index": 114,
+      "inputs": [
+        {
+          "path": "old4444_native/0114/reference.mp4",
+          "sha256": "069f487cbe6148d59c3d3809b8bda22b11466e184539ee79355c07b227464bc2"
+        },
+        {
+          "path": "old4444_native/0114/generated.mp4",
+          "sha256": "996db5519f6b7b29c43fdb3dd2c845b06f0371e7e683540b62c20b5345aebc78"
+        },
+        {
+          "path": "noisy_matched1600_nocaption/0114/generated.mp4",
+          "sha256": "ec685b964eba340d9002702b1a85db4e144b9d99906c383a427376184423c30d"
+        },
+        {
+          "path": "noisy_ttur15_4800_nocaption/0114/generated.mp4",
+          "sha256": "abc89de21723c5591da65ceda9dee511ff01ac63b07ceef42636f85e103a958a"
+        }
+      ]
+    }
+  ]
+}

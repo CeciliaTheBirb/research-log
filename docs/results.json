@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26T10:46:37-07:00",
   "quality_episodes": 172,
   "train_episodes": 4775,
   "speed_indices": [
@@ -11,7 +11,8 @@
     "old": "NVIDIA RTX A5000",
     "clean": "NVIDIA RTX A5000 / NVIDIA L40S",
     "noisy": "NVIDIA RTX A5000 / NVIDIA L40S",
-    "hybrid": "NVIDIA RTX A5000"
+    "hybrid": "NVIDIA RTX A5000",
+    "noisy_ttur15": "NVIDIA RTX A5000"
   },
   "models": [
     {
@@ -87,6 +88,28 @@
         "paired_percentile_95ci": [
           16.260389293019763,
           62.00528045762359
+        ],
+        "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+      }
+    },
+    {
+      "id": "noisy_ttur15",
+      "name": "4222+noisy kv reuse · TTUR1:5",
+      "checkpoint": "4800次总更新 · 800次student",
+      "calls": 24,
+      "fvd121": 221.90745862740232,
+      "fvd16": 275.86708885099324,
+      "lpips": 0.42587823848106515,
+      "psnr": 15.974020324474157,
+      "ssim": 0.5094459722143447,
+      "fvd_delta_vs_noisy": {
+        "protocol": "full121",
+        "episodes": 172,
+        "repeats": 512,
+        "observed_delta": 6.560440476889198,
+        "paired_percentile_95ci": [
+          -7.981505873718038,
+          15.765246871867618
         ],
         "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
       }
@@ -186,6 +209,11 @@
           "fps": null,
           "status": "queued",
           "job_id": 82729
+        },
+        "noisy_ttur15": {
+          "fps": null,
+          "status": "queued",
+          "job_id": 82762
         }
       }
     },
@@ -290,6 +318,30 @@
             }
           },
           "job_id": 82728
+        },
+        "noisy_ttur15": {
+          "fps": 25.732091562832014,
+          "job_id": 82761,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 3.197894809069112,
+              "decode_s": 1.4659513800870627,
+              "combined_s": 4.663846189156175,
+              "combined_fps": 25.729836519696953
+            },
+            "57": {
+              "rollout_s": 3.202679146081209,
+              "decode_s": 1.462570952018723,
+              "combined_s": 4.6653622018639,
+              "combined_fps": 25.721475591339455
+            },
+            "114": {
+              "rollout_s": 3.195182513911277,
+              "decode_s": 1.4651165548712015,
+              "combined_s": 4.661104021826759,
+              "combined_fps": 25.744973602406354
+            }
+          }
         }
       }
     }
@@ -334,5 +386,13 @@
     "prompt": "",
     "action_layout": "120 transitions",
     "external_training_overlap": "not established"
+  },
+  "ttur15_evaluation": {
+    "complete": true,
+    "count": 172,
+    "job": 82761,
+    "benchmark_job": 82761,
+    "l40s_job": 82762,
+    "paired_a5000_noisy_baseline_fps": 25.757452004536656
   }
 }

@@ -70,8 +70,9 @@ rainButtons.forEach(button => button.addEventListener('click', async () => {
     rainButtons.forEach(b => { b.disabled = false; b.removeAttribute('aria-busy'); });
   }
 }));
-[video, rainVideo].forEach(current => current.addEventListener('play', () => {
-  [video, rainVideo].forEach(other => { if (other !== current) other.pause(); });
+const playbackVideos = [...document.querySelectorAll('video')];
+playbackVideos.forEach(current => current.addEventListener('play', () => {
+  playbackVideos.forEach(other => { if (other !== current) other.pause(); });
 }));
 const sidebarToggle = document.querySelector('.sidebar-toggle');
 sidebarToggle.addEventListener('click', () => {
