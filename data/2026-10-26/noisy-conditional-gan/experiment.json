@@ -1,0 +1,107 @@
+{
+  "name": "4222+noisy kv reuse + conditional video GAN",
+  "status": "running",
+  "status_zh": "全部预检通过，正式训练在4×RTX A5000运行中",
+  "updated_at": "2026-10-26T14:38:51-07:00",
+  "baseline": "4222+noisy kv reuse · matched 1:1",
+  "planned_updates": {
+    "student": 800,
+    "fake_score": 800,
+    "discriminator": 800,
+    "total_training_steps": 1600
+  },
+  "initialization": {
+    "student": "causal Stage2 step12550",
+    "fake_and_teacher": "bidir step30000",
+    "fresh_start": true
+  },
+  "student_loss": "AnyFlow forward + 2 * DMD + lambda * conditional GAN logistic loss",
+  "gan": {
+    "weight": 0.001,
+    "ramp_student_updates": 50,
+    "discriminator": "independent FP32 spatiotemporal CNN, randomly initialized",
+    "space": "normalized Cosmos latent video",
+    "conditions": [
+      "anchor latent",
+      "aligned actions for each future latent frame"
+    ],
+    "action_layout": "anchor_padded, drop row0 and group four transitions per future latent frame",
+    "lr": 0.0001,
+    "r1_gamma": 1.0,
+    "r1_every_discriminator_updates": 16,
+    "instance_noise_std": 0.01
+  },
+  "runtime": {
+    "training_gpu_count": 4,
+    "training_gpu": "RTX A5000",
+    "sp": 4,
+    "dp": 1,
+    "effective_batch": 1,
+    "inference_discriminator": false,
+    "decoder": "TinyVAE BF16 streaming",
+    "inference_calls": 24
+  },
+  "train_clips": 4775,
+  "validation_clips": 172,
+  "overlapping_clips": 0,
+  "overlapping_sessions": 0,
+  "preflight_jobs": {
+    "cropped": 83054,
+    "full": 83076
+  },
+  "training_job": 83083,
+  "evaluation_jobs": [
+    {
+      "job": 83084,
+      "kind": "quality-and-speed",
+      "gpu": "a5000",
+      "gpu_count": 1
+    },
+    {
+      "job": 83085,
+      "kind": "speed-l40s",
+      "gpu": "l40s",
+      "gpu_count": 1
+    }
+  ],
+  "quality": null,
+  "fps": null,
+  "storage": "Training state, discriminator optimizer and adapters mirror to Box CoStream/experiments; report on GitHub Pages.",
+  "scope": "Conditional latent-video GAN ablation; different from the DMD2 paper score-feature discriminator. Quality benefit untested.",
+  "run": "20261026-143824_stage3_422_noisy_gan_sp4",
+  "source_sha256": {
+    "costream/video_gan.py": "a25a6bb64fc0d06f1c817bb680c311d1957cbecbc4016af1651b0d664e490c59",
+    "costream/objectives.py": "4b185b4b56a80ea273b3209f6bc9b9022e629faf0c4da8aab062307b80f0afd2",
+    "costream/train.py": "148cccad10f2bcdece77341d02fb4936ca473eaf42e2eb23afbf10c6ca98a8b6",
+    "configs/stage3_422_noisy_gan_sp4.yaml": "f16f4edc38094d7ceaa7a8ce5618372692bbf69d815d3a89a2c9b48ea36586c4"
+  },
+  "preflight": {
+    "passed": true,
+    "single_gpu_train_updates": 4,
+    "fresh_process_reload_exact": true,
+    "full_resolution_sp4_updates": 2,
+    "forced_r1_passed": true,
+    "global_cpu_cuda_rng_isolation": true,
+    "gradient_isolation_verified": true,
+    "discriminator_replica_sync_verified": true,
+    "peak_full_resolution_gb_rank0": 15.522937297821045,
+    "full_latent_shape": [
+      1,
+      48,
+      31,
+      30,
+      52
+    ],
+    "unit_and_regression_tests": 22
+  },
+  "preflight_failures": [
+    {
+      "job": 83052,
+      "reason": "Diagnostic JSON print duplicated the loss key; corrected. First cropped student update succeeded."
+    },
+    {
+      "job": 83057,
+      "reason": "Rank3 SIGSEGV during model construction, before training. Exact root cause unconfirmed. Retry 83076 on another Slurm allocated node with faulthandler, fewer OMP threads and more host memory passed."
+    }
+  ]
+}

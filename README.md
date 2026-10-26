@@ -48,3 +48,5 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 [Hybrid 推理配置核查](data/2026-10-25/hf-hybrid/config-audit-zh.md) 记录官方窗口/记忆参数对照，以及固定十条视频的完整历史、关闭记忆和通用结构化文本诊断。原172条无caption成绩与这份诊断分别保留。运行 `python3 scripts/import_hybrid_audit.py` 校验原始诊断记录并更新摘要，再重建网页。
 
 [Noisy KV 1:5 TTUR 实验](data/2026-10-25/noisy-ttur15/README.md) 已完成800次student＋4000次fake、172条质量评测及A5000优化后测速；L40S仍排队。FVD121为221.91（1:1为215.35，差值95%区间跨0），本轮未显示整体收益。同作业A5000为25.76→25.73 FPS。三个场景的同步对比视频、指标、训练成本和Box checkpoint4800已归档并发布到[研究日志](https://ceciliathebirb.github.io/research-log/#ttur-results)。这只测试更新比例，没有GAN，不代表完整DMD2。
+
+[1:1 Noisy KV＋小权重动作条件视频GAN](data/2026-10-26/noisy-conditional-gan/README.md) 已通过单卡训练/恢复及四卡全分辨率预检，正式训练83083在4×A5000启动。800次student＋800次fake，λ=0.001、前50次student渐增；判别器不进入推理。训练成功后自动运行172条质量评测和A5000/L40S测速，暂不填新结果。

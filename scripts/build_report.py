@@ -167,6 +167,24 @@ if ttur_path.exists():
         astatus += ' TTUR1:5及1:1同作业对照82761已完成。'
         lstatus += ' TTUR1:5作业82762排队中。'
         page = page.replace('2026.10.25 · Cecilia</span>', '2026.10.26 更新 · Cecilia</span>')
+gan_path = r / 'data/2026-10-26/noisy-conditional-gan/experiment.json'
+if gan_path.exists():
+    gan = json.loads(gan_path.read_text())
+    run_status = html.escape(gan['status_zh'])
+    job_note = f'正式训练作业 {gan["training_job"]}；' if gan.get('training_job') else '正式训练尚未启动；'
+    evaluation_note = '、'.join(str(j['job']) for j in gan.get('evaluation_jobs', []))
+    if evaluation_note:
+        job_note += f'训练成功后运行评测作业{evaluation_note}。'
+    check_note = ('单卡训练与新进程精确恢复、22项单元/回归测试、四卡全分辨率前后向及R1正则检查均已通过；'
+                  f'四卡预检rank0峰值allocated显存{gan["preflight"]["peak_full_resolution_gb_rank0"]:.2f} GiB。') if gan.get('preflight', {}).get('passed') else '正式训练前检查梯度隔离、动作对齐、同步与恢复。'
+    training += ('<div class="model-card" id="noisy-gan"><h3>新实验 / 1:1 Noisy KV + 动作条件视频GAN</h3>'
+                 f'<p><strong>{run_status}</strong>。记录时间：{html.escape(gan["updated_at"])}。{job_note}</p>'
+                 '<p>保留1:1基线，从相同Stage2重新初始化；仍是800次student＋800次fake score。新增判别器随fake阶段更新800次，fake score与GAN判别器是两个独立网络。</p>'
+                 '<p>student目标为AnyFlow forward＋2×DMD＋λ×GAN；λ在前50次student更新逐渐增至0.001。判别器读取视频latent、首帧和对齐的动作序列，学习时序与画面真实性；仅从4775条训练clip取真实样本。</p>'
+                 '<p>这版使用独立、随机初始化的轻量时序CNN，在latent空间训练，不是DMD2官方的score特征判别器。判别器不会进入推理；评测仍用TinyVAE BF16流式、直接单卡＋文本缓存。</p>'
+                 f'<p>{check_note}使用相同172条validation与初始噪声评测。本轮尚无新FVD/FPS结论，不替换下方已有结果。</p>'
+                 '<p><a href="https://github.com/CeciliaTheBirb/research-log/tree/main/data/2026-10-26/noisy-conditional-gan" target="_blank" rel="noopener">实验配方、代码与验证记录 ↗</a></p></div>')
+    page = page.replace('<a href="#model-design">模型设计与训练细节</a>', '<a href="#model-design">模型设计与训练细节</a><a href="#noisy-gan">动作条件GAN实验</a>')
 for key, value in {'TRAINING': training, 'QUALITY': quality, 'FPSROWS': ''.join(fps_rows), 'PROTOCOL': protocol,
                    'L40SSTATUS': lstatus, 'A5000STATUS': astatus, 'CHECKPOINTROWS': ''.join(checkpoint_rows)}.items():
     page = page.replace('@@' + key + '@@', value)

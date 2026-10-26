@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "mode": "reload",
+  "updates": 4,
+  "metrics": [],
+  "gradient_isolation_verified": true,
+  "discriminator_replica_sync_verified": true,
+  "reload_verified": true,
+  "latent_shape": [
+    1,
+    48,
+    10,
+    8,
+    12
+  ],
+  "peak_allocated_gb": 12.605122566223145
+}

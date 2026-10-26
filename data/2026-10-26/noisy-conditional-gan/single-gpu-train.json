@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "mode": "train",
+  "updates": 4,
+  "metrics": [
+    {
+      "step": 1,
+      "phase": "student",
+      "total_loss": 1.0478570461273193,
+      "grad_norm": 2.2833380699157715,
+      "loss": 1.0478570461273193,
+      "boundary_mse": 0.05719282105565071,
+      "transition_mse": 0.5324633717536926,
+      "gan_g_loss": 0.7704053521156311,
+      "gan_weight": 1.9999999494757503e-05,
+      "gan_g_weighted": 1.5408106264658272e-05,
+      "gan_g_fake_logit": -0.14690238237380981,
+      "gan_endpoint_grad_rms": 2.021298906029756e-09,
+      "dmd_endpoint_grad_rms": 4.898545012110844e-05,
+      "gan_to_dmd_endpoint_grad_ratio": 4.126325075048953e-05,
+      "forward_loss": 0.016068531200289726,
+      "dmd_loss": 0.5158865451812744,
+      "student_loss": 1.0478570461273193
+    },
+    {
+      "step": 2,
+      "phase": "fake",
+      "total_loss": 0.7898688912391663,
+      "grad_norm": 0.2861011326313019,
+      "fake_loss": 0.08943621069192886,
+      "gan_d_loss": 0.6996203660964966,
+      "gan_r1": 0.0016245446167886257,
+      "gan_d_real_logit": -0.14855779707431793,
+      "gan_d_fake_logit": -0.13599281013011932
+    },
+    {
+      "step": 3,
+      "phase": "student",
+      "total_loss": 1.0224217176437378,
+      "grad_norm": 1.1757657527923584,
+      "loss": 1.0224217176437378,
+      "boundary_mse": 0.060932643711566925,
+      "transition_mse": 0.08839988708496094,
+      "gan_g_loss": 0.7353024482727051,
+      "gan_weight": 3.9999998989515007e-05,
+      "gan_g_weighted": 2.9412096409942023e-05,
+      "gan_g_fake_logit": -0.08164985477924347,
+      "gan_endpoint_grad_rms": 3.634105016914191e-09,
+      "dmd_endpoint_grad_rms": 4.668654946726747e-05,
+      "gan_to_dmd_endpoint_grad_ratio": 7.784051558701321e-05,
+      "forward_loss": 0.08518970012664795,
+      "dmd_loss": 0.4686013162136078,
+      "student_loss": 1.0224217176437378
+    },
+    {
+      "step": 4,
+      "phase": "fake",
+      "total_loss": 0.7734026312828064,
+      "grad_norm": 0.17244398593902588,
+      "fake_loss": 0.08867774903774261,
+      "gan_d_loss": 0.6841448545455933,
+      "gan_r1": 0.0011599860154092312,
+      "gan_d_real_logit": -0.02474527433514595,
+      "gan_d_fake_logit": -0.06384427845478058
+    }
+  ],
+  "gradient_isolation_verified": true,
+  "discriminator_replica_sync_verified": true,
+  "reload_verified": false,
+  "latent_shape": [
+    1,
+    48,
+    10,
+    8,
+    12
+  ],
+  "peak_allocated_gb": 12.971691608428955
+}

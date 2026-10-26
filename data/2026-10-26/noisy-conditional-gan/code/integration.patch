@@ -1,0 +1,166 @@
+--- a/costream/objectives.py
++++ b/costream/objectives.py
+@@ -233,6 +233,7 @@
+     fake: str = "fake"
+     real: str = "real"
+     rollout_policy: CausalPolicy | None = None
++    adversary: Any = None
+     _reuse: list = field(default_factory=list, repr=False)
+     _last_phase: str | None = field(default=None, repr=False)
+ 
+@@ -326,7 +327,7 @@
+         return noisy_mse(pred, target_velocity(generated, noise))
+ 
+     # ---------------------------------------------------------------------- loss
+-    def __call__(self, clips: list[Clip], rng: torch.Generator, *, phase: str, world_rng: torch.Generator) -> tuple[torch.Tensor, Metrics]:
++    def __call__(self, clips: list[Clip], rng: torch.Generator, *, phase: str, world_rng: torch.Generator, update_step: int = 0) -> tuple[torch.Tensor, Metrics]:
+         budget, interval = self.rollout_choice(world_rng)
+         if phase != self._last_phase:  # a new student step replaces what an older one left
+             if phase == "student":
+@@ -334,25 +335,53 @@
+             self._last_phase = phase
+         if phase == "student":
+             forward, metrics = self.stage1(clips, rng)
+-            dmd = []
++            dmd, gan_losses, gan_metrics = [], [], []
+             for clip in clips:
+                 endpoint = self.rollout(clip, budget, interval, rng, grad=True)
+                 if self.fake_reuse_student:
+                     self._reuse.append((clip, endpoint.detach()))
+                 dmd.append(self.dmd_loss(endpoint, clip, rng))
++                if self.adversary is not None:
++                    cycle = self.student_steps_per_cycle + self.fake_steps_per_cycle
++                    student_updates = update_step // cycle * self.student_steps_per_cycle + update_step % cycle + 1
++                    gan_loss, diag = self.adversary.generator_loss(clip, endpoint, step=update_step,
++                        student_updates=student_updates)
++                    if torch.is_grad_enabled() and endpoint.requires_grad and (student_updates <= 2 or student_updates % 50 == 0):
++                        # Measure the added signal without backpropagating through the rollout twice.
++                        gg, = torch.autograd.grad(gan_loss, endpoint, retain_graph=True)
++                        gd, = torch.autograd.grad(dmd[-1], endpoint, retain_graph=True)
++                        gg, gd = gg[:, :, 1:].float(), gd[:, :, 1:].float() * self.dmd_weight
++                        ng, nd = gg.square().mean().sqrt(), gd.square().mean().sqrt()
++                        diag.update(gan_endpoint_grad_rms=ng.detach(), dmd_endpoint_grad_rms=nd.detach(),
++                                    gan_to_dmd_endpoint_grad_ratio=(ng / nd.clamp_min(1e-12)).detach())
++                    gan_losses.append(gan_loss)
++                    gan_metrics.append(diag)
+             dmd = torch.stack(dmd).mean()
+             loss = self.forward_weight * forward + self.dmd_weight * dmd
++            if gan_losses:
++                loss = loss + torch.stack(gan_losses).mean()
++                metrics.update({k: torch.stack([m[k] for m in gan_metrics]).mean() for k in gan_metrics[0]})
+             metrics = {**metrics, "loss": loss.detach(), "forward_loss": forward.detach(), "dmd_loss": dmd.detach(), "student_loss": loss.detach()}
+             return loss, metrics
+-        losses = []
++        losses, gan_losses, gan_metrics = [], [], []
+         if self.fake_reuse_student and len(self._reuse) >= len(clips):
+             pairs = [self._reuse.pop(0) for _ in clips]  # this micro batch's share of the student step
+         else:  # nothing to reuse (option off, or the run resumed on a fake step): roll out now
+             pairs = [(clip, self.rollout(clip, budget, interval, rng, grad=False)) for clip in clips]
+         for clip, endpoint in pairs:
+             losses.append(self.fake_loss(clip, endpoint, rng))
++            if self.adversary is not None:
++                cycle = self.student_steps_per_cycle + self.fake_steps_per_cycle
++                gan_loss, diag = self.adversary.discriminator_loss(clip, endpoint, step=update_step,
++                    fake_updates=update_step // cycle * self.fake_steps_per_cycle + update_step % cycle - self.student_steps_per_cycle + 1)
++                gan_losses.append(gan_loss)
++                gan_metrics.append(diag)
+         loss = torch.stack(losses).mean()
+-        return loss, {"fake_loss": loss.detach()}
++        metrics = {"fake_loss": loss.detach()}
++        if gan_losses:
++            loss = loss + torch.stack(gan_losses).mean()
++            metrics.update({k: torch.stack([m[k] for m in gan_metrics]).mean() for k in gan_metrics[0]})
++        return loss, metrics
+ 
+     def validation(self, clips: list[Clip], rng: torch.Generator) -> Metrics:
+         return self.stage1(clips, rng)[1]
+@@ -377,6 +406,14 @@
+     if stage == "stage1":
+         return stage1
+     s2 = cfg.get("stage2", {})
++    adversary = None
++    gan = s2.get("gan", {})
++    if gan.get("enabled", False):
++        from omegaconf import OmegaConf
++        from .video_gan import VideoGAN
++        adversary = VideoGAN(OmegaConf.to_container(gan, resolve=True), channels=int(model.cfg.latent_channel),
++            action_dim=int(model.cfg.action_dim), temporal_ratio=int(model.vae_temporal), device=ps.device,
++            seed=int(cfg.train.seed), action_layout=cfg.data.get("action_layout", "anchor_padded"))
+     return Stage2Objective(
+         model, ps, stage1,
+         rollout_budgets=tuple(int(v) for v in s2.get("rollout_budgets", (2, 4, 8, 16, 50))),
+@@ -388,4 +425,5 @@
+         student_steps_per_cycle=int(s2.get("student_steps_per_cycle", 1)), fake_steps_per_cycle=int(s2.get("fake_steps_per_cycle", 1)),
+         fake_reuse_student=bool(s2.get("fake_reuse_student", False)),
+         rollout_policy=policy,
++        adversary=adversary,
+     )
+--- a/costream/train.py
++++ b/costream/train.py
+@@ -290,6 +290,8 @@
+         info = json.loads(src.latest.read_text())
+         extra = load_train_state(src.ckpt / info["state"], model.transformer, optimizer)
+         step = int(extra["step"])
++        if getattr(objective, "adversary", None) is not None:
++            objective.adversary.load(src.ckpt / info["state"], step)
+         origin = info["state"] if src is run else run.status().get("resumed_from_url") or f"{src.name}/{info['state']}"
+         log(f"resumed from {origin} at step {step}")
+         if ps.is_main:
+@@ -321,9 +323,12 @@
+         world_rng = step_generator(cfg.train.seed, step, 0, "cpu")
+         clips = prepare_clips(model, batch, cfg, rng, train=True)
+         optimizer.zero_grad(set_to_none=True)
++        adversary = getattr(objective, "adversary", None)
++        if adversary is not None:
++            adversary.zero_grad()
+         metrics: dict[str, torch.Tensor] = {}
+         for i in range(accum):
+-            loss, m = objective(clips[i * micro : (i + 1) * micro], rng, phase=phase, world_rng=world_rng)
++            loss, m = objective(clips[i * micro : (i + 1) * micro], rng, phase=phase, world_rng=world_rng, update_step=step)
+             finite = torch.isfinite(loss.detach()).to(dtype=torch.int32)
+             torch.distributed.all_reduce(finite, op=torch.distributed.ReduceOp.MIN)
+             if not finite.item():
+@@ -340,6 +345,11 @@
+         if not finite.item():
+             raise FloatingPointError(f"non-finite {phase} gradient before update {step + 1}")
+         optimizer.step()
++        if adversary is not None:
++            if phase == "fake":
++                metrics["gan_grad_norm"] = torch.tensor(adversary.step(sp_size=ps.sp_size), device=device)
++            elif any(p.grad is not None for p in adversary.discriminator.parameters()):
++                raise RuntimeError("student update leaked gradients into the discriminator")
+         step += 1
+ 
+         if step % int(cfg.train.get("log_every", 10)) == 0 or step == start_step + 1:
+@@ -364,7 +374,7 @@
+         if cfg.train.get("sample_every") and step % int(cfg.train.sample_every) == 0:
+             run_sampling(model, val_loader, cfg, ps, step, run.inference / f"step{step:07d}")
+         if step in cfg.train.get("ckpt_at", []) or (cfg.train.get("ckpt_every") and step % int(cfg.train.ckpt_every) == 0) or step == total:
+-            save_checkpoint(cfg, model, optimizer, run, step, ps)
++            save_checkpoint(cfg, model, optimizer, run, step, ps, objective=objective)
+     return step
+ 
+ 
+@@ -383,7 +393,7 @@
+     return None
+ 
+ 
+-def save_checkpoint(cfg, model, optimizer, run: RunDir, step: int, ps: ParallelState) -> None:
++def save_checkpoint(cfg, model, optimizer, run: RunDir, step: int, ps: ParallelState, *, objective=None) -> None:
+     """``checkpoints/stepN/adapter`` (portable) + ``stepN/state`` (DCP).  Locally keep the newest
+     ``train.ckpt_keep`` states and ``train.adapter_keep`` adapters (0 keeps every adapter); a
+     mirrored run (``.sync.json``, see costream/run_sync.py) prunes only what its watcher uploaded."""
+@@ -394,8 +404,13 @@
+     meta["causal_rollout"] = None if policy is None else policy.as_dict()
+     meta["warm_start"] = OmegaConf.to_container(cfg.get("warm_start") or OmegaConf.create({}), resolve=True)
+     meta["action_layout"] = cfg.data.get("action_layout", "anchor_padded")
++    adversary = getattr(objective, "adversary", None)
++    if adversary is not None:
++        meta["video_gan"] = adversary.cfg
+     save_adapter(model.transformer, run.ckpt / info["adapter"], meta)
+     save_train_state(run.ckpt / info["state"], model.transformer, optimizer, {"step": step})
++    if adversary is not None:
++        adversary.save(run.ckpt / info["state"], step)
+     if ps.is_main:
+         run.latest.write_text(json.dumps(info))
+         prune_local(cfg, run)

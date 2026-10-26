@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "mode": "full",
+  "updates": 2,
+  "metrics": [
+    {
+      "step": 1,
+      "phase": "student",
+      "total_loss": 0.27538299560546875,
+      "grad_norm": 1.0013861656188965,
+      "loss": 0.27538299560546875,
+      "boundary_mse": 0.12537731230258942,
+      "transition_mse": 2.213056802749634,
+      "gan_g_loss": 0.7210447192192078,
+      "gan_weight": 1.9999999494757503e-05,
+      "gan_g_weighted": 1.4420894331124146e-05,
+      "gan_g_fake_logit": -0.051004812121391296,
+      "gan_endpoint_grad_rms": 4.851602106170638e-11,
+      "dmd_endpoint_grad_rms": 3.524707210544875e-07,
+      "gan_to_dmd_endpoint_grad_ratio": 0.00013764553295914084,
+      "forward_loss": 0.11863560974597931,
+      "dmd_loss": 0.0783664733171463,
+      "student_loss": 0.27538299560546875
+    },
+    {
+      "step": 2,
+      "phase": "fake",
+      "total_loss": 0.8203022480010986,
+      "grad_norm": 0.09849682450294495,
+      "fake_loss": 0.12619605660438538,
+      "gan_d_loss": 0.6940833330154419,
+      "gan_r1": 4.576074570650235e-05,
+      "gan_d_real_logit": -0.04908110573887825,
+      "gan_d_fake_logit": -0.05518876761198044
+    }
+  ],
+  "gradient_isolation_verified": true,
+  "discriminator_replica_sync_verified": true,
+  "reload_verified": false,
+  "latent_shape": [
+    1,
+    48,
+    31,
+    30,
+    52
+  ],
+  "peak_allocated_gb": 15.522937297821045
+}

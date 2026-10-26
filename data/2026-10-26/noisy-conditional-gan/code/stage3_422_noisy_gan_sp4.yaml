@@ -1,0 +1,18 @@
+# Fresh Stage2 -> Noisy KV, fixed 800 student + 800 fake. Only add conditional latent-video GAN.
+_base_: stage3_422_noisy_matched_sp4.yaml
+stage2:
+  student_steps_per_cycle: 1
+  fake_steps_per_cycle: 1
+  gan:
+    enabled: true
+    weight: 0.001
+    ramp_student_updates: 50
+    width: 32
+    lr: 0.0001
+    grad_clip: 1.0
+    instance_noise: 0.01
+    r1_gamma: 1.0
+    r1_interval: 16
+train:
+  steps: 1600
+  log_every: 1

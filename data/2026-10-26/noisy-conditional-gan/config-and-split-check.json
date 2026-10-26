@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "config_diff": {
+    "stage2.gan.width": [
+      null,
+      32
+    ],
+    "stage2.gan.r1_gamma": [
+      null,
+      1.0
+    ],
+    "stage2.gan.enabled": [
+      null,
+      true
+    ],
+    "stage2.gan.weight": [
+      null,
+      0.001
+    ],
+    "stage2.gan.instance_noise": [
+      null,
+      0.01
+    ],
+    "stage2.gan.r1_interval": [
+      null,
+      16
+    ],
+    "stage2.gan.ramp_student_updates": [
+      null,
+      50
+    ],
+    "stage2.gan.grad_clip": [
+      null,
+      1.0
+    ],
+    "stage2.gan.lr": [
+      null,
+      0.0001
+    ]
+  },
+  "planned_student_updates": 800,
+  "planned_fake_updates": 800,
+  "train_clips": 4775,
+  "validation_clips": 172,
+  "overlapping_clips": 0,
+  "overlapping_sessions": 0,
+  "validation_index_sha256": "10422a9de996b76350e1213abadbeca62fd6681e30c57b96325cbece8a396c29",
+  "adversary": "independent action-conditional latent-video PatchGAN; no inference discriminator"
+}

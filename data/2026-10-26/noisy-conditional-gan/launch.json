@@ -1,0 +1,45 @@
+{
+  "submitted_at": "2026-10-26T14:38:24.856209-07:00",
+  "status": "submitted",
+  "run": "20261026-143824_stage3_422_noisy_gan_sp4",
+  "config": "configs/stage3_422_noisy_gan_sp4.yaml",
+  "student_updates": 800,
+  "fake_updates": 800,
+  "gan_weight": 0.001,
+  "gpu_count": 4,
+  "gpu_model": "RTX A5000",
+  "sp": 4,
+  "dp": 1,
+  "effective_batch": 1,
+  "initialization": "Fresh causal Stage2 step12550; score bidir step30000; baseline 1:1 unchanged",
+  "preflight_jobs": [
+    83054,
+    83076
+  ],
+  "source_sha256": {
+    "costream/video_gan.py": "a25a6bb64fc0d06f1c817bb680c311d1957cbecbc4016af1651b0d664e490c59",
+    "costream/objectives.py": "4b185b4b56a80ea273b3209f6bc9b9022e629faf0c4da8aab062307b80f0afd2",
+    "costream/train.py": "148cccad10f2bcdece77341d02fb4936ca473eaf42e2eb23afbf10c6ca98a8b6",
+    "configs/stage3_422_noisy_gan_sp4.yaml": "f16f4edc38094d7ceaa7a8ce5618372692bbf69d815d3a89a2c9b48ea36586c4"
+  },
+  "jobs": [
+    {
+      "job": 83083,
+      "kind": "train",
+      "gpu": "a5000",
+      "gpu_count": 4
+    },
+    {
+      "job": 83084,
+      "kind": "quality-and-speed",
+      "gpu": "a5000",
+      "gpu_count": 1
+    },
+    {
+      "job": 83085,
+      "kind": "speed-l40s",
+      "gpu": "l40s",
+      "gpu_count": 1
+    }
+  ]
+}
