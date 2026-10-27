@@ -1,8 +1,8 @@
 {
   "name": "4222+noisy kv reuse + conditional video GAN",
   "status": "running",
-  "status_zh": "全部预检通过，正式训练在4×RTX A5000运行中",
-  "updated_at": "2026-10-26T14:38:51-07:00",
+  "status_zh": "训练至718/1600步（44.9%），359次student＋359次fake/GAN更新",
+  "updated_at": "2026-10-26T21:00:08-07:00",
   "baseline": "4222+noisy kv reuse · matched 1:1",
   "planned_updates": {
     "student": 800,
@@ -103,5 +103,117 @@
       "job": 83057,
       "reason": "Rank3 SIGSEGV during model construction, before training. Exact root cause unconfirmed. Retry 83076 on another Slurm allocated node with faulthandler, fewer OMP threads and more host memory passed."
     }
-  ]
+  ],
+  "progress": {
+    "observed_at": "2026-10-26T21:00:08-07:00",
+    "job": 83083,
+    "status": "running",
+    "step": 718,
+    "total": 1600,
+    "student_updates": 359,
+    "fake_and_discriminator_updates": 359,
+    "all_logged_values_finite": true,
+    "latest_checkpoint": 700,
+    "latest_checkpoint_box_verified": true,
+    "gan_optimizer_box_verified": true,
+    "step_average_seconds": 31.574666033548233,
+    "remaining_hours_estimate": 7.735793178219317,
+    "peak_allocated_gib": 17.443634033203125,
+    "validation": [
+      {
+        "step": 100,
+        "val/loss": 0.2184564769268036,
+        "val/boundary_mse": 0.2064477503299713,
+        "val/transition_mse": 1.6296088695526123
+      },
+      {
+        "step": 200,
+        "val/loss": 0.2162759006023407,
+        "val/boundary_mse": 0.20408034324645996,
+        "val/transition_mse": 1.6073918342590332
+      },
+      {
+        "step": 300,
+        "val/loss": 0.2148256152868271,
+        "val/boundary_mse": 0.20243984460830688,
+        "val/transition_mse": 1.7061293125152588
+      },
+      {
+        "step": 400,
+        "val/loss": 0.2141287624835968,
+        "val/boundary_mse": 0.20158573985099792,
+        "val/transition_mse": 1.601225733757019
+      },
+      {
+        "step": 500,
+        "val/loss": 0.21361249685287476,
+        "val/boundary_mse": 0.20091132819652557,
+        "val/transition_mse": 1.6559357643127441
+      },
+      {
+        "step": 600,
+        "val/loss": 0.21313093602657318,
+        "val/boundary_mse": 0.2003629356622696,
+        "val/transition_mse": 1.5546427965164185
+      },
+      {
+        "step": 700,
+        "val/loss": 0.21306566894054413,
+        "val/boundary_mse": 0.2001548707485199,
+        "val/transition_mse": 1.4405189752578735
+      }
+    ],
+    "gan_endpoint_gradient_ratios": [
+      {
+        "step": 1,
+        "train/gan_weight": 1.9999999494757503e-05,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.00026245717890560627
+      },
+      {
+        "step": 3,
+        "train/gan_weight": 3.9999998989515007e-05,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.0005594096728600562
+      },
+      {
+        "step": 99,
+        "train/gan_weight": 0.0010000000474974513,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.014172492548823357
+      },
+      {
+        "step": 199,
+        "train/gan_weight": 0.0010000000474974513,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.01891075074672699
+      },
+      {
+        "step": 299,
+        "train/gan_weight": 0.0010000000474974513,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.02621527388691902
+      },
+      {
+        "step": 399,
+        "train/gan_weight": 0.0010000000474974513,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.01800904981791973
+      },
+      {
+        "step": 499,
+        "train/gan_weight": 0.0010000000474974513,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.01168890856206417
+      },
+      {
+        "step": 599,
+        "train/gan_weight": 0.0010000000474974513,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.0179239884018898
+      },
+      {
+        "step": 699,
+        "train/gan_weight": 0.0010000000474974513,
+        "train/gan_to_dmd_endpoint_grad_ratio": 0.026998577639460564
+      }
+    ],
+    "last50_discriminator_real_minus_fake_logit_mean": 0.34015321493148803,
+    "r1_nonzero_updates": 22,
+    "quality": null,
+    "fps": null
+  },
+  "box_report": "https://app.box.com/file/2551090727982"
 }

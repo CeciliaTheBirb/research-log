@@ -177,8 +177,15 @@ if gan_path.exists():
         job_note += f'训练成功后运行评测作业{evaluation_note}。'
     check_note = ('单卡训练与新进程精确恢复、22项单元/回归测试、四卡全分辨率前后向及R1正则检查均已通过；'
                   f'四卡预检rank0峰值allocated显存{gan["preflight"]["peak_full_resolution_gb_rank0"]:.2f} GiB。') if gan.get('preflight', {}).get('passed') else '正式训练前检查梯度隔离、动作对齐、同步与恢复。'
+    progress_note = ''
+    if gan.get('progress'):
+        gp = gan['progress']
+        progress_note = (f'<p>截至本次记录已完成{gp["student_updates"]}次student与{gp["fake_and_discriminator_updates"]}次fake/GAN判别器更新；checkpoint{gp["latest_checkpoint"]}的adapter、训练state及GAN优化器已核实备份到Box。所有记录值有限，rank0峰值allocated显存{gp["peak_allocated_gib"]:.2f} GiB。</p>'
+                         '<p>固定4个validation batch的辅助forward loss从0.21846降至0.21307；warmup后稀疏记录的加权GAN/DMD输出latent梯度RMS比为1.17%–2.70%。这表明GAN参与更新，尚不能判断画质改善。'
+                         f'按当前速度估计还需约{gp["remaining_hours_estimate"]:.1f}小时训练，排队与后续评测另计。</p>')
     training += ('<div class="model-card" id="noisy-gan"><h3>新实验 / 1:1 Noisy KV + 动作条件视频GAN</h3>'
                  f'<p><strong>{run_status}</strong>。记录时间：{html.escape(gan["updated_at"])}。{job_note}</p>'
+                 f'{progress_note}'
                  '<p>保留1:1基线，从相同Stage2重新初始化；仍是800次student＋800次fake score。新增判别器随fake阶段更新800次，fake score与GAN判别器是两个独立网络。</p>'
                  '<p>student目标为AnyFlow forward＋2×DMD＋λ×GAN；λ在前50次student更新逐渐增至0.001。判别器读取视频latent、首帧和对齐的动作序列，学习时序与画面真实性；仅从4775条训练clip取真实样本。</p>'
                  '<p>这版使用独立、随机初始化的轻量时序CNN，在latent空间训练，不是DMD2官方的score特征判别器。判别器不会进入推理；评测仍用TinyVAE BF16流式、直接单卡＋文本缓存。</p>'
