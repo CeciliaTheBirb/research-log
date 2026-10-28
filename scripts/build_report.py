@@ -11,21 +11,26 @@ protocol = (r / 'scripts/protocol-content.html').read_text()
 checkpoints = json.loads((r / 'docs/checkpoints.json').read_text())
 checkpoint_rows = []
 for c in checkpoints['models']:
+    if c.get('id') == 'noisy_gan':
+        continue
     checkpoint_rows.append(f'''<tr><th scope="row">{html.escape(c['name'])}<small>step {c['step']} · {html.escape(c['cache_mode'])} KV</small></th><td><a href="{c['checkpoint_url']}" target="_blank" rel="noopener">打开 checkpoint ↗</a></td><td><a href="{c['weights_url']}" target="_blank" rel="noopener">adapter.safetensors ↗</a><small>1.067 GB</small></td></tr>''')
 fps_rows = []
 for m in s['models']:
+    if m['id'] == 'noisy_gan':
+        continue
     cells = []
     for gpu in ['l40s', 'a5000']:
         b = s['hardware_benchmarks'][gpu]
         record = b['models'][m['id']]
         v = record['fps']
-        cells.append(f'<td>{v:.2f}<small>FPS</small></td>' if v is not None else f'<td class="pending">排队中<small>Slurm {record["job_id"]}</small></td>')
+        pending_label = '测量中' if record.get('status') == 'running' else '排队中'
+        cells.append(f'<td>{v:.2f}<small>FPS</small></td>' if v is not None else f'<td class="pending">{pending_label}<small>Slurm {record["job_id"]}</small></td>')
     fps_rows.append('<tr><th scope="row">' + html.escape(m['name']) + '</th>' + ''.join(cells) + '</tr>')
 page = '''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>cecilia-research-log · 2026.10.25</title>
 <meta name="description" content="Cecilia 的研究日志：模型设计与训练细节、定性与定量结果、Findings。Stage 3 蒸馏，L40S / A5000 优化后推理结果。">
-<meta name="theme-color" content="#ffffff"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script defer src="app.js"></script></head>
+<meta name="theme-color" content="#ffffff"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css?v=20261027"><script defer src="app.js?v=20261027"></script></head>
 <body class="research-log"><a class="skip" href="#log-2026-10-25">跳到日志正文</a>
 <aside class="date-sidebar" id="research-sidebar"><a href="#log-2026-10-25" class="workspace-name"><span class="workspace-icon">C</span><strong>cecilia-research-log</strong><span class="chevron" aria-hidden="true">⌄</span></a><div class="workspace-caption">Research workspace</div><a class="sidebar-home" href="#log-2026-10-25"><span aria-hidden="true">⌂</span>研究日志</a><div class="sidebar-label">2026 · October</div><nav aria-label="按日期浏览"><a class="date-link active" href="#log-2026-10-25" aria-current="page"><span aria-hidden="true">▤</span><span>10.25 · Stage 3 蒸馏</span></a></nav><nav class="entry-nav" aria-label="本页目录"><a href="#model-design">模型设计与训练细节</a><a href="#results">定性与定量结果</a><a href="#rain-results">雨后路口</a><a href="#quality-results">质量指标</a><a href="#throughput-results">推理速度</a><a href="#findings">Findings</a><a href="#checkpoints">Checkpoint</a></nav><div class="sidebar-bottom"><a href="https://github.com/CeciliaTheBirb/research-log" target="_blank" rel="noopener">GitHub repository ↗</a><span>cecilia · research notes</span></div></aside><div class="page-workspace"><header class="log-masthead"><div class="breadcrumb"><button class="sidebar-toggle" aria-label="切换侧栏" aria-controls="research-sidebar" aria-expanded="true">☰</button><span>Research Notes</span><span class="breadcrumb-slash">/</span><span>2026</span><span class="breadcrumb-slash">/</span><span>10.25</span></div><a href="https://github.com/CeciliaTheBirb/research-log" target="_blank" rel="noopener">在 GitHub 查看 ↗</a></header><main class="log-content" id="log-2026-10-25"><header class="entry-header"><div class="page-icon" aria-hidden="true">▤</div><div class="entry-date">2026 年 10 月 25 日</div><h1>Stage 3 蒸馏</h1><p class="entry-deck">从 Stage 2 初始化，训练 4222 clean 与 4222+noisy kv reuse。记录模型设计、质量与速度结果，以及当前发现。</p><div class="entry-tags"><span>Cosmos3-Edge</span><span>4775 train / 172 validation</span><span>TinyVAE BF16 流式</span></div></header>
 <section id="model-design" class="log-section">@@TRAINING@@</section>
@@ -125,11 +130,13 @@ if ttur_path.exists():
     assert ttur['preflight']['reload_verified'] and ttur['preflight']['gradient_isolation_verified']
     jobs = '、'.join(str(j['job']) for j in ttur['training_jobs'])
     evaluation_jobs = '、'.join(str(j['job']) for j in ttur['evaluation_jobs'])
-    completed = ttur['status'] == 'trained_quality_complete_l40s_pending'
+    ttur_l40s = s['hardware_benchmarks']['l40s']['models']['noisy_ttur15']['fps']
+    ttur_l40s_note = 'L40S作业82762已完成。' if ttur_l40s is not None else 'L40S作业82762排队中。'
+    completed = ttur.get('quality') is not None
     resources = '已使用' if completed else '使用'
     training_result = (
         f'<p>训练作业 {jobs} 已完成800次student＋4000次fake，总计4800次更新；两段完整恢复模型及优化器。'
-        '占卡13小时24分，约53.6 GPU小时（含加载、保存和同步）。172条质量与A5000评测作业82761已完成；L40S作业82762排队中。最终checkpoint4800已备份到Box，链接见页末。</p>'
+        f'占卡13小时24分，约53.6 GPU小时（含加载、保存和同步）。172条质量与A5000评测作业82761已完成；{ttur_l40s_note}最终checkpoint4800已备份到Box，链接见页末。</p>'
         if completed else
         f'<p>训练作业：{jobs}。评测作业：{evaluation_jobs}；结果完成后更新。</p>'
     )
@@ -153,7 +160,7 @@ if ttur_path.exists():
             'aria-label="真实视频、旧学生及Noisy KV两种更新比例的同步对比"><source src="assets/noisy-ttur15-comparison.mp4" type="video/mp4">请下载MP4观看。</video></div>'
             '<p class="caption-note">三个场景：0000白天路口、0057夜间街道、0114树荫人行道；共18.15秒，20 FPS播放。172条质量评测已逐条核对首帧、动作、文本、seed与初始噪声；两版noisy均为24次模型调用。</p>'
             '<p>同一作业82761的A5000优化后实测：1:1为<strong>25.76 FPS</strong>，1:5为<strong>25.73 FPS</strong>，速度基本相同。'
-            '下方总表保留1:1旧轮次的26.19 FPS；判断本次速度差异应使用这组同作业对照。L40S作业82762仍排队，未填估算值。</p></div>'
+            f'下方总表保留1:1旧轮次的26.19 FPS；判断本次速度差异应使用这组同作业对照。{ttur_l40s_note}</p></div>'
         )
         page = page.replace('<h3 class="result-title" id="quality-results">', ttur_results + '<h3 class="result-title" id="quality-results">')
         page = page.replace('<a href="#quality-results">质量指标</a>', '<a href="#ttur-results">Noisy KV · 1:5 实验</a><a href="#quality-results">质量指标</a>')
@@ -165,38 +172,69 @@ if ttur_path.exists():
                    '同作业A5000速度为25.76→25.73 FPS。暂保留1:1作为基线，不能仅凭增加fake更新次数认定critic滞后已经解决，或将结果推广到完整DMD2。</p></li>')
         page = page.replace('<ol class="finding-list">', '<ol class="finding-list">' + finding)
         astatus += ' TTUR1:5及1:1同作业对照82761已完成。'
-        lstatus += ' TTUR1:5作业82762排队中。'
+        lstatus += ' ' + ttur_l40s_note
         page = page.replace('2026.10.25 · Cecilia</span>', '2026.10.26 更新 · Cecilia</span>')
+gan_training = gan_results = ''
 gan_path = r / 'data/2026-10-26/noisy-conditional-gan/experiment.json'
 if gan_path.exists():
     gan = json.loads(gan_path.read_text())
+    completed = gan.get('quality') is not None
     run_status = html.escape(gan['status_zh'])
     job_note = f'正式训练作业 {gan["training_job"]}；' if gan.get('training_job') else '正式训练尚未启动；'
     evaluation_note = '、'.join(str(j['job']) for j in gan.get('evaluation_jobs', []))
     if evaluation_note:
-        job_note += f'训练成功后运行评测作业{evaluation_note}。'
+        job_note += f'评测作业{evaluation_note}。' if completed else f'训练成功后运行评测作业{evaluation_note}。'
     check_note = ('单卡训练与新进程精确恢复、22项单元/回归测试、四卡全分辨率前后向及R1正则检查均已通过；'
                   f'四卡预检rank0峰值allocated显存{gan["preflight"]["peak_full_resolution_gb_rank0"]:.2f} GiB。') if gan.get('preflight', {}).get('passed') else '正式训练前检查梯度隔离、动作对齐、同步与恢复。'
     progress_note = ''
     if gan.get('progress'):
         gp = gan['progress']
-        progress_note = (f'<p>截至本次记录已完成{gp["student_updates"]}次student与{gp["fake_and_discriminator_updates"]}次fake/GAN判别器更新；checkpoint{gp["latest_checkpoint"]}的adapter、训练state及GAN优化器已核实备份到Box。所有记录值有限，rank0峰值allocated显存{gp["peak_allocated_gib"]:.2f} GiB。</p>'
-                         '<p>固定4个validation batch的辅助forward loss从0.21846降至0.21307；warmup后稀疏记录的加权GAN/DMD输出latent梯度RMS比为1.17%–2.70%。这表明GAN参与更新，尚不能判断画质改善。'
-                         f'按当前速度估计还需约{gp["remaining_hours_estimate"]:.1f}小时训练，排队与后续评测另计。</p>')
-    training += ('<div class="model-card" id="noisy-gan"><h3>新实验 / 1:1 Noisy KV + 动作条件视频GAN</h3>'
+        progress_note = (f'<p>已完成{gp["student_updates"]}次student与{gp["fake_and_discriminator_updates"]}次fake/GAN判别器更新；checkpoint{gp["latest_checkpoint"]}的adapter、训练state及GAN优化器已核实备份到Box。所有记录值有限，rank0峰值allocated显存{gp["peak_allocated_gib"]:.2f} GiB。</p>')
+        if completed:
+            progress_note += ('<p>使用4×RTX A5000，SP4 / DP1、有效batch=1，正式训练耗时14小时06分28秒，约56.43 GPU小时。固定4个validation batch的辅助forward loss从0.21846变为0.21178，最低为step1200的0.21105，后段有波动，尚不能宣称收敛。'
+                              'warmup后稀疏记录的加权GAN/DMD输出latent梯度RMS比为1.17%–12.02%；这是输出端诊断，不是完整参数梯度比例。</p>')
+        else:
+            progress_note += f'<p>按当前速度估计还需约{gp["remaining_hours_estimate"]:.1f}小时训练，排队与后续评测另计。</p>'
+    conclusion_note = '172条质量与A5000重复测速已完成，结果及同作业基线对照见下方。' if completed else '本轮尚无新FVD/FPS结论，不替换下方已有结果。'
+    gan_training = ('<div class="model-card" id="noisy-gan"><h3>新实验 / 1:1 Noisy KV + 动作条件视频GAN</h3>'
                  f'<p><strong>{run_status}</strong>。记录时间：{html.escape(gan["updated_at"])}。{job_note}</p>'
                  f'{progress_note}'
                  '<p>保留1:1基线，从相同Stage2重新初始化；仍是800次student＋800次fake score。新增判别器随fake阶段更新800次，fake score与GAN判别器是两个独立网络。</p>'
                  '<p>student目标为AnyFlow forward＋2×DMD＋λ×GAN；λ在前50次student更新逐渐增至0.001。判别器读取视频latent、首帧和对齐的动作序列，学习时序与画面真实性；仅从4775条训练clip取真实样本。</p>'
                  '<p>这版使用独立、随机初始化的轻量时序CNN，在latent空间训练，不是DMD2官方的score特征判别器。判别器不会进入推理；评测仍用TinyVAE BF16流式、直接单卡＋文本缓存。</p>'
-                 f'<p>{check_note}使用相同172条validation与初始噪声评测。本轮尚无新FVD/FPS结论，不替换下方已有结果。</p>'
+                 f'<p>{check_note}使用相同172条validation与初始噪声评测。{conclusion_note}</p>'
                  '<p><a href="https://github.com/CeciliaTheBirb/research-log/tree/main/data/2026-10-26/noisy-conditional-gan" target="_blank" rel="noopener">实验配方、代码与验证记录 ↗</a></p></div>')
-    page = page.replace('<a href="#model-design">模型设计与训练细节</a>', '<a href="#model-design">模型设计与训练细节</a><a href="#noisy-gan">动作条件GAN实验</a>')
+    if completed:
+        paired = gan['paired_comparison']
+        quality_rows = ''
+        baseline = next(m for m in s['models'] if m['id'] == 'noisy')
+        candidate = next(m for m in s['models'] if m['id'] == 'noisy_gan')
+        for label, key, spec in [('FVD121 ↓', 'fvd121', '.2f'), ('FVD16 ↓', 'fvd16', '.2f'), ('LPIPS ↓', 'lpips', '.4f'), ('PSNR ↑ dB', 'psnr', '.2f'), ('SSIM ↑', 'ssim', '.4f')]:
+            quality_rows += f'<tr><th scope="row">{label}</th><td>{baseline[key]:{spec}}</td><td>{candidate[key]:{spec}}</td></tr>'
+        same_job = gan['fps']['a5000']
+        gan_results = (
+            '<div id="gan-results" class="rain-results"><h3 class="result-title">1:1 Noisy KV + 小权重动作条件视频GAN</h3>'
+            '<p><strong>配对RGB画质指标有小幅改善，FVD收益尚不确定。</strong>172条相同validation上，LPIPS、PSNR、SSIM均改善；FVD121从215.35变为212.64，差值−2.71，配对bootstrap 95%区间[−14.62,+7.24]跨0，不能称为显著FVD提升。</p>'
+            '<div class="table-wrap"><table class="results-table"><caption>相同800次student预算；新增GAN权重0.001</caption><thead><tr><th scope="col">指标</th><th scope="col">Noisy KV / 1:1基线</th><th scope="col">Noisy KV / 1:1 + GAN</th></tr></thead><tbody>' + quality_rows + '</tbody></table></div>'
+            '<p>相对1:1基线的配对差值：LPIPS −0.00823 [−0.01029,−0.00625]；PSNR +0.1597 dB [0.1140,0.2054]；SSIM +0.00536 [0.00407,0.00663]。三项95%区间均不跨0。FVD121区间使用512次配对重采样；这是同一验证集上的比较，尚需独立测试和长rollout验证。</p>'
+            '<div class="viewer-head"><p>上排：真实视频、旧 stage3 student<br>下排：Noisy KV 1:1基线、Noisy KV 1:1 + GAN</p><a href="assets/noisy-gan-comparison.mp4" download>下载 MP4 ↓</a></div>'
+            '<div class="video-shell"><video id="gan-video" controls playsinline preload="metadata" poster="assets/noisy-gan-comparison.jpg" aria-label="真实视频、旧学生、Noisy KV基线与新增动作条件GAN的同步对比"><source src="assets/noisy-gan-comparison.mp4" type="video/mp4">请下载MP4观看。</video></div>'
+            '<p class="caption-note">三个场景：0000白天路口、0057夜间街道、0114树荫人行道；共18.15秒，统一20 FPS播放。两版Noisy的172条记录已逐条核对clip、seed、初始噪声、文本hash及24次模型调用；同一输入数据与历史策略。指标使用未压缩RGB，MP4仅供观看。</p>'
+            f'<p>同一作业83084、同一张RTX A5000：1:1基线<strong>{same_job["noisy_matched1600_nocaption"]:.2f} FPS</strong>，+GAN<strong>{same_job["noisy_gan1600_nocaption"]:.2f} FPS</strong>，旧学生{same_job["old4444_native"]:.2f} FPS。GAN判别器不进入推理，速度基本相同。'
+            '均为直接单卡＋请求内文本缓存＋TinyVAE BF16流式，不含加载、首帧编码与写文件。两种GPU的同轮次对照见下方速度表。</p>'
+            '<p><a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-26/noisy-conditional-gan/RESULTS.md" target="_blank" rel="noopener">完整配对统计、逐条指标与测速记录 ↗</a></p></div>'
+        )
 for key, value in {'TRAINING': training, 'QUALITY': quality, 'FPSROWS': ''.join(fps_rows), 'PROTOCOL': protocol,
                    'L40SSTATUS': lstatus, 'A5000STATUS': astatus, 'CHECKPOINTROWS': ''.join(checkpoint_rows)}.items():
     page = page.replace('@@' + key + '@@', value)
 assert '@@' not in page
 for forbidden in ['推理优化前后', 'speed_ablation', 'Clean3200', 'Noisy1600', 'localhost', '4222 具体省掉了什么', 'block-track']:
     assert forbidden not in page, forbidden
+from report_dates import build_gan_page, with_date_navigation
+page = with_date_navigation(page, '2026-10-25')
 (r / 'docs/index.html').write_text(page)
-print('Built docs/index.html')
+if gan_results:
+    new_page = build_gan_page(page, gan, gan_training, gan_results, s, checkpoints)
+    assert '@@' not in new_page
+    (r / 'docs/2026-10-27.html').write_text(new_page)
+print('Built docs/index.html and independent docs/2026-10-27.html')

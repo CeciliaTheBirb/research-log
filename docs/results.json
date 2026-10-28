@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T10:46:37-07:00",
+  "updated": "2026-10-27T21:19:41-07:00",
   "quality_episodes": 172,
   "train_episodes": 4775,
   "speed_indices": [
@@ -113,6 +113,28 @@
         ],
         "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
       }
+    },
+    {
+      "id": "noisy_gan",
+      "name": "4222+noisy kv reuse + video GAN",
+      "checkpoint": "1600次总更新 · 800次student",
+      "calls": 24,
+      "fvd121": 212.64182662415533,
+      "fvd16": 277.7093850453439,
+      "lpips": 0.4068098326525904,
+      "psnr": 16.309400003131973,
+      "ssim": 0.5195127528608423,
+      "fvd_delta_vs_noisy": {
+        "protocol": "full121",
+        "episodes": 172,
+        "repeats": 512,
+        "observed_delta": -2.705191526357794,
+        "paired_percentile_95ci": [
+          -14.624759014634652,
+          7.2359403652462415
+        ],
+        "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+      }
     }
   ],
   "quality_scope": "No future captions; raw RGB reference; paired metrics exclude anchor; FVD full121 includes anchor.",
@@ -206,14 +228,54 @@
           }
         },
         "hybrid": {
-          "fps": null,
-          "status": "queued",
-          "job_id": 82729
+          "fps": 48.16490470747943,
+          "job_id": 82729,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 1.7947201179922558,
+              "decode_s": 0.6859191170078702,
+              "combined_s": 2.48075626604259
+            },
+            "57": {
+              "rollout_s": 1.799874442978762,
+              "decode_s": 0.6888711560168304,
+              "combined_s": 2.490061725024134
+            },
+            "114": {
+              "rollout_s": 1.8098684819997288,
+              "decode_s": 0.6933752960176207,
+              "combined_s": 2.5035038660280406
+            }
+          }
         },
         "noisy_ttur15": {
-          "fps": null,
-          "status": "queued",
-          "job_id": 82762
+          "fps": 57.57398435189897,
+          "job_id": 82762,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 1.3809806469944306,
+              "decode_s": 0.6971553990151733,
+              "combined_s": 2.077538277953863,
+              "combined_fps": 57.76066861121146
+            },
+            "57": {
+              "rollout_s": 1.3842367840115912,
+              "decode_s": 0.6989656350342557,
+              "combined_s": 2.083202419045847,
+              "combined_fps": 57.60361974568111
+            },
+            "114": {
+              "rollout_s": 1.3902962480206043,
+              "decode_s": 0.7023767880164087,
+              "combined_s": 2.092083457042463,
+              "combined_fps": 57.359088422620395
+            }
+          }
+        },
+        "noisy_gan": {
+          "fps": 57.64539801992378,
+          "job_id": 83085,
+          "status": "completed"
         }
       }
     },
@@ -342,6 +404,30 @@
               "combined_fps": 25.744973602406354
             }
           }
+        },
+        "noisy_gan": {
+          "fps": 25.110612312555478,
+          "job_id": 83084,
+          "per_clip_median": {
+            "0": {
+              "rollout_s": 3.2769340854138136,
+              "decode_s": 1.5010430947877467,
+              "combined_s": 4.77797718020156,
+              "combined_fps": 25.115230875786178
+            },
+            "57": {
+              "rollout_s": 3.278720379807055,
+              "decode_s": 1.4985215067863464,
+              "combined_s": 4.776780498679727,
+              "combined_fps": 25.121522756418734
+            },
+            "114": {
+              "rollout_s": 3.281736718956381,
+              "decode_s": 1.5013610310852528,
+              "combined_s": 4.781810283660889,
+              "combined_fps": 25.095098483942703
+            }
+          }
         }
       }
     }
@@ -394,5 +480,49 @@
     "benchmark_job": 82761,
     "l40s_job": 82762,
     "paired_a5000_noisy_baseline_fps": 25.757452004536656
+  },
+  "gan_evaluation": {
+    "job_id": 83084,
+    "quality_gpu": "NVIDIA RTX A5000",
+    "episodes": 172,
+    "paired_comparison": {
+      "psnr_db": {
+        "mean": 0.1597406502379928,
+        "bootstrap_95ci": [
+          0.11400315794371825,
+          0.2053753310626793
+        ]
+      },
+      "ssim": {
+        "mean": 0.005357732639698554,
+        "bootstrap_95ci": [
+          0.004066810983687979,
+          0.006632669907976512
+        ]
+      },
+      "lpips_alex": {
+        "mean": -0.00823307850131,
+        "bootstrap_95ci": [
+          -0.010288006154767984,
+          -0.00625189717852713
+        ]
+      },
+      "temporal_difference_l1": {
+        "mean": -0.00023880237334429524,
+        "bootstrap_95ci": [
+          -0.0003989747954873628,
+          -7.908946291684327e-05
+        ]
+      },
+      "fvd_delta": {
+        "full121": -2.705191526357794,
+        "uniform16": -1.1371736399651127
+      }
+    },
+    "same_job_speed": {
+      "old4444_native": 14.731834421823365,
+      "noisy_matched1600_nocaption": 25.1164825441326,
+      "noisy_gan1600_nocaption": 25.110612312555478
+    }
   }
 }

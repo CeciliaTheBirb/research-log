@@ -19,13 +19,13 @@
 
 网站只展示优化后的推理结果。四个模型都使用直接单卡和请求内文本缓存；历史 KV 与记忆策略按各模型原生配置保留。FPS 包含生成和 TinyVAE BF16 流式解码，排除加载、首帧编码、CPU 转换、写 MP4 与质量指标。
 
-质量表是 172 条 validation 的已完成评测（旧学生与 HF hybrid 使用 RTX A5000，两版4222使用 A5000 / L40S 分片），并非分别在两种 GPU 上重跑的两套全量质量结果。双 GPU 速度表使用同 3 条固定视频、预热 1 次后各计时 3 次；HF hybrid 的 L40S 项仍在排队，未填估算值。
+质量表是 172 条 validation 的已完成评测（旧学生与 HF hybrid 使用 RTX A5000，两版4222使用 A5000 / L40S 分片），并非分别在两种 GPU 上重跑的两套全量质量结果。双 GPU 速度表使用同 3 条固定视频、预热 1 次后各计时 3 次；HF hybrid 的 L40S 测速已完成，为48.16 FPS。
 
 本轮速度作业为 L40S `82712`、A5000 `82713`，均通过空闲 GPU 检查。两次作业将 JSON 写进临时代码目录，成功退出后的清理移除了该文件；仓库中的速度记录从持久 Slurm 日志内的全部 27 条 JSON 计时及最终汇总恢复，并重新计算中位数与 FPS 逐一核验。`provenance` 保存恢复说明和原日志 SHA256。后续评测脚本已强制要求绝对输出路径，以免再次随临时目录清理。
 
 ## 更新报告
 
-运行 `python3 scripts/build_report.py`，即可从仓库内的内容与数据重建 `docs/index.html`。先更新 `docs/results.json` 与 `data/`，再重建并提交。无需构建框架或外部依赖。
+运行 `python3 scripts/build_report.py`，即可从仓库内的内容与数据重建 `docs/index.html`（10.25）和 `docs/2026-10-27.html`（10.27）。两页左侧栏均可按日期切换。先更新 `docs/results.json` 与 `data/`，再重建并提交。无需构建框架或外部依赖。
 
 GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频是压缩观看副本；指标使用未压缩生成 RGB。仓库不包含模型权重、训练视频数据集、服务器凭据或机器本地路径。
 
@@ -47,6 +47,10 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 
 [Hybrid 推理配置核查](data/2026-10-25/hf-hybrid/config-audit-zh.md) 记录官方窗口/记忆参数对照，以及固定十条视频的完整历史、关闭记忆和通用结构化文本诊断。原172条无caption成绩与这份诊断分别保留。运行 `python3 scripts/import_hybrid_audit.py` 校验原始诊断记录并更新摘要，再重建网页。
 
-[Noisy KV 1:5 TTUR 实验](data/2026-10-25/noisy-ttur15/README.md) 已完成800次student＋4000次fake、172条质量评测及A5000优化后测速；L40S仍排队。FVD121为221.91（1:1为215.35，差值95%区间跨0），本轮未显示整体收益。同作业A5000为25.76→25.73 FPS。三个场景的同步对比视频、指标、训练成本和Box checkpoint4800已归档并发布到[研究日志](https://ceciliathebirb.github.io/research-log/#ttur-results)。这只测试更新比例，没有GAN，不代表完整DMD2。
+[Noisy KV 1:5 TTUR 实验](data/2026-10-25/noisy-ttur15/README.md) 已完成800次student＋4000次fake、172条质量评测及A5000 / L40S优化后测速；L40S为57.57 FPS。FVD121为221.91（1:1为215.35，差值95%区间跨0），本轮未显示整体收益。同作业A5000为25.76→25.73 FPS。三个场景的同步对比视频、指标、训练成本和Box checkpoint4800已归档并发布到[研究日志](https://ceciliathebirb.github.io/research-log/#ttur-results)。这只测试更新比例，没有GAN，不代表完整DMD2。
 
-[1:1 Noisy KV＋小权重动作条件视频GAN](data/2026-10-26/noisy-conditional-gan/README.md) 已通过单卡训练/恢复及四卡全分辨率预检，正式训练83083在4×A5000启动。800次student＋800次fake，λ=0.001、前50次student渐增；判别器不进入推理。训练成功后自动运行172条质量评测和A5000/L40S测速，暂不填新结果。
+## 2026-10-27 · Noisy KV + 动作条件视频 GAN
+
+[独立10.27页面](https://ceciliathebirb.github.io/research-log/2026-10-27.html)记录保留1:1基线的小权重GAN实验；左侧日期栏可返回10.25。正式训练83083已完成，4×A5000、800次student＋800次fake/GAN更新，耗时14小时06分28秒。λ=0.001，前50次student渐增，判别器不进入推理。
+
+172条质量评测已完成：LPIPS 0.4150→0.4068、PSNR 16.15→16.31 dB、SSIM 0.5142→0.5195，配对差值区间均不跨0；FVD121 215.35→212.64，但差值95%区间[−14.62,+7.24]跨0。同作业A5000 25.12→25.11 FPS。完整统计、三个场景的同步视频、训练配方与最终Box checkpoint见[实验记录](data/2026-10-26/noisy-conditional-gan/RESULTS.md)。

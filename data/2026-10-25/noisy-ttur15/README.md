@@ -25,3 +25,5 @@ FVD121差值为+6.56，配对bootstrap95%区间[-7.98,+15.77]跨0。因此未显
 质量基于未压缩生成RGB与原始相机RGB，172条验证、canonical noise、空SFT文本。速度为直接单卡＋请求内文本缓存＋TinyVAE BF16流式，不含加载、首帧编码、CPU转换、写文件和指标。
 
 [Checkpoint4800](https://app.box.com/folder/431189754989) · [推理adapter](https://app.box.com/file/2550530063317) · [质量汇总](summary.json) · [测速原始记录](a5000-benchmark.json) · [核查记录](evaluation-audit.json) · [视频来源](video-provenance.json)
+
+2026-10-27更新：L40S作业82762已完成。同作业Noisy 1:1基线57.76 FPS，TTUR1:5为57.57 FPS；原始计时见[l40s-benchmark.json](l40s-benchmark.json)，精确值以JSON为准。

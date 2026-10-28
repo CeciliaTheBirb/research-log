@@ -1,18 +1,16 @@
 {
-  "observed_at": "2026-10-26T21:00:08-07:00",
+  "observed_at": "2026-10-27T21:19:41-07:00",
   "job": 83083,
-  "status": "running",
-  "step": 718,
+  "status": "finished",
+  "step": 1600,
   "total": 1600,
-  "student_updates": 359,
-  "fake_and_discriminator_updates": 359,
+  "student_updates": 800,
+  "fake_and_discriminator_updates": 800,
   "all_logged_values_finite": true,
-  "latest_checkpoint": 700,
+  "latest_checkpoint": 1600,
   "latest_checkpoint_box_verified": true,
   "gan_optimizer_box_verified": true,
-  "step_average_seconds": 31.574666033548233,
-  "remaining_hours_estimate": 7.735793178219317,
-  "peak_allocated_gib": 17.443634033203125,
+  "peak_allocated_gib": 17.448333740234375,
   "validation": [
     {
       "step": 100,
@@ -55,6 +53,60 @@
       "val/loss": 0.21306566894054413,
       "val/boundary_mse": 0.2001548707485199,
       "val/transition_mse": 1.4405189752578735
+    },
+    {
+      "step": 800,
+      "val/loss": 0.21409524977207184,
+      "val/boundary_mse": 0.20089229941368103,
+      "val/transition_mse": 1.454761028289795
+    },
+    {
+      "step": 900,
+      "val/loss": 0.21386238932609558,
+      "val/boundary_mse": 0.20052461326122284,
+      "val/transition_mse": 1.4394004344940186
+    },
+    {
+      "step": 1000,
+      "val/loss": 0.21226716041564941,
+      "val/boundary_mse": 0.19910353422164917,
+      "val/transition_mse": 1.4621597528457642
+    },
+    {
+      "step": 1100,
+      "val/loss": 0.21115052700042725,
+      "val/boundary_mse": 0.19813483953475952,
+      "val/transition_mse": 1.4535831212997437
+    },
+    {
+      "step": 1200,
+      "val/loss": 0.21105122566223145,
+      "val/boundary_mse": 0.1980251669883728,
+      "val/transition_mse": 1.4383519887924194
+    },
+    {
+      "step": 1300,
+      "val/loss": 0.21158166229724884,
+      "val/boundary_mse": 0.19846725463867188,
+      "val/transition_mse": 1.493729591369629
+    },
+    {
+      "step": 1400,
+      "val/loss": 0.21273869276046753,
+      "val/boundary_mse": 0.19933266937732697,
+      "val/transition_mse": 1.4864115715026855
+    },
+    {
+      "step": 1500,
+      "val/loss": 0.21278499066829681,
+      "val/boundary_mse": 0.19931292533874512,
+      "val/transition_mse": 1.553831696510315
+    },
+    {
+      "step": 1600,
+      "val/loss": 0.21177959442138672,
+      "val/boundary_mse": 0.1984677016735077,
+      "val/transition_mse": 1.5405133962631226
     }
   ],
   "gan_endpoint_gradient_ratios": [
@@ -102,10 +154,52 @@
       "step": 699,
       "train/gan_weight": 0.0010000000474974513,
       "train/gan_to_dmd_endpoint_grad_ratio": 0.026998577639460564
+    },
+    {
+      "step": 799,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.018619293347001076
+    },
+    {
+      "step": 899,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.0247062798589468
+    },
+    {
+      "step": 999,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.02376045100390911
+    },
+    {
+      "step": 1099,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.01665450632572174
+    },
+    {
+      "step": 1199,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.12023146450519562
+    },
+    {
+      "step": 1299,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.03957314416766167
+    },
+    {
+      "step": 1399,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.07909370213747025
+    },
+    {
+      "step": 1499,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.029827244579792023
+    },
+    {
+      "step": 1599,
+      "train/gan_weight": 0.0010000000474974513,
+      "train/gan_to_dmd_endpoint_grad_ratio": 0.04096968472003937
     }
   ],
-  "last50_discriminator_real_minus_fake_logit_mean": 0.34015321493148803,
-  "r1_nonzero_updates": 22,
-  "quality": null,
-  "fps": null
+  "r1_nonzero_updates": 50
 }

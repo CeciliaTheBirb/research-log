@@ -6,3 +6,4 @@
 
 /* Keep the experiment title visible below the fixed breadcrumb on anchor navigation. */
 #noisy-gan{scroll-margin-top:72px}
+.date-link{background:transparent;font-weight:400;color:#787774;margin-bottom:3px}.date-link.active{background:#eaeae7;color:#37352f;font-weight:550}#gan-results>.result-title:first-child{margin-top:0}

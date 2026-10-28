@@ -1,0 +1,13 @@
+{
+  "noisy_gan1600_nocaption_minus_noisy_matched1600_nocaption": {
+    "protocol": "full121",
+    "episodes": 172,
+    "repeats": 512,
+    "observed_delta": -2.705191526357794,
+    "paired_percentile_95ci": [
+      -14.624759014634652,
+      7.2359403652462415
+    ],
+    "scope": "Paired resampling of validation episodes; finite-sample FVD estimate, not an independent test."
+  }
+}

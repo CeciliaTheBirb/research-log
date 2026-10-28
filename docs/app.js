@@ -1,6 +1,10 @@
+// Preserve links shared before the GAN experiment received its own dated page.
+if (['#noisy-gan', '#gan-results'].includes(location.hash) && !location.pathname.endsWith('2026-10-27.html')) {
+  location.replace(`2026-10-27.html${location.search}${location.hash}`);
+}
 const video = document.querySelector('#comparison-video');
 const scenes = [...document.querySelectorAll('[data-time]')];
-const originalVideoURL = video.querySelector('source').src;
+const originalVideoURL = video?.querySelector('source')?.src;
 let seekableVideo;
 // Some static hosts stream MP4 without byte ranges. A complete in-memory copy
 // gives the media element a seekable resource while keeping the download link.
@@ -30,7 +34,7 @@ scenes.forEach(scene => scene.addEventListener('click', async () => {
     scenes.forEach(button => { button.disabled = false; button.removeAttribute('aria-busy'); });
   }
 }));
-video.addEventListener('timeupdate', () => {
+video?.addEventListener('timeupdate', () => {
   const i = video.currentTime < 6.05 ? 0 : video.currentTime < 12.1 ? 1 : 2;
   scenes.forEach((scene, k) => scene.classList.toggle('active', i === k));
 });

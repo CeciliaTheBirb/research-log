@@ -1,8 +1,8 @@
 {
   "name": "4222+noisy kv reuse · TTUR1:5",
-  "updated_at": "2026-10-26T10:46:37-07:00",
-  "status": "trained_quality_complete_l40s_pending",
-  "status_zh": "训练与172条质量评测已完成；A5000测速已完成，L40S测速排队",
+  "updated_at": "2026-10-27T21:20:00-07:00",
+  "status": "completed",
+  "status_zh": "训练、172条质量评测与A5000 / L40S测速均已完成",
   "baseline": "4222+noisy kv reuse（修正版，1600次总更新）",
   "initialization": {
     "student": "edge-text-causal-s1-step12550",
@@ -231,10 +231,11 @@
   },
   "fps": {
     "a5000": 25.732091562832014,
-    "l40s": null,
+    "l40s": 57.57398435189897,
     "same_job_a5000_noisy_baseline": 25.757452004536656,
     "a5000_job": 82761,
-    "l40s_pending_job": 82762
+    "l40s_job": 82762,
+    "same_job_l40s_noisy_baseline": 57.75831153036855
   },
   "storage": "Training checkpoints and logs mirror to the existing Box CoStream/experiments root; public progress is published through this repository GitHub Pages.",
   "progress": {

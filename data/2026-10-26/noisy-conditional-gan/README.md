@@ -1,6 +1,6 @@
 # 1:1 Noisy KV + 动作条件视频GAN
 
-保留修正版Noisy KV 1:1基线，单独增加GAN监督。正式训练作业 **83083** 已在4×RTX A5000启动。计划800次student＋800次fake，结束后依次执行A5000质量/速度作业83084和L40S速度作业83085。尚无新质量或FPS结论。
+保留修正版Noisy KV 1:1基线，单独增加GAN监督。正式训练作业 **83083** 已完成：4×RTX A5000，800次student＋800次fake/GAN判别器更新，耗时14小时06分28秒，约56.43 GPU小时。172条质量及A5000测速作业83084已完成；L40S测速83085已完成。详见[完整结果](RESULTS.md)。
 
 从同一causal Stage2 step12550重新开始；fake score和冻结teacher仍从bidir step30000加载。维持4×A5000、SP4/DP1、batch1、seed0、422…网格、Noisy KV、历史噪声匹配、shifted-uniform score时间、原AnyFlow和DMD损失、student/fake学习率2e-6。
 
@@ -22,4 +22,6 @@ student阶段通过冻结判别器的输入梯度更新student；fake阶段只�
 
 首个单卡预检83052因诊断打印重复loss字段退出，已修复；首次四卡83057在模型构建时rank3 SIGSEGV，未开始训练，根因尚未确认。之后使用相同核心训练代码，在另一正常调度节点启用崩溃堆栈、降低OMP线程并增加主机内存预留，83076完整通过。正式训练83083使用这组通过的运行设置；首次GPU guard确认四张分配卡无既有计算进程。
 
-2026-10-26 21:00（洛杉矶）状态：**718/1600步，359次student＋359次fake/GAN更新**，约45%；已运行6小时21分。step700的adapter、训练state及`video_gan.pt`已通过Box目录实际核对。所有已记录数值有限，rank0峰值allocated显存17.44GiB；R1已执行22次。辅助验证loss从step100的0.21846降至step700的0.21307，这是固定4个validation batch的forward损失，不是172条视频FVD或GAN质量结论。warmup完成后的稀疏记录中，加权GAN/DMD输出latent梯度RMS比为1.17%–2.70%；说明GAN有实际梯度贡献，尚不能据此判断画质收益。按31.57秒/总更新估计还需约7.7小时训练，随后才开始完整评测，排队和评测另计。原始逐步指标见[training-metrics.jsonl](training-metrics.jsonl)，摘要见[progress.json](progress.json)。
+2026-10-27 21:13（洛杉矶）状态：**1600/1600步，800次student＋800次fake/GAN更新，完整训练和172条评测均完成**。step1600的adapter、训练state及`video_gan.pt`已通过Box实际列目录核对。所有记录值有限，rank0峰值allocated显存17.45GiB；R1已执行50次。固定4个validation batch的辅助forward loss从0.21846变为0.21178；最低为step1200的0.21105，后段有波动，不能据此宣称收敛。warmup后稀疏记录的加权GAN/DMD输出latent梯度RMS比为1.17%–12.02%，不代表完整参数梯度比例。逐步指标见[training-metrics.jsonl](training-metrics.jsonl)，摘要见[progress.json](progress.json)。
+
+最终[checkpoint目录](https://app.box.com/folder/431510569802)、[推理adapter](https://app.box.com/file/2552548393910)、[metadata](https://app.box.com/file/2552545801742)。推理只加载student adapter，判别器不参与推理。原有Box权限不变。
