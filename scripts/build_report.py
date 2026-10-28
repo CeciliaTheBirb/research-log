@@ -195,7 +195,7 @@ if gan_path.exists():
                               'warmup后稀疏记录的加权GAN/DMD输出latent梯度RMS比为1.17%–12.02%；这是输出端诊断，不是完整参数梯度比例。</p>')
         else:
             progress_note += f'<p>按当前速度估计还需约{gp["remaining_hours_estimate"]:.1f}小时训练，排队与后续评测另计。</p>'
-    conclusion_note = '172条质量与A5000重复测速已完成，结果及同作业基线对照见下方。' if completed else '本轮尚无新FVD/FPS结论，不替换下方已有结果。'
+    conclusion_note = '172条质量与两种GPU重复测速已完成，结果及同作业基线对照见本页结果区。' if completed else '本轮尚无新FVD/FPS结论，不替换下方已有结果。'
     gan_training = ('<div class="model-card" id="noisy-gan"><h3>新实验 / 1:1 Noisy KV + 动作条件视频GAN</h3>'
                  f'<p><strong>{run_status}</strong>。记录时间：{html.escape(gan["updated_at"])}。{job_note}</p>'
                  f'{progress_note}'
@@ -215,7 +215,7 @@ if gan_path.exists():
         gan_results = (
             '<div id="gan-results" class="rain-results"><h3 class="result-title">1:1 Noisy KV + 小权重动作条件视频GAN</h3>'
             '<p><strong>配对RGB画质指标有小幅改善，FVD收益尚不确定。</strong>172条相同validation上，LPIPS、PSNR、SSIM均改善；FVD121从215.35变为212.64，差值−2.71，配对bootstrap 95%区间[−14.62,+7.24]跨0，不能称为显著FVD提升。</p>'
-            '<div class="table-wrap"><table class="results-table"><caption>相同800次student预算；新增GAN权重0.001</caption><thead><tr><th scope="col">指标</th><th scope="col">Noisy KV / 1:1基线</th><th scope="col">Noisy KV / 1:1 + GAN</th></tr></thead><tbody>' + quality_rows + '</tbody></table></div>'
+            '<div class="table-wrap"><table class="results-table gan-quality-table"><caption>相同800次student预算；新增GAN权重0.001</caption><thead><tr><th scope="col">指标</th><th scope="col">Noisy KV / 1:1基线</th><th scope="col">Noisy KV / 1:1 + GAN</th></tr></thead><tbody>' + quality_rows + '</tbody></table></div>'
             '<p>相对1:1基线的配对差值：LPIPS −0.00823 [−0.01029,−0.00625]；PSNR +0.1597 dB [0.1140,0.2054]；SSIM +0.00536 [0.00407,0.00663]。三项95%区间均不跨0。FVD121区间使用512次配对重采样；这是同一验证集上的比较，尚需独立测试和长rollout验证。</p>'
             '<div class="viewer-head"><p>上排：真实视频、旧 stage3 student<br>下排：Noisy KV 1:1基线、Noisy KV 1:1 + GAN</p><a href="assets/noisy-gan-comparison.mp4" download>下载 MP4 ↓</a></div>'
             '<div class="video-shell"><video id="gan-video" controls playsinline preload="metadata" poster="assets/noisy-gan-comparison.jpg" aria-label="真实视频、旧学生、Noisy KV基线与新增动作条件GAN的同步对比"><source src="assets/noisy-gan-comparison.mp4" type="video/mp4">请下载MP4观看。</video></div>'
