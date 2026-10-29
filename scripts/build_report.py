@@ -237,4 +237,8 @@ if gan_results:
     new_page = build_gan_page(page, gan, gan_training, gan_results, s, checkpoints)
     assert '@@' not in new_page
     (r / 'docs/2026-10-27.html').write_text(new_page)
+edge_nano_data = r / 'data/2026-10-29/edge-nano-4444'
+if edge_nano_data.exists():
+    from report_edge_nano import build_edge_nano_page
+    (r / 'docs/2026-10-29.html').write_text(build_edge_nano_page(page, edge_nano_data))
 print('Built date-indexed research pages')

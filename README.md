@@ -25,7 +25,7 @@
 
 ## 更新报告
 
-运行 `python3 scripts/build_report.py`，即可从仓库内的内容与数据重建 `docs/index.html`（10.25）和 `docs/2026-10-27.html`（10.27）。两页左侧栏均可按日期切换。先更新 `docs/results.json` 与 `data/`，再重建并提交。无需构建框架或外部依赖。
+运行 `python3 scripts/build_report.py`，即可从仓库内的内容与数据重建 `docs/index.html`（10.25）、`docs/2026-10-27.html`（10.27）和 `docs/2026-10-29.html`（10.29）。各页左侧栏均可按日期切换。先更新 `docs/results.json` 与 `data/`，再重建并提交。无需构建框架或外部依赖。
 
 GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频是压缩观看副本；指标使用未压缩生成 RGB。仓库不包含模型权重、训练视频数据集、服务器凭据或机器本地路径。
 
@@ -54,3 +54,15 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 [独立10.27页面](https://ceciliathebirb.github.io/research-log/2026-10-27.html)记录保留1:1基线的小权重GAN实验；左侧日期栏可返回10.25。正式训练83083已完成，4×A5000、800次student＋800次fake/GAN更新，耗时14小时06分28秒。λ=0.001，前50次student渐增，判别器不进入推理。
 
 172条质量评测已完成：LPIPS 0.4150→0.4068、PSNR 16.15→16.31 dB、SSIM 0.5142→0.5195，配对差值区间均不跨0；FVD121 215.35→212.64，但差值95%区间[−14.62,+7.24]跨0。同作业A5000 25.12→25.11 FPS。完整统计、三个场景的同步视频、训练配方与最终Box checkpoint见[实验记录](data/2026-10-26/noisy-conditional-gan/RESULTS.md)。
+
+## 2026-10-29 · 已训练 Edge × Nano 四步混合推理
+
+[10.29 实验页](https://ceciliathebirb.github.io/research-log/2026-10-29.html)为全新的普通学生混合推理实验；此前撤下的原生base模型测试没有恢复。
+使用Edge step2200、Nano-v0.1 step1070，比较EEEE、NNNN、NEEE、EEEN，以及计算路径匹配的Edge历史反馈对照，不更新权重。
+
+作业84988已在3×RTX A5000运行：Edge占1卡、Nano分层占2卡；GPU空闲检查、原生逐值一致性和历史反馈隔离均通过。
+固定视频57预热1次、计时3次，EEEE为14.70 FPS，NNNN为5.77，NEEE与EEEN均约8.27。包括模型切换、历史提交及TinyVAE BF16流式解码，排除加载、cached首帧编码、CPU转换、写文件与质量指标。
+这些是三卡部署的吞吐，不是单张A5000结果；单卡L40S作业84980仍排队。
+
+本次网页发布共同完成12/172条的阶段质量快照与三组同步视频，完整FVD尚待全部172条完成。页面不是服务器日志的实时镜像。
+数据及协议在[data/2026-10-29/edge-nano-4444](data/2026-10-29/edge-nano-4444/)，视频均在`docs/assets/edge-nano-20261029/`，生成逻辑为`scripts/report_edge_nano.py`。

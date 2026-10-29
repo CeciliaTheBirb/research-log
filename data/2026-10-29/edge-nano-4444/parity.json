@@ -1,0 +1,38 @@
+{
+  "placement": {
+    "exact": true,
+    "max_abs": 0.0,
+    "compared_splits": [
+      18,
+      20
+    ],
+    "generated_chunks": 2
+  },
+  "E": {
+    "exact": true,
+    "max_abs": 0.0,
+    "calls": {
+      "E": {
+        "denoise": 4,
+        "shadow": 0,
+        "commit": 2
+      }
+    }
+  },
+  "N": {
+    "exact": true,
+    "max_abs": 0.0,
+    "calls": {
+      "N": {
+        "denoise": 4,
+        "shadow": 0,
+        "commit": 2
+      }
+    }
+  },
+  "feedback": {
+    "shadow_final_exact": true,
+    "first_chunk_exact": true,
+    "second_chunk_max_abs": 2.453125
+  }
+}

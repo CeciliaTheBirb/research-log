@@ -1,0 +1,33 @@
+{
+  "gpu": "NVIDIA RTX A5000",
+  "gpu_count": 3,
+  "placement": "three-a5000",
+  "job_id": "84988",
+  "torch": "2.9.1+cu128",
+  "prompt": "You are an autonomous vehicle planning system.",
+  "sampling": {
+    "steps_per_chunk": 4,
+    "shift": 5.0,
+    "CFG": 1.0,
+    "history": "full clean",
+    "text_cache": "native request-local, separate per model",
+    "precision": "native BF16"
+  },
+  "scope": "172 existing validation clips; external historical student training overlap not established",
+  "fps_protocol": "120 new frames / synchronized rollout plus TinyVAE streaming decode; exclude loading, cached anchor, CPU conversion, file writing and quality metrics; include cache construction and both model commits; both models resident; diagnostic arms include extra Edge branch",
+  "observed_at": "2026-10-29T16:57:26.857847-07:00",
+  "status": "running; matched12 snapshot; FVD pending full172",
+  "decoder": {
+    "dtype": "BF16",
+    "parallel": false,
+    "checkpoint": "NavWorldGym/tinyvae/step-38000"
+  },
+  "checkpoints": {
+    "Edge": "NavWorldGym/edge-anyflow-causal/step-2200",
+    "Nano": "NavWorldGym/nano-v0.1 step1070 non-EMA"
+  },
+  "l40s_job": {
+    "id": 84980,
+    "status": "PENDING; no results"
+  }
+}
