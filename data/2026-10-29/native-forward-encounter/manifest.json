@@ -1,0 +1,89 @@
+{
+  "schema_version": 3,
+  "suite": "forward_encounter",
+  "name": "Native Super vs Nano vs Edge: forward motion with oncoming pedestrian passing left/right",
+  "date": "2026-10-28",
+  "frames": 121,
+  "fps": 20.0,
+  "height": 480,
+  "width": 832,
+  "seeds": [
+    2026,
+    2027
+  ],
+  "anchors": [
+    {
+      "id": "rain",
+      "file": "rain.png",
+      "source": "NavWorldGym/test_assets/rain_obs.png",
+      "scene": "A low navigation-robot camera observes the wet suburban intersection in the initial image, with a stone wall on the left, puddles, houses and parked cars.",
+      "image_sha256": "c989d05e65192daf6a37eff0e1b886c7b8df18548e80f14314d4971de4f91684"
+    },
+    {
+      "id": "night0057",
+      "file": "heldout-0057.png",
+      "source": "held-out episode 0057, decoded reference frame 0",
+      "scene": "A low navigation-robot camera observes the snowy urban sidewalk at night in the initial image, with warm decorative lights, buildings, parked vehicles and background pedestrians.",
+      "image_sha256": "65809d22332b82ceb7d4ad9c79c74240aad7e528c1fb7114fe841c5bc5baf5bd"
+    }
+  ],
+  "cases": [
+    {
+      "id": "fd_forward_control",
+      "task": "forward_dynamics",
+      "event": "control",
+      "speed_mps": 0.5,
+      "yaw_dps": 0.0
+    },
+    {
+      "id": "fd_forward_oncoming_left",
+      "task": "forward_dynamics",
+      "event": "oncoming_left",
+      "speed_mps": 0.5,
+      "yaw_dps": 0.0
+    },
+    {
+      "id": "fd_forward_oncoming_right",
+      "task": "forward_dynamics",
+      "event": "oncoming_right",
+      "speed_mps": 0.5,
+      "yaw_dps": 0.0
+    }
+  ],
+  "steps": 50,
+  "sampler": "UniPC",
+  "precision": "BF16",
+  "task_settings": {
+    "forward_dynamics": {
+      "guidance": 1.0,
+      "shift": 5.0,
+      "caption_format": "action",
+      "action_domain": "av"
+    }
+  },
+  "native_weights": true,
+  "adapters": [],
+  "causal": false,
+  "noisy_kv_reuse": false,
+  "decoder": "TinyVAE step38000 BF16 streaming",
+  "scope": "Exploratory two-scene, two-seed controllability pilot, not a statistical model ranking. No population FVD is estimated from this small set. PSNR/SSIM lack paired real futures for these counterfactual events and trajectories.",
+  "action_interpretation": "AV9 body-frame camera/ego transitions. These test navigation ego-motion, not robot arm or joint control.",
+  "image_repeat_frames_before_encoding": 121,
+  "conditioned_latent_frames": [
+    0
+  ],
+  "prompt_templates": {
+    "use_system_prompt": false,
+    "add_duration_template": false,
+    "add_resolution_template": false
+  },
+  "input_policy": "Shared image repeat-padded to 121 frames before VAE encoding for FD and I2V; only normalized latent frame zero is conditioned. Shared CPU FP32 initial noise and raw actions; model-specific native tokenizer. Future ground-truth frames are never inputs.",
+  "joint_control": {
+    "robot_speed_mps": 0.5,
+    "robot_yaw_dps": 0.0,
+    "total_forward_metres": 3.0,
+    "pedestrian": "approaches from ahead, then passes on robot-camera left/right",
+    "motion_text_agrees_with_numeric_actions": true
+  },
+  "records_per_model": 12
+}

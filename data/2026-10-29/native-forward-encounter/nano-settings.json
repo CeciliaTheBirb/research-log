@@ -1,0 +1,38 @@
+{
+  "model": "Nano",
+  "adapter_loaded": false,
+  "lora_modules": 0,
+  "generator_parameter_count": 14551339264,
+  "backend": "CoStream Cosmos3 port, native one-time weights and bidirectional UniPC; not the distilled causal runtime",
+  "native_one_time_bidirectional": true,
+  "gpu": "NVIDIA RTX A5000",
+  "gpu_count": 2,
+  "sp": 2,
+  "fsdp_shards": 2,
+  "text_cache": false,
+  "job_id": "84722",
+  "torch": "2.9.1+cu128",
+  "cuda": "12.8",
+  "manifest_sha256": "c3230b8c19654576f9db31f65893b302151403861587cdfed211d0fb9742f041",
+  "suite": "forward_encounter",
+  "tinyvae_dtype": "BF16",
+  "tinyvae_parallel": false,
+  "image_repeat_frames_before_encoding": 121,
+  "conditioned_latent_frames": [
+    0
+  ],
+  "prompt_templates": {
+    "use_system_prompt": false,
+    "add_duration_template": false,
+    "add_resolution_template": false,
+    "forward_dynamics": "native action JSON",
+    "image_to_video": "authored scene JSON"
+  },
+  "checkpoint": {
+    "repo_id": "nvidia/Cosmos3-Nano",
+    "revision": "e59a53c25979a090fa8706c9acc0c254a6e89b92",
+    "verified": true,
+    "adapters": []
+  },
+  "tinyvae": "NavWorldGym/tinyvae/step-38000/decoder.safetensors"
+}

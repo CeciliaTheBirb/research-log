@@ -54,3 +54,7 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 [独立10.27页面](https://ceciliathebirb.github.io/research-log/2026-10-27.html)记录保留1:1基线的小权重GAN实验；左侧日期栏可返回10.25。正式训练83083已完成，4×A5000、800次student＋800次fake/GAN更新，耗时14小时06分28秒。λ=0.001，前50次student渐增，判别器不进入推理。
 
 172条质量评测已完成：LPIPS 0.4150→0.4068、PSNR 16.15→16.31 dB、SSIM 0.5142→0.5195，配对差值区间均不跨0；FVD121 215.35→212.64，但差值95%区间[−14.62,+7.24]跨0。同作业A5000 25.12→25.11 FPS。完整统计、三个场景的同步视频、训练配方与最终Box checkpoint见[实验记录](data/2026-10-26/noisy-conditional-gan/RESULTS.md)。
+
+## 2026-10-29 · 原生 Super / Nano / Edge
+
+[独立10.29页面](https://ceciliathebirb.github.io/research-log/2026-10-29.html)收录机器人前进＋迎面行人左／右经过的36条原生模型输出，含四组合辑和12个单条件并排视频。两场景、两seed的全部结果均保留；这一轮没有显示稳定联合跟随，不能据单个片段判定Super优势。输入条件、逐条hash与实际耗时见[实验记录](data/2026-10-29/native-forward-encounter/README.md)。运行 `python3 scripts/build_report.py` 会同时重建10.25、10.27和10.29三页，左侧日期栏可切换。

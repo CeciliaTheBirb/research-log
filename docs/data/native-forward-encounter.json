@@ -1,0 +1,142 @@
+{
+  "status": "completed",
+  "published_date": "2026-10-29",
+  "experiment": "native-forward-encounter-20261028",
+  "total_clips": 36,
+  "clips_per_model": 12,
+  "models": [
+    {
+      "id": "edge",
+      "name": "Edge",
+      "clips": 12,
+      "gpu": "NVIDIA RTX A5000",
+      "gpu_count": 1,
+      "sp": 1,
+      "text_cache": true,
+      "job_id": "84721",
+      "median_generation_seconds": 58.010196860530414,
+      "median_decode_seconds": 1.4683895134367049,
+      "median_total_seconds": 59.480071686557494,
+      "median_fps": 2.017482437437642,
+      "max_peak_allocated_gib": 7.652135848999023,
+      "checkpoint": {
+        "repo_id": "nvidia/Cosmos3-Edge",
+        "revision": "344d602b128d1bbdacb43b08d0a3626f46343e29",
+        "verified": true,
+        "adapters": []
+      }
+    },
+    {
+      "id": "nano",
+      "name": "Nano",
+      "clips": 12,
+      "gpu": "NVIDIA RTX A5000",
+      "gpu_count": 2,
+      "sp": 2,
+      "text_cache": false,
+      "job_id": "84722",
+      "median_generation_seconds": 158.5826264026109,
+      "median_decode_seconds": 1.4819684585090727,
+      "median_total_seconds": 160.06355259078555,
+      "median_fps": 0.7497029754320089,
+      "max_peak_allocated_gib": 18.193095684051514,
+      "checkpoint": {
+        "repo_id": "nvidia/Cosmos3-Nano",
+        "revision": "e59a53c25979a090fa8706c9acc0c254a6e89b92",
+        "verified": true,
+        "adapters": []
+      }
+    },
+    {
+      "id": "super",
+      "name": "Super",
+      "clips": 12,
+      "gpu": "NVIDIA RTX A6000",
+      "gpu_count": 4,
+      "sp": 4,
+      "text_cache": false,
+      "job_id": "84723",
+      "median_generation_seconds": 1178.1004076246172,
+      "median_decode_seconds": 1.2567097749561071,
+      "median_total_seconds": 1179.3531974013895,
+      "median_fps": 0.10175392870926603,
+      "max_peak_allocated_gib": 37.285762786865234,
+      "checkpoint": {
+        "repo_id": "nvidia/Cosmos3-Super",
+        "revision": "f543c56225b2e04d0ad141e29655be3a45d9c455",
+        "verified": true,
+        "adapters": []
+      }
+    }
+  ],
+  "bundles": [
+    {
+      "file": "night0057-seed2026-joint-fd.mp4",
+      "poster": "night0057-seed2026-joint-fd.jpg",
+      "cases": [
+        "fd_forward_control",
+        "fd_forward_oncoming_left",
+        "fd_forward_oncoming_right"
+      ],
+      "frames": 363,
+      "sha256": "8065435267987ba40409e1929af3429aba5732eddc7917fd565da88754a024df"
+    },
+    {
+      "file": "night0057-seed2027-joint-fd.mp4",
+      "poster": "night0057-seed2027-joint-fd.jpg",
+      "cases": [
+        "fd_forward_control",
+        "fd_forward_oncoming_left",
+        "fd_forward_oncoming_right"
+      ],
+      "frames": 363,
+      "sha256": "02c8f593b08c1c07d6fbb1ec4afda6000d13034b46091cff3eb5796434f8ccbf"
+    },
+    {
+      "file": "rain-seed2026-joint-fd.mp4",
+      "poster": "rain-seed2026-joint-fd.jpg",
+      "cases": [
+        "fd_forward_control",
+        "fd_forward_oncoming_left",
+        "fd_forward_oncoming_right"
+      ],
+      "frames": 363,
+      "sha256": "2543efb7f0495033bb48e6b092541144956dd558f174935a8c44a9028b813f4b"
+    },
+    {
+      "file": "rain-seed2027-joint-fd.mp4",
+      "poster": "rain-seed2027-joint-fd.jpg",
+      "cases": [
+        "fd_forward_control",
+        "fd_forward_oncoming_left",
+        "fd_forward_oncoming_right"
+      ],
+      "frames": 363,
+      "sha256": "e97a0ba39cb87ffad4d58f96cea3b7ff967d116a0f317d1581d2a859eb49a3dd"
+    }
+  ],
+  "conditions": {
+    "speed_mps": 0.5,
+    "yaw_dps": 0.0,
+    "duration_seconds": 6.0,
+    "requested_forward_metres": 3.0,
+    "frames": 121,
+    "new_frames": 120,
+    "fps": 20,
+    "width": 832,
+    "height": 480,
+    "steps": 50,
+    "sampler": "UniPC",
+    "guidance": 1.0,
+    "shift": 5.0,
+    "action_domain": "av",
+    "decoder": "TinyVAE step38000 BF16 streaming"
+  },
+  "input_checks": {
+    "matched_across_models": true,
+    "events_share_actions": true,
+    "all_prompts_untruncated": true
+  },
+  "timing_scope": "Generation plus TinyVAE decode; excludes model loading, first-frame encoding, CPU conversion, file writes. Single inference per condition; no repeated benchmark. GPU allocations and text-cache settings differ.",
+  "scope": "Exploratory two-scene, two-seed controllability pilot, not a statistical model ranking. No population FVD is estimated from this small set. PSNR/SSIM lack paired real futures for these counterfactual events and trajectories."
+}
