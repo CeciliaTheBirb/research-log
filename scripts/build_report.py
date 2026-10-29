@@ -237,8 +237,4 @@ if gan_results:
     new_page = build_gan_page(page, gan, gan_training, gan_results, s, checkpoints)
     assert '@@' not in new_page
     (r / 'docs/2026-10-27.html').write_text(new_page)
-native_summary = r / 'data/2026-10-29/native-forward-encounter/summary.json'
-if native_summary.exists():
-    from build_native_follow_page import build_native_follow_page
-    (r / 'docs/2026-10-29.html').write_text(build_native_follow_page(page, r))
 print('Built date-indexed research pages')

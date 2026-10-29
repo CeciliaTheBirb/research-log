@@ -3,18 +3,14 @@ import html
 
 
 def with_date_navigation(page, date):
-    entries = [('2026-10-29', '2026-10-29.html', '10.29 · 原生 Super / Nano / Edge'),
-               ('2026-10-27', '2026-10-27.html', '10.27 · Noisy KV + GAN'),
+    entries = [('2026-10-27', '2026-10-27.html', '10.27 · Noisy KV + GAN'),
                ('2026-10-25', 'index.html', '10.25 · Stage 3 蒸馏')]
     dates = ''.join(
         f'<a class="date-link{" active" if day == date else ""}" href="{url}"'
         + (' aria-current="page"' if day == date else '')
         + f'><span aria-hidden="true">▤</span><span>{label}</span></a>'
         for day, url, label in entries)
-    sections = ([('results', '前进＋迎面行人视频'), ('findings', '观察与局限'),
-                 ('runtime', '推理耗时'), ('protocol', '相同测试条件'), ('provenance', '模型与原始记录')]
-                if date == '2026-10-29' else
-                [('gan-results', '定性与定量结果'), ('throughput-results', '推理速度'),
+    sections = ([('gan-results', '定性与定量结果'), ('throughput-results', '推理速度'),
                  ('noisy-gan', '训练细节'), ('findings', 'Findings'), ('checkpoints', 'Checkpoint')]
                 if date == '2026-10-27' else
                 [('model-design', '模型设计与训练细节'), ('results', '定性与定量结果'),
