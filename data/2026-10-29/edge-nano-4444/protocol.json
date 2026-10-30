@@ -15,8 +15,8 @@
   },
   "scope": "172 existing validation clips; external historical student training overlap not established",
   "fps_protocol": "120 new frames / synchronized rollout plus TinyVAE streaming decode; exclude loading, cached anchor, CPU conversion, file writing and quality metrics; include cache construction and both model commits; both models resident; diagnostic arms include extra Edge branch",
-  "observed_at": "2026-10-29T20:26:55.215540-07:00",
-  "status": "running; audited matched122 snapshot; FVD pending full172",
+  "observed_at": "2026-10-30T16:11:37.198595-07:00",
+  "status": "complete: matched172 with paired session-bootstrap analysis",
   "decoder": {
     "dtype": "BF16",
     "parallel": false,
@@ -33,7 +33,11 @@
     "time_limit_hours": 3,
     "scope": "parity, three pilot clips, warmed three-repeat FPS; no duplicate full172 quality evaluation"
   },
-  "access_note": "SSH连接已恢复；20:24检查确认84988仍在运行，85009仍等待资源。",
   "automation": "No scheduled checks or automatic publication; user requests checking only when asked.",
-  "last_remote_checked_at": "2026-10-29T20:24:39-07:00"
+  "last_remote_checked_at": "2026-10-30T16:12:33.107555-07:00",
+  "job_state": "COMPLETED",
+  "job_elapsed": "05:37:08",
+  "job_exit_code": "0:0",
+  "updated_on": "2026-10-30",
+  "access_note": "完整评测作业84988已正常结束（5小时37分08秒，exit 0）；10月30日检查L40S85009仍等待资源。"
 }

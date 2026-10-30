@@ -63,7 +63,7 @@ def build_edge_nano_page(base_page, data):
     status_title = '完整质量评测 · 172 / 172 条' if complete else f'质量阶段快照 · {count} / 172 条'
     status_note = ('FVD121、FVD16 与配对 RGB 指标已完成；下面用配对差值分析 Nano 的位置和历史反馈。' if complete else
                    f'质量表仅汇总已验证的 {count} 条，FVD 等待全部172条。完整评测作业84988已提交；服务器进度与本页快照分开记录。')
-    status_note += (' 单 L40S FPS 已完成。' if l40s else f' 单 L40S 测速作业{l40s_job}已提交，尚无验证后的 FPS。')
+    status_note += (' 单 L40S FPS 已完成。' if l40s else f' 单 L40S 测速作业{l40s_job}仍等待资源，尚未开始，没有实测 FPS。')
     access_note = html.escape(protocol.get('access_note', ''))
     repo = 'https://github.com/CeciliaTheBirb/research-log/tree/main/data/2026-10-29/edge-nano-4444'
     header = f'''<header class="entry-header"><div class="page-icon" aria-hidden="true">▤</div>
@@ -72,7 +72,7 @@ def build_edge_nano_page(base_page, data):
 <div class="entry-tags"><span>Inference only</span><span>每 chunk 四步</span><span>3×RTX A5000</span><span>TinyVAE BF16 流式</span></div>
 <div class="timing-box"><strong>{status_title}</strong>
 <p>{status_note}</p>
-<p>质量快照记录：{stamp}（洛杉矶时间）。{access_note} 本页按需人工更新，未设置自动检查任务。</p></div></header>'''
+<p>结果核验记录：{stamp}（洛杉矶时间）。{access_note} 本页按需人工更新，未设置自动检查任务。</p></div></header>'''
     results = '''<section id="results" class="log-section"><h2>同步对比视频</h2>
 <p>E = Edge，N = Nano；字母顺序对应每个 chunk 从高噪声到低噪声的四个去噪区间。</p>
 <p class="section-intro">上排：真实参考 / 纯 Edge / 纯 Nano。<br>下排：Nano 开头 / Nano 收尾并提交最终历史 / Nano 收尾但 Edge 保留 draft 历史。</p>'''
@@ -135,6 +135,9 @@ def build_edge_nano_page(base_page, data):
         analysis = (f'<section id="paired-analysis" class="log-section"><h2>配对分析 · {"完整172条" if complete else f"阶段{count}条"}</h2>'
                     f'<p>同一{count}条、{paired["sessions"]}个源session配对成组bootstrap：RGB {paired["rgb_bootstrap_repeats"]}次{fvd_bootstrap_note}。下降指标负值有利，PSNR/SSIM正值有利。区间跨0表示方向仍不确定。</p>'
                     + ''.join(blocks) + '<p class="caption-note">这是复用validation上的描述统计。置信区间不能证明独立数据、多seed或更长rollout的稳定性；逐chunk区间未作多重比较校正。</p></section>')
+        if complete:
+            plot = '''<figure><img src="assets/edge-nano-20261029/paired-lpips-by-chunk.svg" alt="172条配对LPIPS逐chunk差值：左侧Nano开头减收尾；右侧最终历史减draft历史，负值有利于前者；阴影为逐点95%区间" style="display:block;width:100%;height:auto"><figcaption class="caption-note">负值表示前者LPIPS更低。左：开头/收尾的优势随chunk变化。右：写回历史在第2–9个chunk的逐点区间低于0，第10个chunk跨0；末段8–10的平均差值区间仍低于0。逐点区间未作多重比较校正。<a href="assets/edge-nano-20261029/paired-lpips-by-chunk.png" download>下载PNG ↓</a></figcaption></figure>'''
+            analysis = analysis.replace('</section>', plot + '</section>')
     findings = '''<section id="findings" class="log-section findings-section"><h2>Findings · 暂定</h2><ol class="finding-list">
 <li><h3>当前混合方案处在两种纯模型之间。</h3><p>共同完成样本的平均 LPIPS 均优于纯 Edge，但不及纯 Nano；混合 FPS 高于纯 Nano、低于纯 Edge。全量尚未完成，尚无最终 FVD 结论。</p></li>
 <li><h3>开头与收尾各有作用，不能只凭模型大小选步骤。</h3><p>当前平均 LPIPS 是 Nano 开头更低，SSIM 是 Nano 收尾更高；具体场景仍有退化。不能从少量视频判断一种顺序全面更好。</p></li>
@@ -152,17 +155,21 @@ def build_edge_nano_page(base_page, data):
     if complete:
         first = result['variants']['nano_first']
         last = result['variants']['nano_last']
+        feedback_stats = paired['comparisons']['history_final_vs_draft']
         history = paired['comparisons']['history_final_vs_draft']['lpips_chunks2_to10']
         lo,hi = history['ci95']
         history_verdict = ('在本组validation的后续LPIPS上支持改善' if hi < 0 else
                            '在本组validation的后续LPIPS上支持退步' if lo > 0 else '后续LPIPS的差值区间跨0，暂不能确认稳定方向')
+        l40s_status_note = 'L40S FPS已补入上方速度表。' if l40s else 'L40S FPS尚未就绪。'
         findings = f'''<section id="findings" class="log-section findings-section"><h2>Findings · 完整172条</h2>
-<ol class="finding-list"><li><h3>开头与收尾按指标分别比较。</h3><p>Nano开头 / 收尾：FVD121 {first['fvd_full121']:.2f} / {last['fvd_full121']:.2f}；FVD16 {first['fvd_uniform16']:.2f} / {last['fvd_uniform16']:.2f}；LPIPS {first['lpips_alex']:.4f} / {last['lpips_alex']:.4f}。完整差值区间见配对分析，不能把一项指标的排序推广为全面优势。</p></li>
-<li><h3>历史写回：{history_verdict}。</h3><p>第2–10个chunk的LPIPS差值{history['mean_candidate_minus_baseline']:+.5f}，95%区间[{lo:+.5f}, {hi:+.5f}]。仍需独立数据、多seed和长rollout检验；当前实验没有证明所有场景都会改善。</p></li></ol></section>'''
+<ol class="finding-list"><li><h3>Nano开头与收尾，当前没有全面胜者。</h3><p>Nano开头 / 收尾：FVD121 {first['fvd_full121']:.2f} / {last['fvd_full121']:.2f}；FVD16 {first['fvd_uniform16']:.2f} / {last['fvd_uniform16']:.2f}；LPIPS {first['lpips_alex']:.5f} / {last['lpips_alex']:.5f}。LPIPS和两种FVD的配对差值区间均跨0。PSNR偏向开头，SSIM偏向收尾；不能仅依据某一项均值定路由。</p></li>
+<li><h3>历史写回改善配对画质，FVD收益尚不明确。</h3><p>{history_verdict}：第2–10个chunk的LPIPS差值{history['mean_candidate_minus_baseline']:+.5f}，95%区间[{lo:+.5f}, {hi:+.5f}]。全视频LPIPS、PSNR、SSIM的配对区间均支持改善；LPIPS在{wins}/172条上更低。但FVD121差值{feedback_stats['fvd']['full121']['candidate_minus_baseline']:+.2f}，FVD16差值{feedback_stats['fvd']['uniform16']['candidate_minus_baseline']:+.2f}，区间都跨0。不能将配对RGB收益表述为整体视频质量稳定提升。</p></li>
+<li><h3>混合推理更快，质量仍未达到纯Nano。</h3><p>同一3×A5000部署：NEEE / EEEN为{bench['variants']['nano_first']['fps_from_median_seconds']:.2f} / {bench['variants']['nano_last']['fps_from_median_seconds']:.2f} FPS，纯Nano为{bench['variants']['nano4444']['fps_from_median_seconds']:.2f} FPS。两种混合的LPIPS低于纯Edge，但FVD未呈现一致改善；纯Nano在本组质量均值上最好。仍需独立数据、多seed和长rollout检验。{l40s_status_note}</p></li></ol></section>'''
     research = (data.parents[2] / 'scripts' / 'edge-nano-research.html').read_text()
     paired_file = 'edge-nano-paired-analysis.json' if complete else 'edge-nano-paired-interim.json'
     paired_link = f'<a href="{paired_file}" download>配对分析 JSON ↓</a>' if paired else ''
-    footer = f'''<footer class="entry-footer"><a href="edge-nano-results.json" download>质量 JSON ↓</a>{paired_link}<a href="{repo}" target="_blank" rel="noopener">数据、调研与测速记录 ↗</a><span>2026.10.29 · Cecilia</span></footer>'''
+    footer_stamp = html.escape(protocol.get('updated_on', '2026-10-29').replace('-', '.'))
+    footer = f'''<footer class="entry-footer"><a href="edge-nano-results.json" download>质量 JSON ↓</a>{paired_link}<a href="{repo}" target="_blank" rel="noopener">数据、调研与测速记录 ↗</a><span>{footer_stamp} 更新 · Cecilia</span></footer>'''
     body = header + results + quality + speed + feedback + analysis + checks + findings + research + footer
     start = base_page.index('<main class="log-content"')
     end = base_page.index('</main>', start) + len('</main>')
