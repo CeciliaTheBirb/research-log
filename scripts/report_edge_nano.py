@@ -15,9 +15,12 @@ def build_edge_nano_page(base_page, data):
     assert count == len(result['matched_indices'])
     assert result['all_noise_actions_matched'] and result['all_shadow_final_latents_equal']
     assert bench['gpu_count'] == 3 and bench['timed_repeats'] == 3
+    paired_path = data / ('paired-analysis.json' if complete else 'paired-interim.json')
+    paired = json.loads(paired_path.read_text()) if paired_path.exists() else None
     if complete:
         assert result['matched_indices'] == [f'{i:04d}' for i in range(172)]
-        paired = json.loads((data / 'paired-analysis.json').read_text())
+        assert paired is not None
+    if paired:
         assert paired['count'] == count
     l40s_path = data / 'benchmark-l40s.json'
     l40s = json.loads(l40s_path.read_text()) if l40s_path.exists() else None
@@ -76,7 +79,8 @@ def build_edge_nano_page(base_page, data):
     results += ''.join(videos) + '<p class="caption-note">视频为压缩观看副本；质量指标来自压缩前 RGB。20 FPS 播放速度与模型推理吞吐不同。</p></section>'
     quality_label = '完整172条' if complete else '阶段结果'
     quality_caption = '完整172条，同一参考集' if complete else f'共同完成 {count}/172 条；并非最终结果'
-    indices_note = '0000–0171' if complete else ', '.join(result['matched_indices'])
+    indices_note = (f'0000–{count-1:04d}' if result['matched_indices'] == [f'{i:04d}' for i in range(count)]
+                    else ', '.join(result['matched_indices']))
     fvd_note = ('FVD121使用完整121帧的I3D特征，FVD16使用未来120帧中均匀采样的16帧；所有路由共享相同参考特征。' if complete else
                 '真实参考视频和 I3D 特征已经准备好。FVD 待全量，是因为当前快照只验证了部分样本；有参考数据的 PSNR、SSIM、LPIPS 已可逐条统计。')
     quality = f'''<section id="quality-results" class="log-section"><h2>质量指标 · {quality_label}</h2>
@@ -106,7 +110,7 @@ def build_edge_nano_page(base_page, data):
 <div><dt>资源</dt><dd>Slurm84988，bolei-gpu02，3×A5000，12小时上限。启动前通过空闲 GPU 检查；没有终止其他用户进程。未使用量化、CPU offload、梯度或跨网络反传。</dd></div>
 </dl></div></section>'''
     analysis = ''
-    if complete:
+    if paired:
         blocks = []
         for key, title in [('nano_first_vs_last', 'Nano 开头 − Nano 收尾'),
                            ('history_final_vs_draft', '最终历史 − Edge draft 历史')]:
@@ -117,6 +121,8 @@ def build_edge_nano_page(base_page, data):
                 a, b = row['ci95']
                 stats.append(f'<tr><th scope="row">{name}</th><td>{row["mean_candidate_minus_baseline"]:+.{decimals}f}</td><td>[{a:+.{decimals}f}, {b:+.{decimals}f}]</td><td>{row["wins"]}/{count}</td></tr>')
             for feature, name in [('full121', 'FVD121 ↓'), ('uniform16', 'FVD16 ↓')]:
+                if feature not in comparison.get('fvd', {}):
+                    continue
                 row = comparison['fvd'][feature]
                 a,b = row['ci95']
                 stats.append(f'<tr><th scope="row">{name}</th><td>{row["candidate_minus_baseline"]:+.2f}</td><td>[{a:+.2f}, {b:+.2f}]</td><td>集合指标</td></tr>')
@@ -125,14 +131,24 @@ def build_edge_nano_page(base_page, data):
                 a,b = row['ci95']
                 stats.append(f'<tr><th scope="row">{name}</th><td>{row["mean_candidate_minus_baseline"]:+.5f}</td><td>[{a:+.5f}, {b:+.5f}]</td><td>{row["wins"]}/{count}</td></tr>')
             blocks.append(f'<h3 class="result-title">{title}</h3><div class="table-wrap"><table class="results-table"><thead><tr><th scope="col">指标</th><th scope="col">配对差值</th><th scope="col">95% 区间</th><th scope="col">前者胜出</th></tr></thead><tbody>{"".join(stats)}</tbody></table></div>')
-        analysis = ('<section id="paired-analysis" class="log-section"><h2>配对分析：是否有稳定提升？</h2>'
-                    f'<p>同一172条、{paired["sessions"]}个源session配对成组bootstrap：RGB {paired["rgb_bootstrap_repeats"]}次，FVD {paired["fvd_bootstrap_repeats"]}次。下降指标负值有利，PSNR/SSIM正值有利。区间跨0表示方向仍不确定。</p>'
+        fvd_bootstrap_note = f'，FVD {paired["fvd_bootstrap_repeats"]}次' if complete else '；FVD仍待172条全部匹配'
+        analysis = (f'<section id="paired-analysis" class="log-section"><h2>配对分析 · {"完整172条" if complete else f"阶段{count}条"}</h2>'
+                    f'<p>同一{count}条、{paired["sessions"]}个源session配对成组bootstrap：RGB {paired["rgb_bootstrap_repeats"]}次{fvd_bootstrap_note}。下降指标负值有利，PSNR/SSIM正值有利。区间跨0表示方向仍不确定。</p>'
                     + ''.join(blocks) + '<p class="caption-note">这是复用validation上的描述统计。置信区间不能证明独立数据、多seed或更长rollout的稳定性；逐chunk区间未作多重比较校正。</p></section>')
     findings = '''<section id="findings" class="log-section findings-section"><h2>Findings · 暂定</h2><ol class="finding-list">
-<li><h3>当前混合方案处在两种纯模型之间。</h3><p>共同完成样本的平均 LPIPS 均优于纯 Edge，但不及纯 Nano；混合 FPS 高于纯 Nano、低于纯 Edge。样本仍少，尚无最终 FVD 结论。</p></li>
+<li><h3>当前混合方案处在两种纯模型之间。</h3><p>共同完成样本的平均 LPIPS 均优于纯 Edge，但不及纯 Nano；混合 FPS 高于纯 Nano、低于纯 Edge。全量尚未完成，尚无最终 FVD 结论。</p></li>
 <li><h3>开头与收尾各有作用，不能只凭模型大小选步骤。</h3><p>当前平均 LPIPS 是 Nano 开头更低，SSIM 是 Nano 收尾更高；具体场景仍有退化。不能从少量视频判断一种顺序全面更好。</p></li>
 <li><h3>历史反馈有初步正向趋势。</h3><p>把 Nano 最终 latent 写入 Edge 后，当前平均配对指标略好。完整172条完成后再判断收益是否稳定，以及它在后续 chunk 能保持多久。</p></li>
 </ol></section>'''
+    if paired and not complete:
+        position = paired['comparisons']['nano_first_vs_last']['rgb']['lpips_alex']
+        history = paired['comparisons']['history_final_vs_draft']['rgb']['lpips_alex']
+        p_lo,p_hi = position['ci95']
+        h_lo,h_hi = history['ci95']
+        findings = f'''<section id="findings" class="log-section findings-section"><h2>Findings · 阶段{count}条</h2>
+<ol class="finding-list"><li><h3>Nano开头与收尾，当前LPIPS尚分不出优劣。</h3><p>开头减收尾的LPIPS差值{position['mean_candidate_minus_baseline']:+.5f}，95%区间[{p_lo:+.5f}, {p_hi:+.5f}]。PSNR偏向开头，SSIM偏向收尾；需完整FVD与其他指标共同判断。</p></li>
+<li><h3>历史写回在当前批次有改善信号。</h3><p>最终历史减draft历史的LPIPS差值{history['mean_candidate_minus_baseline']:+.5f}，95%区间[{h_lo:+.5f}, {h_hi:+.5f}]；{history['wins']}/{count}条更低。第2–10及8–10个生成chunk的配对区间见上表。全量尚未完成，仍不能据此保证其他seed或更长rollout都提升。</p></li>
+<li><h3>FVD与单L40S测速尚未就绪。</h3><p>保留已验证的3×A5000重复测速。L40S85009仍等待资源；没有用其他GPU结果推算其FPS。</p></li></ol></section>'''
     if complete:
         first = result['variants']['nano_first']
         last = result['variants']['nano_last']
@@ -144,7 +160,8 @@ def build_edge_nano_page(base_page, data):
 <ol class="finding-list"><li><h3>开头与收尾按指标分别比较。</h3><p>Nano开头 / 收尾：FVD121 {first['fvd_full121']:.2f} / {last['fvd_full121']:.2f}；FVD16 {first['fvd_uniform16']:.2f} / {last['fvd_uniform16']:.2f}；LPIPS {first['lpips_alex']:.4f} / {last['lpips_alex']:.4f}。完整差值区间见配对分析，不能把一项指标的排序推广为全面优势。</p></li>
 <li><h3>历史写回：{history_verdict}。</h3><p>第2–10个chunk的LPIPS差值{history['mean_candidate_minus_baseline']:+.5f}，95%区间[{lo:+.5f}, {hi:+.5f}]。仍需独立数据、多seed和长rollout检验；当前实验没有证明所有场景都会改善。</p></li></ol></section>'''
     research = (data.parents[2] / 'scripts' / 'edge-nano-research.html').read_text()
-    paired_link = '<a href="edge-nano-paired-analysis.json" download>配对分析 JSON ↓</a>' if complete else ''
+    paired_file = 'edge-nano-paired-analysis.json' if complete else 'edge-nano-paired-interim.json'
+    paired_link = f'<a href="{paired_file}" download>配对分析 JSON ↓</a>' if paired else ''
     footer = f'''<footer class="entry-footer"><a href="edge-nano-results.json" download>质量 JSON ↓</a>{paired_link}<a href="{repo}" target="_blank" rel="noopener">数据、调研与测速记录 ↗</a><span>2026.10.29 · Cecilia</span></footer>'''
     body = header + results + quality + speed + feedback + analysis + checks + findings + research + footer
     start = base_page.index('<main class="log-content"')
@@ -155,4 +172,7 @@ def build_edge_nano_page(base_page, data):
     page = page.replace('<title>cecilia-research-log · 2026.10.25</title>', '<title>cecilia-research-log · 2026.10.29 · Edge × Nano 推理</title>')
     old_description = 'Cecilia 的研究日志：模型设计与训练细节、定性与定量结果、Findings。Stage 3 蒸馏，L40S / A5000 优化后推理结果。'
     page = page.replace(old_description, '已训练 Edge / Nano 四步学生的混合推理：同步视频、质量指标、FPS、历史反馈与模型路由调研。')
-    return with_date_navigation(page, '2026-10-29')
+    page = with_date_navigation(page, '2026-10-29')
+    if paired:
+        page = page.replace('<a href="#protocol">配置与检查</a>', '<a href="#paired-analysis">配对分析</a><a href="#protocol">配置与检查</a>')
+    return page

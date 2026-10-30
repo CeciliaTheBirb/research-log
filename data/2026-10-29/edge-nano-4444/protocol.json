@@ -15,8 +15,8 @@
   },
   "scope": "172 existing validation clips; external historical student training overlap not established",
   "fps_protocol": "120 new frames / synchronized rollout plus TinyVAE streaming decode; exclude loading, cached anchor, CPU conversion, file writing and quality metrics; include cache construction and both model commits; both models resident; diagnostic arms include extra Edge branch",
-  "observed_at": "2026-10-29T16:57:26.857847-07:00",
-  "status": "running; matched12 snapshot; FVD pending full172",
+  "observed_at": "2026-10-29T20:26:55.215540-07:00",
+  "status": "running; audited matched122 snapshot; FVD pending full172",
   "decoder": {
     "dtype": "BF16",
     "parallel": false,
@@ -28,11 +28,12 @@
   },
   "l40s_job": {
     "id": 85009,
-    "status": "last observed PENDING; no verified results",
+    "status": "PENDING (Resources); no verified results",
     "gpu_count": 1,
     "time_limit_hours": 3,
     "scope": "parity, three pilot clips, warmed three-repeat FPS; no duplicate full172 quality evaluation"
   },
-  "access_note": "10月29日20:15再次读取时SSH控制连接缺失，直连超时；无法确认此后的服务器进度。",
-  "automation": "No scheduled checks or automatic publication; user requests checking only when asked."
+  "access_note": "SSH连接已恢复；20:24检查确认84988仍在运行，85009仍等待资源。",
+  "automation": "No scheduled checks or automatic publication; user requests checking only when asked.",
+  "last_remote_checked_at": "2026-10-29T20:24:39-07:00"
 }
