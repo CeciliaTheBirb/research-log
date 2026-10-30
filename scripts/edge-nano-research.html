@@ -1,0 +1,21 @@
+<section id="model-routing" class="log-section">
+<h2>模型切换：相关工作与下一步</h2>
+<p>调研更新于 2026.10.29。下面是论文方法与针对当前学生的实验建议，尚未把这些新建议作为实测收益。</p>
+<div class="table-wrap"><table class="results-table"><caption>优先看前两种：适合已有四步学生，工程改动较小。</caption>
+<thead><tr><th scope="col">方法 / 原始来源</th><th scope="col">怎么切换</th><th scope="col">对当前 Edge × Nano 的意义</th></tr></thead>
+<tbody>
+<tr><th scope="row"><a href="https://arxiv.org/html/2609.30096v1" target="_blank" rel="noopener">TRACK · 2026.09 ↗</a></th><td>离线沿大模型轨迹，在相同 latent、时间和条件上比较大小模型预测；把分歧小的步骤交给小模型。部署时每步只运行选中的模型，允许非连续路由。</td><td>最直接的下一轮基线：补测 ENEE、EENE，并按 chunk 位置与动作类型校准路由。论文已测 Cosmos3 Super/Nano、Super/Edge，也测少步视频模型；当前机器人学生的收益仍需验证。</td></tr>
+<tr><th scope="row"><a href="https://arxiv.org/html/2604.17397v1" target="_blank" rel="noopener">SDVG · 2026.04 ↗</a></th><td>小模型先生成一个视频块，画质路由器决定接受，或让大模型从同一初始噪声重生成。首块强制大模型；drafter 保留自己的历史。</td><td>适合测试“多数 chunk 用 Edge，关键 chunk 用 Nano”。我们应增加动作、运动与几何检查；ImageReward 本身不能保证 action follow。拒绝 draft 时要恢复流式解码状态。</td></tr>
+<tr><th scope="row"><a href="https://t-stitch.github.io/" target="_blank" rel="noopener">T-Stitch · 2024 ↗</a><br><a href="https://arxiv.org/abs/2505.19151" target="_blank" rel="noopener">SRDiffusion · 2025 ↗</a></th><td>T-Stitch 先小后大；SRDiffusion 先大后小，用大模型处理高噪声结构与运动，再由小模型完成低噪声部分。</td><td>分别对应 EEEN、NEEE 的出发点。论文结果方向不同，不能仅凭“开头管结构、结尾管细节”决定当前四步学生的最佳顺序。</td></tr>
+<tr><th scope="row"><a href="https://arxiv.org/html/2603.07815v3" target="_blank" rel="noopener">HybridStitch · v3 / 2026.10 ↗</a></th><td>按 token 选择采用哪个模型的更新；共享生成状态，各模型维护自己的逐层 KV 缓冲，只计算被选中的查询。</td><td>可以探索让 Nano 只处理行人、障碍物等区域。但真实加速需要部分 token 执行和缓存维护；两网完整前向后再混合输出不会获得这种计算节省。论文尚未验证我们的因果机器人视频设置。</td></tr>
+<tr><th scope="row"><a href="https://arxiv.org/html/2501.05370v2" target="_blank" rel="noopener">连续扩散的 speculative sampling · 2025 ↗</a></th><td>小模型 draft、大模型验证，通过随机转移核的耦合保持目标分布。</td><td>论文明确说明其方法不能直接用于确定性采样器。当前四步 AnyFlow Euler 不能直接套上“精确接受/拒绝”就声称无损提速；改为随机采样是另一项实验。</td></tr>
+</tbody></table></div>
+<h3 class="result-title">建议优先做：等预算的步骤路由与跨 chunk 路由</h3>
+<ol>
+<li><strong>补齐一个 Nano 步的位置。</strong>比较 NEEE、ENEE、EENE、EEEN，使用独立校准数据选择策略，再用保留的评测数据确认。当前 172 条已反复用于比较，应继续称为 validation。</li>
+<li><strong>比较均匀分配与集中修正。</strong>例如四个 chunk 各用一次 Nano，与一个完整 NNNN chunk 加三个 EEEE chunk 比较；两者均有四次 Nano 去噪调用。实际 FPS 仍须计入历史补算、提交和设备传输，调用数相同不代表耗时相同。</li>
+<li><strong>再试动作条件路由。</strong>只根据已知动作和已经生成的历史，选择转弯、近障碍物等关键 chunk；用同预算的随机或周期路由作对照。评测时不读取真实未来帧作为路由输入。</li>
+</ol>
+<p>这三条是针对我们系统的提案。单纯切换大小模型已有先例；更值得验证的是：<strong>在动作条件、因果历史和固定延迟预算下，如何选择步骤，以及何时把最终 latent 提交到两个模型各自的历史。</strong>当前实现以各自原生前向重建历史 KV，不直接复制跨模型 KV，也不需要梯度回传。</p>
+<p class="caption-note">四个去噪区间的宽度并不相等：0.0625、0.10417、0.20833、0.625。最后一次 Nano 调用跨越的时间更长；普通多步模型的经验不能直接替代当前学生的实测。完整质量结果将报告开头/收尾的配对差值，并单独检查历史反馈在第 2–10、8–10 个生成 chunk 的表现。</p>
+</section>

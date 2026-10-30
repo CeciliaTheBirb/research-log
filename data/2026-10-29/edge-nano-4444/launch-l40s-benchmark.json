@@ -1,0 +1,12 @@
+{
+  "job_id": 85009,
+  "replaced_pending_job": 84980,
+  "purpose": "single L40S parity, three pilot clips, one warmup plus three repeat FPS; no duplicate full validation",
+  "partition": "l40s",
+  "gpu_count": 1,
+  "time_hours": 3,
+  "snapshot": ".jobkit/code/20261029-160113-41978d6-1798873-dirty.tar",
+  "output": "out/evaluation/edge-nano-4444-20261029",
+  "log": "logs/en4444-l40s-fps-85009.out",
+  "status": "PENDING"
+}

@@ -27,7 +27,12 @@
     "Nano": "NavWorldGym/nano-v0.1 step1070 non-EMA"
   },
   "l40s_job": {
-    "id": 84980,
-    "status": "PENDING; no results"
-  }
+    "id": 85009,
+    "status": "last observed PENDING; no verified results",
+    "gpu_count": 1,
+    "time_limit_hours": 3,
+    "scope": "parity, three pilot clips, warmed three-repeat FPS; no duplicate full172 quality evaluation"
+  },
+  "access_note": "10月29日20:15再次读取时SSH控制连接缺失，直连超时；无法确认此后的服务器进度。",
+  "automation": "No scheduled checks or automatic publication; user requests checking only when asked."
 }

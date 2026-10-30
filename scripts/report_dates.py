@@ -13,7 +13,7 @@ def with_date_navigation(page, date):
         for day, url, label in entries)
     sections = ([('results', '同步对比视频'), ('quality-results', '阶段质量指标'),
                  ('throughput-results', '推理速度'), ('history-feedback', '历史反馈对照'),
-                 ('protocol', '配置与检查'), ('findings', 'Findings')]
+                 ('protocol', '配置与检查'), ('findings', 'Findings'), ('model-routing', '模型切换调研')]
                 if date == '2026-10-29' else
                 [('gan-results', '定性与定量结果'), ('throughput-results', '推理速度'),
                  ('noisy-gan', '训练细节'), ('findings', 'Findings'), ('checkpoints', 'Checkpoint')]

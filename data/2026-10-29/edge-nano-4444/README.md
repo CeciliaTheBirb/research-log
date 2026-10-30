@@ -2,7 +2,13 @@
 
 2026-10-29。作业84988运行中，节点bolei-gpu02，分配 **3×RTX A5000 24GB**。
 Edge常驻CUDA0，Nano前18层及输入/输出位于CUDA1，后18层位于CUDA2。
-没有量化、CPU offload、梯度计算或权重更新。单张L40S作业84980仍排队，尚无其结果。
+没有量化、CPU offload、梯度计算或权重更新。单张L40S测速改为3小时短作业85009，
+保留三条pilot、原生一致性检查、预热与三次重复测速，不重复172条全量质量评测。
+原84980仅在仍排队时取消；85009最后确认状态为PENDING，尚无已验证结果。
+
+10月29日20:15本轮再次读取时，本地SSH控制连接缺失，直连超时，未取得新进度。
+本页质量数字保留此前验证过的12条快照，不能据此推断远端仍只完成12条。
+用户明确要求**不设置定时检查或自动发布任务，等提问时再查看**。
 
 使用普通因果AnyFlow学生：Edge step2200，Nano step1070非EMA。每个chunk四步，
 shift5、CFG1、完整clean历史、两套独立文本/KV缓存、BF16流式TinyVAE step38000。
@@ -67,5 +73,12 @@ shift5、CFG1、完整clean历史、两套独立文本/KV缓存、BF16流式Tiny
 - [人行道 · 114](../../../docs/assets/edge-nano-20261029/comparison-0114.mp4)
 
 原始记录：`settings.json`、`parity.json`、`benchmark.json`、`interim.json`。
+
+## 模型切换调研与全量分析准备
+
+- [原始论文、适配判断与下一步建议](model-routing-research.md)：TRACK、SDVG、T-Stitch、SRDiffusion、HybridStitch v3、连续扩散speculative sampling。
+- `analysis/analyze_results.py`：仅在六组共同172条通过hash和参考匹配后计算完整FVD，按源session成组配对bootstrap；分别分析Nano开头/收尾和最终/draft历史，包括后续chunk。
+- `../../../scripts/import_edge_nano.py`：一次性导入已验证的完整质量或L40S测速；检查FVD两种算法一致、模型payload、采样器、原生一致性和计时口径，不提交GPU作业、不循环、不推送Git。
+- L40S发布前还需读取实际输出，并通过上述检查；没有用其他GPU的速度推算。
 
 [公开实验页](https://ceciliathebirb.github.io/research-log/2026-10-29.html)
