@@ -104,9 +104,9 @@ def build_edge_nano_page(base_page, data):
 <div><dt>资源</dt><dd>Slurm84988，bolei-gpu02，3×A5000，12小时上限。启动前通过空闲 GPU 检查；没有终止其他用户进程。未使用量化、CPU offload、梯度或跨网络反传。</dd></div>
 </dl></div></section>'''
     findings = f'''<section id="findings" class="log-section findings-section"><h2>Findings</h2>
-<ol class="finding-list"><li><h3>雨后案例：Nano 开头，运动与行进轨迹更合理。</h3><p>在 0.5 m/s 的慢行视频中，NEEE 与 NEEN 比 EEEE、EEEN 更少靠近左侧墙面，表现出更合理的前进运动。这是当前雨后路口、单一 seed 的视觉观察。</p></li>
+<ol class="finding-list"><li><h3>雨后案例：Nano 开头，运动与行进轨迹更合理。</h3><p>在 0.5 m/s 的慢行视频中，NEEE、NEEN 与 NNEE 比 EEEE、EEEN 更少靠近左侧墙面。2.5 m/s 的 NNEE 也比 NEEN 更少向灌木靠近，但仍有纹理变形与模糊。这是当前雨后路口、单一 seed 的视觉观察。</p></li>
 <li><h3>雨后案例：Nano 收尾，画面观感有所改善。</h3><p>与纯 Edge 相比，最后一步使用 Nano 对部分纹理和局部画面质量有帮助；但它并未可靠地纠正行进轨迹。2.5 m/s 的 NEEN 在后段仍向灌木靠近，并出现模糊。</p></li>
-<li><h3>整体仍以四步全部使用 Nano 的结果最好。</h3><p>这两段雨后展示中，NNNN 的整体场景和道路轨迹更连贯。完整 {count} 条 validation 中，纯 Nano 的质量均值也最好；混合方案更快，但尚未达到纯 Nano 的整体质量。NEEN 的这两段展示未加入上方 172 条质量表或预热测速。</p></li></ol></section>'''
+<li><h3>整体仍以四步全部使用 Nano 的结果最好。</h3><p>这两段雨后展示中，NNNN 的整体场景和道路轨迹更连贯。完整 {count} 条 validation 中，纯 Nano 的质量均值也最好；混合方案更快，但尚未达到纯 Nano 的整体质量。NEEN 与 NNEE 的雨后展示未加入上方 172 条质量表或预热测速。</p></li></ol></section>'''
     research = (data.parents[2] / 'scripts' / 'edge-nano-research.html').read_text()
     footer_stamp = html.escape(protocol.get('updated_on', '2026-10-29').replace('-', '.'))
     footer = f'''<footer class="entry-footer"><a href="edge-nano-results.json" download>质量 JSON ↓</a><a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-29/edge-nano-4444/rain-cases.json" target="_blank" rel="noopener">雨后案例记录 ↗</a><a href="{repo}" target="_blank" rel="noopener">数据、调研与测速记录 ↗</a><span>{footer_stamp} 更新 · Cecilia</span></footer>'''
@@ -127,19 +127,21 @@ def build_edge_nano_page(base_page, data):
 def build_rain_results(data):
     rain = json.loads((data / 'rain-cases.json').read_text())
     assert rain['delivery_verified'] and len(rain['cases']) == 2
+    assert rain['layout'] == {'top': ['EEEE', 'NNNN', 'NEEN'], 'bottom': ['NEEE', 'EEEN', 'NNEE']}
+    version = html.escape(rain['asset_version'], quote=True)
     videos = []
     for case in rain['cases']:
         stem = html.escape(case['asset_stem'], quote=True)
         title = html.escape(case['title'])
         videos.append(f'<h3 class="result-title">{title}</h3>'
-                      f'<div class="video-shell"><video controls playsinline preload="metadata" poster="{stem}.jpg" '
-                      f'aria-label="{title}：五种模型路由与静态输入图的六视图">'
-                      f'<source src="{stem}.mp4" type="video/mp4">请下载 MP4 观看。</video></div>'
-                      f'<p class="caption-note"><a href="{stem}.mp4" download>下载六视图 MP4 ↓</a> · 121 帧 / 6.05 秒 / 20 FPS 播放</p>')
+                      f'<div class="video-shell"><video controls playsinline preload="metadata" poster="{stem}.jpg?v={version}" '
+                      f'aria-label="{title}：EEEE、NNNN、NEEN、NEEE、EEEN、NNEE 六种模型路由对比">'
+                      f'<source src="{stem}.mp4?v={version}" type="video/mp4">请下载 MP4 观看。</video></div>'
+                      f'<p class="caption-note"><a href="{stem}.mp4?v={version}" download>下载六视图 MP4 ↓</a> · 121 帧 / 6.05 秒 / 20 FPS 播放</p>')
     return ('''<section id="rain-results" class="log-section"><h2>雨后路口 · 两种速度的六视图</h2>
-<p>E = 普通 Edge student，N = 普通 Nano student；四个字母对应每个生成 chunk 的四步去噪。NEEN 表示第一步和第四步用 Nano，第二步和第三步用 Edge。</p>
-<p class="section-intro"><strong>上排：</strong>EEEE / NNNN / NEEN。<br><strong>下排：</strong>NEEE / EEEN / 静态输入图。右下角仅用于对照初始场景。</p>''' + ''.join(videos) +
-            '''<div class="timing-box"><h4>同一输入、同一噪声，比较五种路由。</h4>
+<p>E = 普通 Edge student，N = 普通 Nano student；四个字母对应每个生成 chunk 的四步去噪。NEEN 的第一、四步用 Nano；NNEE 的第一、二步用 Nano，后两步用 Edge。</p>
+<p class="section-intro"><strong>上排：</strong>EEEE / NNNN / NEEN。<br><strong>下排：</strong>NEEE / EEEN / NNEE。六个画面均为生成结果。</p>''' + ''.join(videos) +
+            '''<div class="timing-box"><h4>同一输入、同一噪声，比较六种路由。</h4>
 <p>普通 Edge step2200 与 Nano step1070，seed2026，CFG1、shift5，TinyVAE BF16 流式解码。两模型同时常驻 2×RTX A6000；雨后展示与 3×A5000 全量评测的硬件部署分别记录。此处 20 FPS 是播放帧率。</p>
-<p>NEEN 与 EEEN 将 Nano 的最终 latent 分别经过两个模型各自的原生前向，提交到各自的 clean 历史；不使用 Edge draft 历史。此次没有重训，也未使用之前的 4222+noisy kv reuse Edge 权重。</p>
+<p>NEEN 与 EEEN 将 Nano 最终 latent 提交到两个模型各自的 clean 历史；NNEE 则提交 Edge 最终 latent。历史均通过各自原生前向写入，不使用 draft 历史。此次没有重训，也未使用之前的 4222+noisy kv reuse Edge 权重。</p>
 <p>这是独立的单图生成案例，不计入 172 条 validation 指标。质量表中的 FVD、PSNR、SSIM、LPIPS 仍来自已有真实参考的 172 条评测。</p></div></section>''')

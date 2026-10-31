@@ -39,7 +39,7 @@
     "bottom": [
       "NEEE",
       "EEEN",
-      "static decoded input image; not future ground truth"
+      "NNEE"
     ]
   },
   "job_ids": {
@@ -47,9 +47,10 @@
       85457,
       85465
     ],
-    "NEEN": 85478
+    "NEEN": 85478,
+    "NNEE": 85502
   },
-  "history": "Each active model clean-commits the accepted final latent through its own forward. NEEN and EEEN use Nano final, with no Edge draft branch.",
+  "history": "Each active model clean-commits the accepted final latent through its own forward. NEEN and EEEN use Nano final; NNEE uses Edge final. No rejected draft or shadow branch.",
   "native_parity": {
     "E": {
       "exact": true,
@@ -68,14 +69,19 @@
     "image/anchor/noise/actions SHA256",
     "prompt/seed/time-grid/history/decoder",
     "GPU type/placement",
-    "NEEN call order/counts"
+    "NEEN call order/counts",
+    "checkpoint payload and model config/base revision",
+    "image/anchor/noise/actions hashes",
+    "prompt/seed/time grid/history/decoder",
+    "GPU type and placement",
+    "NNEE calls and accepted final history"
   ],
   "cases": [
     {
       "id": "2p5mps",
       "title": "雨后路口 · 直行 2.5 m/s",
       "asset_stem": "assets/edge-nano-20261029/rain-six-view-2p5mps",
-      "sha256": "241820ec8fa6b4ea45947e9179740cc8d9c922e8f04fc4e9985ace6e2dfaaff0",
+      "sha256": "5f12c1d434128571bf3a971ad9bd9bb0bc4abe8dff393db5a122d34cf9e4534d",
       "width": 2496,
       "height": 1028,
       "frames": 121,
@@ -95,13 +101,27 @@
           "commit": 11
         }
       },
-      "timestamps_checked": true
+      "timestamps_checked": true,
+      "NNEE_latent_sha256": "db2112f138f9b672f3a5058fd9bebf77207d423a99bbce9129faca32a68f47a5",
+      "NNEE_rgb_sha256": "4e5b88624cee5855d6da598c23e73cf991e9932ac667d2d4cafa142a0fee9dc1",
+      "NNEE_calls": {
+        "E": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        },
+        "N": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        }
+      }
     },
     {
       "id": "0p5mps",
       "title": "雨后路口 · 慢行 0.5 m/s",
       "asset_stem": "assets/edge-nano-20261029/rain-six-view-0p5mps",
-      "sha256": "29d56d2ca7dd863c9a9fe1f0c9818652ef728c93bd65d6ca8a72a1ee65ea0208",
+      "sha256": "9e6aa3b47fab8e78ed5899bf78404700eca2d1e5c98578945e61a61306631dcf",
       "width": 2496,
       "height": 1028,
       "frames": 121,
@@ -121,7 +141,48 @@
           "commit": 11
         }
       },
-      "timestamps_checked": true
+      "timestamps_checked": true,
+      "NNEE_latent_sha256": "4fb3eb7d8382a3ced393d9f5f86afd0a47cfc1c8b1059ac639905a060888ff5e",
+      "NNEE_rgb_sha256": "91cae652b2c688916b1b57137e2a7214dc9369073c36df927062f6886556360f",
+      "NNEE_calls": {
+        "E": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        },
+        "N": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        }
+      }
     }
-  ]
+  ],
+  "asset_version": "nnee85502",
+  "native_parity_by_extension": {
+    "NEEN": {
+      "E": {
+        "exact": true,
+        "max_abs": 0.0,
+        "generated_chunks": 2
+      },
+      "N": {
+        "exact": true,
+        "max_abs": 0.0,
+        "generated_chunks": 2
+      }
+    },
+    "NNEE": {
+      "E": {
+        "exact": true,
+        "max_abs": 0.0,
+        "generated_chunks": 2
+      },
+      "N": {
+        "exact": true,
+        "max_abs": 0.0,
+        "generated_chunks": 2
+      }
+    }
+  }
 }

@@ -70,6 +70,8 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 
 ### 10.29 页面更新 · 2026-10-30
 
-页面撤下配对分析栏目、区间表、逐 chunk 图及其下载入口；既有原始统计归档保留。新增雨后路口 2.5 m/s 与 0.5 m/s 六视图：上排 EEEE / NNNN / NEEN，下排 NEEE / EEEN / 静态输入图。视频与封面位于 `docs/assets/edge-nano-20261029/rain-six-view-*`，来源、权重哈希、历史策略和交付检查见 `data/2026-10-29/edge-nano-4444/rain-cases.json`。
+页面撤下配对分析栏目、区间表、逐 chunk 图及其下载入口；既有原始统计归档保留。新增雨后路口 2.5 m/s 与 0.5 m/s 六视图：上排 EEEE / NNNN / NEEN，下排 NEEE / EEEN / NNEE；六个画面均为生成结果。视频与封面位于 `docs/assets/edge-nano-20261029/rain-six-view-*`，来源、权重哈希、历史策略和交付检查见 `data/2026-10-29/edge-nano-4444/rain-cases.json`。
 
 雨后案例使用 2×RTX A6000，属于独立视觉诊断；没有把其播放帧率当作模型吞吐，也未将其加入原 172 条 validation 指标。Findings 记录 Nano 开头的运动表现、收尾的局部画面改善，以及当前整体仍不及四步全 Nano 的观察。
+
+两段雨后视频已替换为包含 NNEE 的最新六路版本，原五路加静态输入图版本已从页面和当前视频文件中替换。NNEE 来自作业85502，历史提交 Edge 最终 latent；视频与封面使用版本参数避免浏览器继续读取旧缓存。
