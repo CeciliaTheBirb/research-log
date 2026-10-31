@@ -66,3 +66,10 @@ GitHub Pages 可将 `main` 分支的 `docs/` 作为静态站点来源。视频�
 
 本次网页发布共同完成12/172条的阶段质量快照与三组同步视频，完整FVD尚待全部172条完成。页面不是服务器日志的实时镜像。
 数据及协议在[data/2026-10-29/edge-nano-4444](data/2026-10-29/edge-nano-4444/)，视频均在`docs/assets/edge-nano-20261029/`，生成逻辑为`scripts/report_edge_nano.py`。
+
+
+### 10.29 页面更新 · 2026-10-30
+
+页面撤下配对分析栏目、区间表、逐 chunk 图及其下载入口；既有原始统计归档保留。新增雨后路口 2.5 m/s 与 0.5 m/s 六视图：上排 EEEE / NNNN / NEEN，下排 NEEE / EEEN / 静态输入图。视频与封面位于 `docs/assets/edge-nano-20261029/rain-six-view-*`，来源、权重哈希、历史策略和交付检查见 `data/2026-10-29/edge-nano-4444/rain-cases.json`。
+
+雨后案例使用 2×RTX A6000，属于独立视觉诊断；没有把其播放帧率当作模型吞吐，也未将其加入原 172 条 validation 指标。Findings 记录 Nano 开头的运动表现、收尾的局部画面改善，以及当前整体仍不及四步全 Nano 的观察。

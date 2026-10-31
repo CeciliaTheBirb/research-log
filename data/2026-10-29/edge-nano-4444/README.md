@@ -92,3 +92,12 @@ RGB/FVD bootstrap使用相同session配对抽样；逐chunk为pointwise区间，
 [公开完整实验页](https://ceciliathebirb.github.io/research-log/2026-10-29.html#quality-results)
 
 [白天路口视频](../../../docs/assets/edge-nano-20261029/comparison-0000.mp4) · [夜间街道](../../../docs/assets/edge-nano-20261029/comparison-0057.mp4) · [树荫人行道](../../../docs/assets/edge-nano-20261029/comparison-0114.mp4)
+
+
+## 雨后路口六视图 · 2026-10-30
+
+新增 `rain-cases.json`：普通 Edge step2200 / Nano step1070，同一输入与 seed2026；2×RTX A6000，模型同时驻留，使用各自的完整 clean 历史。两段视频分别直行 2.5 m/s、0.5 m/s。上排 EEEE / NNNN / NEEN，下排 NEEE / EEEN / 静态输入图；后者不是真实未来视频。
+
+NEEN 的原生 E/N 一致性检查覆盖两个生成 chunk，最大差为0；交付核对了模型、输入、动作、噪声、时间网格、解码、历史、GPU 部署和调用数。视频均为121帧、20 FPS播放、6.05秒，时间戳间隔0.05秒。权重与视频 SHA256 记录在 JSON，视频保存在本仓库 `docs/assets/edge-nano-20261029/`。NEEN 和 EEEN 使用 Nano 最终 latent 作为两个模型的历史内容，没有 Edge draft 分支。
+
+本次网页移除配对分析展示，既有归档未删除。新增的雨后视频没有并入172条参考质量指标，也没有产生新的预热 FPS。

@@ -11,7 +11,7 @@ def with_date_navigation(page, date):
         + (' aria-current="page"' if day == date else '')
         + f'><span aria-hidden="true">▤</span><span>{label}</span></a>'
         for day, url, label in entries)
-    sections = ([('results', '同步对比视频'), ('quality-results', '阶段质量指标'),
+    sections = ([('results', '同步对比视频'), ('rain-results', '雨后六视图'), ('quality-results', '质量指标'),
                  ('throughput-results', '推理速度'), ('history-feedback', '历史反馈对照'),
                  ('protocol', '配置与检查'), ('findings', 'Findings'), ('model-routing', '模型切换调研')]
                 if date == '2026-10-29' else

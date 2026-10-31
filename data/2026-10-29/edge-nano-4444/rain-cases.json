@@ -1,0 +1,127 @@
+{
+  "updated_on": "2026-10-30",
+  "scope": "Two single-image, single-seed qualitative diagnostics, separate from the172-clip validation and warmed throughput benchmark.",
+  "delivery_verified": true,
+  "seed": 2026,
+  "gpu": "2x NVIDIA RTX A6000",
+  "placement": "Edge on CUDA0; complete Nano on CUDA1; both resident",
+  "models": {
+    "Edge": "edge-anyflow-causal step2200 non-EMA",
+    "Nano": "nano-v0.1 step1070 non-EMA"
+  },
+  "payload_sha256": {
+    "E": {
+      "adapter_model.safetensors": "7ea17da70d6922cd9193867976b7465c86fc1a74bd1c3fd3211f860a013aa905",
+      "action_weights.safetensors": "e1790b6e01960c23990417e117bcd8a7a44c76472e345bfa45f5a815f217edef",
+      "time_weights.safetensors": "ad2477a35b94bcc943b463930a0de95095fa17451b87db2ef744debefcfa4943"
+    },
+    "N": {
+      "adapter_model.safetensors": "e0ecc4a83b2e37655b2b96e4b81f043a4a3740d296ca176f5a9ff4d881e922be",
+      "action_weights.safetensors": "21abadc9a5795e927197bd2e3966fe28978c44821ef4347995e7191c9c62f25f",
+      "time_weights.safetensors": "7cbdb20e90feb61cdf5f69e24b707f5b5fe005e4c8e9e99e1758323a68ace171"
+    }
+  },
+  "grid": [
+    1,
+    0.9375,
+    0.8333333134651184,
+    0.625,
+    0
+  ],
+  "CFG": 1,
+  "decoder": "TinyVAE step38000 BF16 streaming",
+  "layout": {
+    "top": [
+      "EEEE",
+      "NNNN",
+      "NEEN"
+    ],
+    "bottom": [
+      "NEEE",
+      "EEEN",
+      "static decoded input image; not future ground truth"
+    ]
+  },
+  "job_ids": {
+    "four_routes": [
+      85457,
+      85465
+    ],
+    "NEEN": 85478
+  },
+  "history": "Each active model clean-commits the accepted final latent through its own forward. NEEN and EEEN use Nano final, with no Edge draft branch.",
+  "native_parity": {
+    "E": {
+      "exact": true,
+      "max_abs": 0.0,
+      "generated_chunks": 2
+    },
+    "N": {
+      "exact": true,
+      "max_abs": 0.0,
+      "generated_chunks": 2
+    }
+  },
+  "matched_checks": [
+    "checkpoint payload SHA256",
+    "model config/base revision",
+    "image/anchor/noise/actions SHA256",
+    "prompt/seed/time-grid/history/decoder",
+    "GPU type/placement",
+    "NEEN call order/counts"
+  ],
+  "cases": [
+    {
+      "id": "2p5mps",
+      "title": "雨后路口 · 直行 2.5 m/s",
+      "asset_stem": "assets/edge-nano-20261029/rain-six-view-2p5mps",
+      "sha256": "241820ec8fa6b4ea45947e9179740cc8d9c922e8f04fc4e9985ace6e2dfaaff0",
+      "width": 2496,
+      "height": 1028,
+      "frames": 121,
+      "playback_fps": 20,
+      "duration_seconds": 6.05,
+      "NEEN_latent_sha256": "d639f23d7dcd29db2a210753bd2365db67bf6126da0f3a2aab0707c0933f5429",
+      "NEEN_rgb_sha256": "318f999e511b83daa3c6bc23e683e77eab880fae1716a5e6d9c8c3ed2e35fc9f",
+      "NEEN_calls": {
+        "E": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        },
+        "N": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        }
+      },
+      "timestamps_checked": true
+    },
+    {
+      "id": "0p5mps",
+      "title": "雨后路口 · 慢行 0.5 m/s",
+      "asset_stem": "assets/edge-nano-20261029/rain-six-view-0p5mps",
+      "sha256": "29d56d2ca7dd863c9a9fe1f0c9818652ef728c93bd65d6ca8a72a1ee65ea0208",
+      "width": 2496,
+      "height": 1028,
+      "frames": 121,
+      "playback_fps": 20,
+      "duration_seconds": 6.05,
+      "NEEN_latent_sha256": "f09b24d34e2215a5eafd6e9088cb4543756387a2b7b19b5904705f680e4a4a51",
+      "NEEN_rgb_sha256": "cce8168380841193b3281b0e2e025f91b57fb061fcb6756bac54c461e75711bc",
+      "NEEN_calls": {
+        "E": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        },
+        "N": {
+          "denoise": 20,
+          "shadow": 0,
+          "commit": 11
+        }
+      },
+      "timestamps_checked": true
+    }
+  ]
+}
