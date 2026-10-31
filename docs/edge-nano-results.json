@@ -181,7 +181,9 @@
     "nano_first": 172,
     "nano_last": 172,
     "nano_last_feedback_diagnostic": 172,
-    "nano_last_draft_history": 172
+    "nano_last_draft_history": 172,
+    "nano_first_last": 172,
+    "nano_first_two": 172
   },
   "fvd_status": "full validation",
   "variants": {
@@ -310,10 +312,38 @@
       "diagnostic_speed": true,
       "fvd_full121": 234.01630944033832,
       "fvd_uniform16": 293.41368910078654
+    },
+    "nano_first_last": {
+      "lpips_alex": 0.39511926264281905,
+      "psnr_db": 16.541321635361786,
+      "ssim": 0.5312065016370007,
+      "route": "NEEN",
+      "count": 172,
+      "fvd_full121": 225.26669237543092,
+      "fvd_full121_covariance_check": 225.2665283811366,
+      "fvd_uniform16": 285.5903990844722,
+      "fvd_uniform16_covariance_check": 285.5902493842459,
+      "warmed_fps": 7.110876560491067
+    },
+    "nano_first_two": {
+      "lpips_alex": 0.406010905446759,
+      "psnr_db": 16.412078551451366,
+      "ssim": 0.5173464453937989,
+      "route": "NNEE",
+      "count": 172,
+      "fvd_full121": 224.43237755716564,
+      "fvd_full121_covariance_check": 224.4322157661145,
+      "fvd_uniform16": 281.71196417005194,
+      "fvd_uniform16_covariance_check": 281.71180809496127,
+      "warmed_fps": 7.183028874463198
     }
   },
   "all_noise_actions_matched": true,
   "all_shadow_final_latents_equal": true,
   "final_history_vs_draft_lpips_wins": 111,
-  "final_history_vs_draft_count": 172
+  "final_history_vs_draft_count": 172,
+  "extension_job_ids": [
+    "85511",
+    "85512"
+  ]
 }

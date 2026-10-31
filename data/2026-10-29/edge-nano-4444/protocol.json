@@ -15,7 +15,7 @@
   },
   "scope": "172 existing validation clips; external historical student training overlap not established",
   "fps_protocol": "120 new frames / synchronized rollout plus TinyVAE streaming decode; exclude loading, cached anchor, CPU conversion, file writing and quality metrics; include cache construction and both model commits; both models resident; diagnostic arms include extra Edge branch",
-  "observed_at": "2026-10-30T16:11:37.198595-07:00",
+  "observed_at": "2026-10-30T23:33:32.423927-07:00",
   "status": "complete: matched172 with paired session-bootstrap analysis",
   "decoder": {
     "dtype": "BF16",
@@ -39,5 +39,8 @@
   "job_elapsed": "05:37:08",
   "job_exit_code": "0:0",
   "updated_on": "2026-10-30",
-  "access_note": "完整评测作业84988已正常结束（5小时37分08秒，exit 0）；10月30日检查L40S85009仍等待资源。"
+  "extension_jobs": [
+    "85511",
+    "85512"
+  ]
 }

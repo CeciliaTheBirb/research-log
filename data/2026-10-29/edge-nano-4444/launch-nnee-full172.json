@@ -1,0 +1,26 @@
+{
+  "route": "NNEE",
+  "variant": "nano_first_two",
+  "job_id": 85512,
+  "node": "bolei-gpu02",
+  "gpu": "NVIDIA RTX A5000",
+  "gpu_count": 3,
+  "cpus": 8,
+  "host_memory_gib": 96,
+  "time_limit_hours": 4,
+  "snapshot": ".jobkit/code/20261030-221753-41978d6-3852436-dirty.tar",
+  "baseline_output": "out/evaluation/edge-nano-4444-20261029-a5000",
+  "output": "out/evaluation/edge-nano-4444-20261029-nnee-20261030-a5000",
+  "log": "logs/nnee-full172-85512.out",
+  "placement": "three-a5000",
+  "protocol": "same172 validation and canonical noise/actions; full clean history, accepted final latent through each model own commit; same grid/CFG/prompt/TinyVAE as baseline; warmed1 repeat3 on video57",
+  "source_jobs": [
+    85512
+  ],
+  "observed_state": "COMPLETED, exit0; full172 and warmed FPS independently audited",
+  "observed_at": "2026-10-30T23:33:32.466973-07:00",
+  "automation": "No scheduled monitoring or automatic publication configured",
+  "completed_clips": 172,
+  "elapsed_seconds": 4450,
+  "exit_code": "0:0"
+}

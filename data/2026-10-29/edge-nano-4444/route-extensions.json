@@ -1,0 +1,183 @@
+{
+  "matched_count": 172,
+  "provenance_verified": true,
+  "observed_at": "2026-10-31T06:33:32.389997+00:00",
+  "variants": {
+    "nano_first_last": {
+      "lpips_alex": 0.39511926264281905,
+      "psnr_db": 16.541321635361786,
+      "ssim": 0.5312065016370007,
+      "route": "NEEN",
+      "count": 172,
+      "fvd_full121": 225.26669237543092,
+      "fvd_full121_covariance_check": 225.2665283811366,
+      "fvd_uniform16": 285.5903990844722,
+      "fvd_uniform16_covariance_check": 285.5902493842459,
+      "warmed_fps": 7.110876560491067
+    },
+    "nano_first_two": {
+      "lpips_alex": 0.406010905446759,
+      "psnr_db": 16.412078551451366,
+      "ssim": 0.5173464453937989,
+      "route": "NNEE",
+      "count": 172,
+      "fvd_full121": 224.43237755716564,
+      "fvd_full121_covariance_check": 224.4322157661145,
+      "fvd_uniform16": 281.71196417005194,
+      "fvd_uniform16_covariance_check": 281.71180809496127,
+      "warmed_fps": 7.183028874463198
+    }
+  },
+  "benchmarks": {
+    "nano_first_last": {
+      "gpu": "NVIDIA RTX A5000",
+      "gpu_count": 3,
+      "placement": "three-a5000",
+      "index": 57,
+      "warmups_per_variant": 1,
+      "timed_repeats": 3,
+      "variants": {
+        "nano_first_last": {
+          "repeats": [
+            {
+              "rollout_s": 15.389235503971577,
+              "decode_s": 1.446102261543274,
+              "combined_s": 16.83533776551485,
+              "chunk_seconds": [
+                0.21227861195802689,
+                1.2864179387688637,
+                1.3341021686792374,
+                1.3912867307662964,
+                1.4387655332684517,
+                1.4928162172436714,
+                1.5439797416329384,
+                1.5946022048592567,
+                1.64720056951046,
+                1.6990857794880867,
+                1.74583288282156
+              ]
+            },
+            {
+              "rollout_s": 15.43024381250143,
+              "decode_s": 1.4484319910407066,
+              "combined_s": 16.878675803542137,
+              "chunk_seconds": [
+                0.21067272126674652,
+                1.2837417721748352,
+                1.3394502252340317,
+                1.392795890569687,
+                1.4471734017133713,
+                1.4955961182713509,
+                1.5503556430339813,
+                1.5992964208126068,
+                1.6486550569534302,
+                1.703890286386013,
+                1.7562767416238785
+              ]
+            },
+            {
+              "rollout_s": 15.425237230956554,
+              "decode_s": 1.4503193870186806,
+              "combined_s": 16.875556617975235,
+              "chunk_seconds": [
+                0.20854167640209198,
+                1.2894054725766182,
+                1.3348310217261314,
+                1.3886846750974655,
+                1.4455744624137878,
+                1.4940053224563599,
+                1.5516045689582825,
+                1.5989478901028633,
+                1.655972458422184,
+                1.7047231569886208,
+                1.7503306791186333
+              ]
+            }
+          ],
+          "fps_from_median_seconds": 7.110876560491067,
+          "diagnostic": false
+        }
+      },
+      "protocol": "120 new frames / synchronized rollout plus TinyVAE streaming decode; exclude loading, cached anchor, CPU conversion, file writing and quality metrics; include cache construction and both model commits; both models resident; diagnostic arms include extra Edge branch"
+    },
+    "nano_first_two": {
+      "gpu": "NVIDIA RTX A5000",
+      "gpu_count": 3,
+      "placement": "three-a5000",
+      "index": 57,
+      "warmups_per_variant": 1,
+      "timed_repeats": 3,
+      "variants": {
+        "nano_first_two": {
+          "repeats": [
+            {
+              "rollout_s": 15.236523195009795,
+              "decode_s": 1.4404809400002705,
+              "combined_s": 16.677004135010066,
+              "chunk_seconds": [
+                0.20564459401066415,
+                1.272121319998405,
+                1.3219808939902578,
+                1.3715216910059098,
+                1.4246353820053628,
+                1.4781400409992784,
+                1.531478649994824,
+                1.5808378989895573,
+                1.6283256010065088,
+                1.6853139540035045,
+                1.7334557419962948
+              ]
+            },
+            {
+              "rollout_s": 15.265733253996586,
+              "decode_s": 1.440311243000906,
+              "combined_s": 16.706044496997492,
+              "chunk_seconds": [
+                0.205427316002897,
+                1.2753045380086405,
+                1.3255986489966745,
+                1.3771212930005277,
+                1.429565468992223,
+                1.4777198759984458,
+                1.5310607249994064,
+                1.5806836020055925,
+                1.635056674000225,
+                1.6883177650015568,
+                1.7374629550031386
+              ]
+            },
+            {
+              "rollout_s": 15.282991489002598,
+              "decode_s": 1.4421417609992204,
+              "combined_s": 16.725133250001818,
+              "chunk_seconds": [
+                0.20652699799393304,
+                1.2760517739952775,
+                1.3322406939987559,
+                1.3778980580100324,
+                1.4313398380036233,
+                1.4832367979979608,
+                1.5310890959954122,
+                1.584684946006746,
+                1.6348658880015137,
+                1.6859768639988033,
+                1.735806209006114
+              ]
+            }
+          ],
+          "fps_from_median_seconds": 7.183028874463198,
+          "diagnostic": false
+        }
+      },
+      "protocol": "120 new frames / synchronized rollout plus TinyVAE streaming decode; exclude loading, cached anchor, CPU conversion, file writing and quality metrics; include cache construction and both model commits; both models resident; diagnostic arms include extra Edge branch"
+    }
+  },
+  "source_audit_sha256": {
+    "nano_first_last": "2b58fdb444a810ac6fd6b5606d79301a4ee3c9a522e4540b8cf9b74d042c761b",
+    "nano_first_two": "3d0150bc58fc6a6ad01008445b7014da9a83904696c69e5b54618c1d60e373d9"
+  },
+  "job_ids": [
+    "85511",
+    "85512"
+  ]
+}

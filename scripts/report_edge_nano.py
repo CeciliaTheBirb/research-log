@@ -26,14 +26,24 @@ def build_edge_nano_page(base_page, data):
         return f'{q["fvd_full121"]:.2f} / {q["fvd_uniform16"]:.2f}' if complete else '待全量'
     labels = [('edge4444', 'EEEE · 纯 Edge'), ('nano4444', 'NNNN · 纯 Nano'),
               ('nano_first', 'NEEE · Nano 开头'), ('nano_last', 'EEEN · Nano 收尾')]
+    extension_path = data / 'route-extensions.json'
+    extensions = json.loads(extension_path.read_text()) if extension_path.exists() else None
+    if extensions:
+        assert extensions['matched_count'] == 172 and extensions['provenance_verified']
+        assert set(extensions['variants']) == {'nano_first_last', 'nano_first_two'}
+        labels += [('nano_first_last', 'NEEN · Nano 开头＋收尾'),
+                   ('nano_first_two', 'NNEE · Nano 前两步')]
     quality_rows = []
     speed_rows = []
     for key, label in labels:
-        q = result['variants'][key]
+        extra = extensions is not None and key in extensions['variants']
+        q = extensions['variants'][key] if extra else result['variants'][key]
+        fps = q['warmed_fps'] if extra else bench['variants'][key]['fps_from_median_seconds']
+        quality_fps = f'<td>{fps:.2f}</td>' if extensions else ''
         quality_rows.append(f'<tr><th scope="row">{label}</th><td>{q["lpips_alex"]:.4f}</td>'
-                            f'<td>{q["psnr_db"]:.2f}</td><td>{q["ssim"]:.4f}</td><td>{fvd_cell(q)}</td></tr>')
-        fps = bench['variants'][key]['fps_from_median_seconds']
-        lfps = f'{l40s["variants"][key]["fps_from_median_seconds"]:.2f}<small>FPS</small>' if l40s else '待实测'
+                            f'<td>{q["psnr_db"]:.2f}</td><td>{q["ssim"]:.4f}</td><td>{fvd_cell(q)}</td>{quality_fps}</tr>')
+        lfps = (f'{l40s["variants"][key]["fps_from_median_seconds"]:.2f}<small>FPS</small>'
+                if l40s and key in l40s['variants'] else '待实测')
         speed_rows.append(f'<tr><th scope="row">{label}</th><td>{fps:.2f}<small>FPS</small></td><td>{lfps}</td></tr>')
     videos = []
     for index, title in [(0, '白天路口'), (57, '夜间街道'), (114, '树荫人行道')]:
@@ -58,6 +68,9 @@ def build_edge_nano_page(base_page, data):
     status_note = ('FVD121、FVD16、LPIPS、PSNR 与 SSIM 已完成；新增两种直行速度的雨后六视图。' if complete else
                    f'质量表仅汇总已验证的 {count} 条，FVD 等待全部172条。完整评测作业84988已提交；服务器进度与本页快照分开记录。')
     status_note += (' 单 L40S FPS 已完成。' if l40s else f' 单 L40S 测速作业{l40s_job}仍等待资源，尚未开始，没有实测 FPS。')
+    if extensions:
+        status_note = ('六种正式路由均已完成相同172条：新增 NEEN、NNEE 的 FVD、参考质量指标和3×A5000预热测速。'
+                       + (' 单 L40S 结果见速度表。' if l40s else f' 单 L40S 作业{l40s_job}仍在等待资源。'))
     access_note = html.escape(protocol.get('access_note', ''))
     repo = 'https://github.com/CeciliaTheBirb/research-log/tree/main/data/2026-10-29/edge-nano-4444'
     header = f'''<header class="entry-header"><div class="page-icon" aria-hidden="true">▤</div>
@@ -77,13 +90,22 @@ def build_edge_nano_page(base_page, data):
                     else ', '.join(result['matched_indices']))
     fvd_note = ('FVD121使用完整121帧的I3D特征，FVD16使用未来120帧中均匀采样的16帧；所有路由共享相同参考特征。' if complete else
                 '真实参考视频和 I3D 特征已经准备好。FVD 待全量，是因为当前快照只验证了部分样本；有参考数据的 PSNR、SSIM、LPIPS 已可逐条统计。')
+    quality_fps_header = '<th scope="col">FPS ↑<small>3×A5000</small></th>' if extensions else ''
     quality = f'''<section id="quality-results" class="log-section"><h2>质量指标 · {quality_label}</h2>
 <p>同一组 {count} 条 validation、相同输入图、真实动作和 canonical 初始噪声。121 帧 / 480×832；RGB 参考指标排除已知首帧。</p>
 <div class="table-wrap"><table class="results-table"><caption>{quality_caption}</caption>
-<thead><tr><th scope="col">每 chunk 路由</th><th scope="col">LPIPS ↓</th><th scope="col">PSNR ↑ dB</th><th scope="col">SSIM ↑</th><th scope="col">FVD121 / 16 ↓</th></tr></thead>
+<thead><tr><th scope="col">每 chunk 路由</th><th scope="col">LPIPS ↓</th><th scope="col">PSNR ↑ dB</th><th scope="col">SSIM ↑</th><th scope="col">FVD121 / 16 ↓</th>{quality_fps_header}</tr></thead>
 <tbody>{''.join(quality_rows)}</tbody></table></div>
 <p class="caption-note">质量快照索引：{html.escape(indices_note)}。这些是反复用于比较的 validation；外部学生历史训练数据与它的重叠尚未确认，不声称这是外部模型完全未见过的测试集。</p>
 <p>{fvd_note}</p></section>'''
+    if extensions:
+        extension_jobs = ' / '.join(str(v) for v in extensions['job_ids'])
+        quality = quality.replace('</section>',
+            f'<p class="caption-note">新增 NEEN、NNEE：各172/172条，作业 {extension_jobs}。'
+            '逐条核对原表的 CID、action、初始噪声与 RGB 参考；复用逐值相同的参考 I3D 特征，'
+            '两种 FVD 实现交叉检查通过。雨后单图视频不计入此表。</p></section>')
+        quality = quality.replace('</section>', '<p class="caption-note">FPS 为固定视频0057预热1次、计时3次，'
+            '与下方速度表同源；质量指标则使用全部172条，FPS并非172条的平均值。</p></section>')
     speed = f'''<section id="throughput-results" class="log-section"><h2>推理速度</h2>
 <div class="table-wrap"><table class="hardware-table"><thead><tr><th scope="col">路由</th><th scope="col">3×RTX A5000<small>Edge 1 卡 / Nano 2 卡</small></th><th scope="col">1×L40S<small>作业{l40s_job}</small></th></tr></thead><tbody>{''.join(speed_rows)}</tbody></table></div>
 <div class="timing-box"><h4>包含模型切换、历史提交与 TinyVAE 解码。</h4>
@@ -107,6 +129,11 @@ def build_edge_nano_page(base_page, data):
 <ol class="finding-list"><li><h3>雨后案例：Nano 开头，运动与行进轨迹更合理。</h3><p>在 0.5 m/s 的慢行视频中，NEEE、NEEN 与 NNEE 比 EEEE、EEEN 更少靠近左侧墙面。2.5 m/s 的 NNEE 也比 NEEN 更少向灌木靠近，但仍有纹理变形与模糊。这是当前雨后路口、单一 seed 的视觉观察。</p></li>
 <li><h3>雨后案例：Nano 收尾，画面观感有所改善。</h3><p>与纯 Edge 相比，最后一步使用 Nano 对部分纹理和局部画面质量有帮助；但它并未可靠地纠正行进轨迹。2.5 m/s 的 NEEN 在后段仍向灌木靠近，并出现模糊。</p></li>
 <li><h3>整体仍以四步全部使用 Nano 的结果最好。</h3><p>这两段雨后展示中，NNNN 的整体场景和道路轨迹更连贯。完整 {count} 条 validation 中，纯 Nano 的质量均值也最好；混合方案更快，但尚未达到纯 Nano 的整体质量。NEEN 与 NNEE 的雨后展示未加入上方 172 条质量表或预热测速。</p></li></ol></section>'''
+    if extensions:
+        findings = findings.replace('NEEN 与 NNEE 的雨后展示未加入上方 172 条质量表或预热测速。',
+            'NEEN 与 NNEE 已独立跑完相同172条 validation 并加入上表；雨后展示仍仅作定性观察。')
+        findings = findings.replace('纯 Nano 的质量均值也最好；混合方案更快，但尚未达到纯 Nano 的整体质量。',
+            '纯 Nano 的 FVD、LPIPS 与 PSNR 均值最好；NEEN 的 SSIM 与纯 Nano 接近。混合方案更快，但尚未达到纯 Nano 的整体质量。')
     research = (data.parents[2] / 'scripts' / 'edge-nano-research.html').read_text()
     footer_stamp = html.escape(protocol.get('updated_on', '2026-10-29').replace('-', '.'))
     footer = f'''<footer class="entry-footer"><a href="edge-nano-results.json" download>质量 JSON ↓</a><a href="https://github.com/CeciliaTheBirb/research-log/blob/main/data/2026-10-29/edge-nano-4444/rain-cases.json" target="_blank" rel="noopener">雨后案例记录 ↗</a><a href="{repo}" target="_blank" rel="noopener">数据、调研与测速记录 ↗</a><span>{footer_stamp} 更新 · Cecilia</span></footer>'''

@@ -2,6 +2,7 @@
 import argparse
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import numpy as np
 
@@ -21,12 +22,14 @@ def fvd(x, y):
 
 def summarize(output):
     output = Path(output)
-    counts = {name: sorted(p.parent.name for p in (output/name).glob('*/metrics.json')) for name in NAMES}
+    settings = json.loads((output/'settings.json').read_text()) if (output/'settings.json').exists() else {}
+    names = tuple(settings.get('variants', NAMES))
+    counts = {name: sorted(p.parent.name for p in (output/name).glob('*/metrics.json')) for name in names}
     common = sorted(set.intersection(*(set(v) for v in counts.values())))
     report = {'completed_per_variant':{k:len(v) for k,v in counts.items()}, 'matched_count':len(common),
               'fvd_status':'full validation' if len(common)==172 else 'pending: do not interpret pilot FVD',
               'variants':{}}
-    for name in NAMES:
+    for name in names:
         rows = [json.loads((output/name/i/'metrics.json').read_text()) for i in common]
         if not rows:
             continue
@@ -47,13 +50,28 @@ def summarize(output):
 
 
 def stitch(output, index):
+    # This is an optional delivery artifact. A missing system encoder must never
+    # interrupt validation generation or metric collection on compute nodes.
+    if shutil.which('ffmpeg') is None:
+        print(json.dumps({'event':'stitch_deferred', 'index':index,
+                          'reason':'ffmpeg unavailable; assemble on delivery host'}), flush=True)
+        return
     output = Path(output)
+    settings = json.loads((output/'settings.json').read_text()) if (output/'settings.json').exists() else {}
+    baseline = Path(settings['baseline_output']) if settings.get('baseline_output') else output
     panels = [('Reference',output/'reference'/f'{index:04d}'/'reference.mp4'),
               ('Edge 4444',output/'edge4444'/f'{index:04d}'/'generated.mp4'),
               ('Nano 4444',output/'nano4444'/f'{index:04d}'/'generated.mp4'),
               ('Nano first',output/'nano_first'/f'{index:04d}'/'generated.mp4'),
               ('Nano last + final history',output/'nano_last'/f'{index:04d}'/'generated.mp4'),
               ('Nano last + Edge draft history',output/'nano_last_draft_history'/f'{index:04d}'/'generated.mp4')]
+    if 'nano_first_last' in settings.get('variants', {}):
+        panels = [('Reference',output/'reference'/f'{index:04d}'/'reference.mp4'),
+                  ('EEEE - Edge',baseline/'edge4444'/f'{index:04d}'/'generated.mp4'),
+                  ('NNNN - Nano',baseline/'nano4444'/f'{index:04d}'/'generated.mp4'),
+                  ('NEEE - Nano first',baseline/'nano_first'/f'{index:04d}'/'generated.mp4'),
+                  ('EEEN - Nano last',baseline/'nano_last'/f'{index:04d}'/'generated.mp4'),
+                  ('NEEN - Nano first and last',output/'nano_first_last'/f'{index:04d}'/'generated.mp4')]
     if not all(p.is_file() for _,p in panels):
         return
     out = output/'comparisons'
